@@ -1,37 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   User.hpp                                           :+:      :+:    :+:   */
+/*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/18 15:56:15 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/18 16:33:30 by laprieur         ###   ########.fr       */
+/*   Created: 2023/12/18 16:33:57 by laprieur          #+#    #+#             */
+/*   Updated: 2023/12/18 16:36:39 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef USER_HPP
-# define USER_HPP
+#ifndef SERVER_HPP
+# define SERVER_HPP
 
-#include <string>
-
-enum userType {
-	OPERATOR,
-	REGULAR
-};
-
-class User {
+class Server {
 	private:
-		std::string	nickName;
-		std::string	userName;
-		int			type;
-	
-		User(const User& source);
-		User& operator=(const User& source);
+		int			port;
+		std::string	password;
 
+		Server(const Server& source);
+		Server& operator=(const Server& source);
+	
 	public:
-		User();
-		~User();
+		Server();
+		~Server();
 };
 
 #endif
