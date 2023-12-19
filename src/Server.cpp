@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:09:56 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/19 16:36:01 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/19 17:12:36 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,9 @@ void	Server::start() {
                 }
 				std::cout << "New client connected!" << std::endl;
             } else {
-                // Handle client data
-                int clientSocket = _events[i].data.fd;
+				int clientSocket = _events[i].data.fd;
 				(void)clientSocket;
-				// Read and process data from clientSocket
+				// Handle incoming data or other events: authenticate, set a nickname, a username, join a channel...
             }
         }
     }
