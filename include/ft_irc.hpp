@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 14:08:20 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/19 15:30:21 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/19 16:00:47 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,3 +27,5 @@
 #define YELLOW	"\033[33m"
 #define BLUE	"\033[34m"
 #define NONE	"\033[0m"
+
+#define MAX_EVENTS 10

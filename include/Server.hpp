@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 16:33:57 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/19 15:34:15 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/19 16:32:37 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,13 @@
 
 class Server {
 	private:
-		int			_port;
-		std::string	_password;
+		int					_port;
+		int					_socket;
+		int					_epoll;
+		std::string			_password;
+		struct sockaddr_in	_serverAddress;
+        struct sockaddr_in	_clientAddress;
+		struct epoll_event	_event, _events[MAX_EVENTS];
 
 		Server();
 		Server(const Server& source);
@@ -28,7 +33,8 @@ class Server {
 		Server(char** params);
 		~Server();
 		
-		void	startServer();
+		void	setup();
+		void	start();
 };
 
 #endif

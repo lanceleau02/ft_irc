@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 14:04:57 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/19 15:35:17 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/19 16:35:09 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	main(int argc, char **argv) {
 		if (argc != 3)
 			throw std::invalid_argument("invalid number of arguments.");
 		Server	server(argv);
+		server.setup();
+		server.start();
 	}
 	catch (std::exception& e) {
 		std::cerr << RED << "Error: " << e.what() << NONE << std::endl;
