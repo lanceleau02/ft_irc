@@ -6,17 +6,21 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 14:08:20 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/18 14:23:27 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/19 15:30:21 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include <cstring>
 #include <cstdlib>
+#include <string>
 #include <unistd.h>
 #include <sys/socket.h>
 #include <sys/epoll.h>
 #include <netinet/in.h>
+
+#include "Server.hpp"
+#include "User.hpp"
 
 #define RED		"\033[31m"
 #define GREEN	"\033[32m"
