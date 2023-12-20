@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:09:56 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/19 17:12:36 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/20 16:29:19 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	Server::setup() {
 }
 
 void	Server::start() {
+	User	users;
 	// Main event loop
 	while (true) {
 		// Wait for events on the epoll instance
@@ -73,7 +74,7 @@ void	Server::start() {
             if (_events[i].data.fd == _socket) {
                 // Accept new client connection
                 socklen_t clientAddressLength = sizeof(_clientAddress);
-                int clientSocket = accept(_socket, (struct sockaddr*)&_clientAddress, &clientAddressLength);
+                int clientSocket = accept(_socket, reinterpret_cast<sockaddr*>(&_clientAddress), &clientAddressLength);
                 if (clientSocket == -1) {
                     std::cerr << RED << "Error: failed to accept client connection." << NONE << std::endl;
                     continue;
@@ -87,13 +88,46 @@ void	Server::start() {
                     continue;
                 }
 				std::cout << "New client connected!" << std::endl;
-            } else {
-				int clientSocket = _events[i].data.fd;
-				(void)clientSocket;
-				// Handle incoming data or other events: authenticate, set a nickname, a username, join a channel...
             }
+			else {
+				// Handle incoming data or other events: authenticate, set a nickname, a username, join a channel...
+				int		clientSocket = _events[i].data.fd;
+				char	buffer[1024];
+    			int		bytes = recv(clientSocket, buffer, sizeof(buffer), 0);
+				if (bytes <= 0) {
+					if (bytes == 0)
+						std::cout << "Client disconnected!" << std::endl;
+					else
+						std::cout << "Error or disconnection from client." << std::endl;
+					close(clientSocket);
+    				epoll_ctl(_epoll, EPOLL_CTL_DEL, clientSocket, NULL);
+				}
+				else {
+					buffer[bytes] = '\0';
+					std::string buf(buffer);
+					std::istringstream iss(buf);
+					std::string command, arg;
+					iss >> command;
+					std::getline(iss >> std::ws, arg);
+					if (buf.compare(0, 4, "PASS") == 0)
+						pass(users, arg);
+					else if (buf.compare(0, 4, "NICK") == 0) {
+						nick(users, arg);
+					}
+/* 					else if (buf == "user")
+						user();
+					else if (buf == "join")
+						join();
+					else if (buf == "privmsg")
+						privmsg(); */
+				}
+			}
         }
     }
 	close(_socket);
 	close(_epoll);
+}
+
+void	clientLog(int socket, const std::string& log) {
+	send(socket, log.c_str(), log.size(), 0);
 }

@@ -6,7 +6,7 @@
 #    By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/14 13:54:59 by laprieur          #+#    #+#              #
-#    Updated: 2023/12/19 15:18:55 by laprieur         ###   ########.fr        #
+#    Updated: 2023/12/20 14:52:07 by laprieur         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,8 +16,11 @@ NAME			:= ircserv
 #                                 INGREDIENTS                                  #
 # **************************************************************************** #
 
-SRC				:=	src/main.cpp		\
-					src/Server.cpp		\
+SRC				:=	src/main.cpp			\
+					src/Server.cpp			\
+					src/User.cpp			\
+					src/commands/pass.cpp	\
+					src/commands/nick.cpp	\
 					
 SRC_OBJS		:=	$(SRC:%.cpp=.build/%.o)
 DEPS			:=	$(SRC_OBJS:%.o=%.d)

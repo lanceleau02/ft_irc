@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 16:33:57 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/19 16:42:43 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/20 14:52:43 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define SERVER_HPP
 
 #include "ft_irc.hpp"
+
+class User;
 
 class Server {
 	private:
@@ -27,10 +29,6 @@ class Server {
 		
 		// Client variables
         struct sockaddr_in	_clientAddress;
-
-		Server();
-		Server(const Server& source);
-		Server& operator=(const Server& source);
 	
 	public:
 		Server(char** params);
@@ -38,6 +36,11 @@ class Server {
 		
 		void	setup();
 		void	start();
+		void	pass(User& user, const std::string& password);
+		void	nick(User& user, std::string nickname);
+		void	user();
+		void	join();
+		void	privmsg();
 };
 
 #endif

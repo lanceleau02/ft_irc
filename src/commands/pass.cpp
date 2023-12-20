@@ -1,32 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_irc.hpp                                         :+:      :+:    :+:   */
+/*   pass.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/14 14:08:20 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/20 15:26:33 by laprieur         ###   ########.fr       */
+/*   Created: 2023/12/20 13:30:36 by laprieur          #+#    #+#             */
+/*   Updated: 2023/12/20 14:40:47 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
-#include <cstring>
-#include <cstdlib>
-#include <string>
-#include <sstream>
-#include <unistd.h>
-#include <sys/socket.h>
-#include <sys/epoll.h>
-#include <netinet/in.h>
-
 #include "Server.hpp"
-#include "User.hpp"
 
-#define RED		"\033[31m"
-#define GREEN	"\033[32m"
-#define YELLOW	"\033[33m"
-#define BLUE	"\033[34m"
-#define NONE	"\033[0m"
-
-#define MAX_EVENTS 10
+void	Server::pass(User& user, const std::string& password) {
+	if (password == _password) {
+		user.setAuthentification();
+		std::cout << GREEN << "Client successfully authentified!" << NONE << std::endl;
+	}
+	else
+		std::cout << RED << "Wrong password submitted." << NONE << std::endl;
+}
