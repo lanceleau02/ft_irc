@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 16:33:57 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/21 14:44:13 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/21 15:34:05 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,14 @@
 #include "ft_irc.hpp"
 
 enum Logs {
-	RPL_WELCOME
+	RPL_WELCOME,
+	ERR_NEEDMOREPARAMS,
+	ERR_ALREADYREGISTRED
 };
 
-//class Client;
+enum Commands {
+	PASS
+};
 
 class Server {
 	private:
@@ -41,7 +45,7 @@ class Server {
 		void	user();
 		void	join();
 		void	privmsg();
-		void	clientLog(const User& user, int socket, int logCode);
+		void	clientLog(const User& user, int socket, int logCode, std::string cmd);
 		
 };
 

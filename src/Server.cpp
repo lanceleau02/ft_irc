@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:09:56 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/21 14:44:00 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/21 15:34:23 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,20 @@ void	Server::setup() {
 	}
 }
 
-/* void	Server::clientLog(const User& user, int socket, int logCode) {
+void	Server::clientLog(const User& user, int socket, int logCode, std::string cmd) {
 	std::stringstream	logMessage;
 	char				test[256];
 	
-	if (logCode == RPL_WELCOME)
+	if (logCode == RPL_WELCOME) {
+		(void)cmd;
 		logMessage << "Welcome to the Internet Relay Network " << user.getNickname() << "!" << user.getUsername() << "@" << gethostname(test, sizeof(test));
+	}
+	if (logCode == ERR_NEEDMOREPARAMS)
+		logMessage << cmd << ": Not enough parameters";
+	if (logCode == ERR_ALREADYREGISTRED)
+		logMessage << cmd << ": Unauthorized command (already registered)";
 	send(socket, (logMessage.str()).c_str(), (logMessage.str()).size(), 0);
-} */
+}
 
 void	Server::start() {
 	Client client;
@@ -111,11 +117,11 @@ void	Server::start() {
 				// Handle incoming data or other events: authenticate, set a nickname, a username, join a channel...
 				int		userSocket = _events[i].data.fd;
 
-				const User* currentUser = NULL;
+				User* currentUser = NULL;
 
 				for (size_t j = 0; j < client.getNbUsers(); ++j) {
 					if (client.getUser(j).getSocket() == userSocket) {
-						currentUser = &client.getUser(j);
+						currentUser = const_cast<User*>(&client.getUser(j));
 						break;
 					}
 				}
@@ -141,17 +147,17 @@ void	Server::start() {
 						iss >> command;
 						std::getline(iss >> std::ws, arg);
 						if (buf.compare(0, 4, "PASS") == 0)
-							pass(currentUser, arg);
+							pass(*currentUser, arg);
 						else if (buf.compare(0, 4, "NICK") == 0) {
-							nick(currentUser, arg);
+							nick(*currentUser, arg);
 						}
 /* 						else if (buf == "user")
 							user();
 						else if (buf == "join")
 							join();
 						else if (buf == "privmsg")
-							privmsg();
-					} */
+							privmsg(); */
+					}
 				}
 			}
         }

@@ -6,7 +6,7 @@
 #    By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/14 13:54:59 by laprieur          #+#    #+#              #
-#    Updated: 2023/12/21 14:32:30 by laprieur         ###   ########.fr        #
+#    Updated: 2023/12/21 15:30:26 by laprieur         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,8 +20,8 @@ SRC				:=	src/main.cpp			\
 					src/Server.cpp			\
 					src/Client.cpp			\
 					src/User.cpp			\
-					#src/commands/pass.cpp	\
-					#src/commands/nick.cpp	\
+					src/commands/pass.cpp	\
+					src/commands/nick.cpp	\
 					
 SRC_OBJS		:=	$(SRC:%.cpp=.build/%.o)
 DEPS			:=	$(SRC_OBJS:%.o=%.d)
