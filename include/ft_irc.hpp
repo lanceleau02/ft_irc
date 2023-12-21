@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 14:08:20 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/20 15:26:33 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/21 13:41:06 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,17 @@
 #include <cstdlib>
 #include <string>
 #include <sstream>
+#include <vector>
 #include <unistd.h>
 #include <sys/socket.h>
 #include <sys/epoll.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
+#include <netdb.h>
 
 #include "Server.hpp"
 #include "User.hpp"
+#include "Client.hpp"
 
 #define RED		"\033[31m"
 #define GREEN	"\033[32m"
