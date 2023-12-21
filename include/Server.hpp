@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 16:33:57 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/21 15:34:05 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/21 16:34:42 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ class Server {
 		void	setup();
 		void	start();
 		void	pass(User& user, const std::string& password);
-		void	nick(User& user, std::string nickname);
+		bool	nick(User& user, std::string nickname);
 		void	user();
 		void	join();
 		void	privmsg();
