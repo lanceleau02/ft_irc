@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:09:56 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/21 16:29:43 by hsebille         ###   ########.fr       */
+/*   Updated: 2023/12/21 17:40:13 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,14 @@ void	Server::clientLog(const User& user, int socket, int logCode, std::string cm
 	
 	if (logCode == RPL_WELCOME) {
 		(void)cmd;
-		logMessage << "Welcome to the Internet Relay Network " << user.getNickname() << "!" << user.getUsername() << "@" << gethostname(test, sizeof(test));
+		logMessage << "Welcome to the Internet Relay Network " << user.getNickname() << "!" << user.getUsername() << "@" << gethostname(test, sizeof(test)) << std::endl;
 	}
+	if (logCode == ERR_PASSWDMISMATCH)
+		logMessage << cmd << ": Password incorrect" << std::endl;
 	if (logCode == ERR_NEEDMOREPARAMS)
-		logMessage << cmd << ": Not enough parameters";
+		logMessage << cmd << ": Not enough parameters" << std::endl;
 	if (logCode == ERR_ALREADYREGISTRED)
-		logMessage << cmd << ": Unauthorized command (already registered)";
+		logMessage << cmd << ": Unauthorized command (already registered)" << std::endl;
 	send(socket, (logMessage.str()).c_str(), (logMessage.str()).size(), 0);
 }
 

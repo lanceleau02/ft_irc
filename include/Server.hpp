@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 16:33:57 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/21 16:34:42 by hsebille         ###   ########.fr       */
+/*   Updated: 2023/12/21 17:41:59 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 enum Logs {
 	RPL_WELCOME,
+	ERR_PASSWDMISMATCH,
 	ERR_NEEDMOREPARAMS,
 	ERR_ALREADYREGISTRED
 };
@@ -41,12 +42,11 @@ class Server {
 		void	setup();
 		void	start();
 		void	pass(User& user, const std::string& password);
-		bool	nick(User& user, std::string nickname);
+		bool	nick(User& user, const std::string& nickname);
 		void	user();
 		void	join();
 		void	privmsg();
-		void	clientLog(const User& user, int socket, int logCode, std::string cmd);
-		
+		static void	clientLog(const User& user, int socket, int logCode, std::string cmd);
 };
 
 #endif
