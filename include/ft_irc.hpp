@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 14:08:20 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/21 13:41:06 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/22 11:21:09 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
+#include <regex.h>
 
 #include "Server.hpp"
 #include "User.hpp"
@@ -34,3 +35,5 @@
 #define NONE	"\033[0m"
 
 #define MAX_EVENTS 10
+
+bool	RegExr(const char* pattern, const std::string& input);

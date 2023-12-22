@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:09:56 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/21 17:40:13 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/22 16:31:16 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,10 @@ void	Server::clientLog(const User& user, int socket, int logCode, std::string cm
 		logMessage << cmd << ": Not enough parameters" << std::endl;
 	if (logCode == ERR_ALREADYREGISTRED)
 		logMessage << cmd << ": Unauthorized command (already registered)" << std::endl;
+	if (logCode == ERR_NONICKNAMEGIVEN)
+		logMessage << cmd << ": No nickname given" << std::endl;
+	if (logCode == ERR_ERRONEUSNICKNAME)
+		logMessage << cmd << ": Erroneous nickname" << std::endl;
 	send(socket, (logMessage.str()).c_str(), (logMessage.str()).size(), 0);
 }
 
