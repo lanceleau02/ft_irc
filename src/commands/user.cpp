@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 16:32:19 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/22 16:40:04 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/23 19:05:16 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ ERR_NEEDMOREPARAMS		"<command>: Not enough parameters"
 ERR_ALREADYREGISTRED	"<command>: Unauthorized command (already registered)" */
 
 static bool parsing(const User& user, const std::string& username) {
-	if (user.getAuthentification())
+	if (!(user.getUsername()).empty())
 		Server::clientLog(user, user.getSocket(), ERR_ALREADYREGISTRED, "USER");
 	else if (username.empty())
 		Server::clientLog(user, user.getSocket(), ERR_NEEDMOREPARAMS, "USER");

@@ -6,15 +6,19 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 12:55:54 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/21 13:47:16 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/23 17:40:32 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "User.hpp"
 
-User::User() : _nickname(""), _username(""), _type(REGULAR), _isAuthentified(false) {
-	(void)_type;
-	(void)_isAuthentified;
+User::User(const std::string& nickname, const std::string& username, int type, int socket, bool isAuthentified, const sockaddr_in& address) {
+	_nickname = nickname;
+	_username = username;
+	_type = type;
+	_socket = socket;
+	_isAuthentified = isAuthentified;
+	_address = address;
 }
 
 User::~User() {}
@@ -27,11 +31,11 @@ const std::string&	User::getUsername() const {
 	return _username;
 }
 
-const bool&			User::getAuthentification() const {
+bool			User::getAuthentification() const {
 	return _isAuthentified;
 }
 
-const int&			User::getSocket() const {
+int			User::getSocket() const {
 	return _socket;
 }
 
