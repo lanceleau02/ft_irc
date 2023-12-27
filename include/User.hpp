@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 12:51:42 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/21 14:07:23 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/23 17:40:43 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,13 @@ class User {
 		struct sockaddr_in	_address;
 
 	public:
-		User();
+		User(const std::string& nickname, const std::string& username, int type, int socket, bool isAuthentified, const sockaddr_in& address);
 		~User();
 
 	const std::string&	getNickname() const;
 	const std::string&	getUsername() const;
-	const bool&			getAuthentification() const;
-	const int&			getSocket() const;
+	bool				getAuthentification() const;
+	int					getSocket() const;
 	const sockaddr_in&	getAddress() const;
 	void				setNickname(const std::string& nickname);
 	void				setUsername(const std::string& username);
