@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 16:33:57 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/27 14:07:53 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/27 16:38:37 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ class Server {
 
 		/* UTILS */
 		static void	serverLog(int type, std::string log);
-		static void	clientLog(const User& user, int socket, int logCode, std::string cmd);
+		static void	clientLog(int socket, const char* log);
 };
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 14:08:20 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/22 11:21:09 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/27 16:46:04 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,14 @@
 #define YELLOW	"\033[33m"
 #define BLUE	"\033[34m"
 #define NONE	"\033[0m"
+
+// COMMAND REPLIES
+#define RPL_WELCOME(nick, user, host) (": 001 " + ":Welcome to the Internet Relay Network " + nick + "!" + user + "@" + host)
+
+// ERROR REPLIES
+#define ERR_ALREADYREGISTRED() (": 462 :Unauthorized command (already registered)")
+#define ERR_NEEDMOREPARAMS(command) (": 461 " + command + " :Not enough parameters")
+#define ERR_PASSWDMISMATCH() (": 464 :Password incorrect")
 
 #define MAX_EVENTS 10
 

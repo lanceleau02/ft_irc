@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:09:56 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/27 15:58:11 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/27 16:38:32 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,23 +200,6 @@ void	Server::serverLog(int type, std::string log) {
 		std::cerr << RED << log << NONE << std::endl;
 }
 
-void	Server::clientLog(const User& user, int socket, int logCode, std::string cmd) {
-	std::stringstream	logMessage;
-	char				test[256];
-	
-	if (logCode == RPL_WELCOME) {
-		(void)cmd;
-		logMessage << "Welcome to the Internet Relay Network " << user.getNickname() << "!" << user.getUsername() << "@" << gethostname(test, sizeof(test)) << std::endl;
-	}
-	if (logCode == ERR_PASSWDMISMATCH)
-		logMessage << cmd << ": Password incorrect" << std::endl;
-	if (logCode == ERR_NEEDMOREPARAMS)
-		logMessage << cmd << ": Not enough parameters" << std::endl;
-	if (logCode == ERR_ALREADYREGISTRED)
-		logMessage << cmd << ": Unauthorized command (already registered)" << std::endl;
-	if (logCode == ERR_NONICKNAMEGIVEN)
-		logMessage << cmd << ": No nickname given" << std::endl;
-	if (logCode == ERR_ERRONEUSNICKNAME)
-		logMessage << cmd << ": Erroneous nickname" << std::endl;
-	send(socket, (logMessage.str()).c_str(), (logMessage.str()).size(), 0);
+void	Server::clientLog(int socket, const char* log) {
+	send(socket, log, sizeof(log), 0);
 }
