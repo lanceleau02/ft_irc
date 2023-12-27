@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 09:51:01 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/27 09:51:06 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/27 15:44:45 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,6 @@ static bool parsing(const User& user, const std::string& username) {
 }
 
 void	Server::user(User& user, const std::string& username) {
-	if (parsing(user, username) && user.getAuthentification())
+	if (parsing(user, username) && user.getAuthentication())
 		user.setUsername(username);
 }

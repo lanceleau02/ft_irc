@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 14:04:57 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/19 16:35:09 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/27 15:56:25 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ int	main(int argc, char **argv) {
 		Server	server(argv);
 		server.setup();
 		server.start();
-	}
-	catch (std::exception& e) {
+	} catch (std::exception& e) {
 		std::cerr << RED << "Error: " << e.what() << NONE << std::endl;
 		return 1;
 	}

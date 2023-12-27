@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:09:56 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/23 19:01:30 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/27 15:58:11 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,23 +73,48 @@ int		Server::addSocket(epoll_event& event, int socket, int epoll) {
 	return epoll_ctl(epoll, EPOLL_CTL_ADD, socket, &event);
 }
 
-void	Server::launchCommand(char* buffer, int bytes, User* user) {
-	buffer[bytes] = '\0';
-	std::string buf(buffer);
-	std::istringstream iss(buf);
-	std::string command, arg;
-	iss >> command;
-	std::getline(iss >> std::ws, arg);
-	if (buf.compare(0, 4, "PASS") == 0)
-		pass(*user, arg);
-	else if (buf.compare(0, 4, "NICK") == 0)
-		nick(*user, arg);
-	else if (buf.compare(0, 4, "USER") == 0)
-		this->user(*user, arg);
-	/* else if (buf == "join")
-		join();
-	else if (buf == "privmsg")
-		privmsg(); */
+void	Server::registerUser(User& user, const std::string& userInfos) {
+	std::istringstream iss(userInfos);
+	std::string line;
+	while (std::getline(iss, line)) {
+		std::istringstream field(line);
+		std::string command, value;
+		if (field >> command >> value) {
+			if (command == "PASS") {
+				std::string password = value;
+				if (password == _password && !user.getAuthentication()) {
+					user.setAuthentication();
+					serverLog(0, "User successfully authentified!");
+				}
+			} else if (command == "NICK") {
+				std::string nickname = value;
+				if ((user.getNickname()).empty()) {
+					this->nick(user, nickname);
+					serverLog(0, "New nickname setted!");
+				}
+			} else if (command == "USER") {
+				std::string username = value;
+				if ((user.getUsername()).empty()) {
+					this->user(user, username);
+					serverLog(0, "New username setted!");
+				}
+			}
+		}
+	}
+	if (user.getAuthentication() && !(user.getNickname()).empty() && !(user.getUsername()).empty())
+		user.setRegistration();
+}
+
+void	Server::launchCommand(User* user, const std::string& cmd, const std::string& args) {
+	std::string		cmdNames[3] = {"pass", "nick", "user"};
+	typedef void	(Server::*cmds)(User&, const std::string&);
+	cmds			cmdFunc[3] = {&Server::pass, &Server::nick, &Server::user};
+
+	std::cout << args << std::endl;
+
+	for (int i = 0; i < 3; i++)
+		if (cmdNames[i] == cmd)
+			(this->*cmdFunc[i])(*user, args);
 }
 
 void	Server::start() {
@@ -112,7 +137,7 @@ void	Server::start() {
 				}
 				serverLog(0, "New user connected!");
 				// Create new user
-				User newUser("", "", REGULAR, userSocket, false, userAddress);
+				User newUser("", "", REGULAR, userSocket, false, false, userAddress);
 				client.addUser(newUser);
 				// Add user socket to epoll
                 if (addSocket(_event, userSocket, _epoll) == -1) {
@@ -120,9 +145,7 @@ void	Server::start() {
                     close(userSocket);
                     continue;
                 }
-            }
-			// Handle incoming data or other events: authenticate, set a nickname, a username, join a channel...
-			else {
+            } else { // Handle incoming data or other events: authenticate, set a nickname, a username, join a channel...
 				// Manage events
 				int		userSocket = _events[i].data.fd;
 				User*	currentUser = NULL;
@@ -146,10 +169,18 @@ void	Server::start() {
 						epoll_ctl(_epoll, EPOLL_CTL_DEL, userSocket, NULL);
 						/* client._users.erase(std::remove_if(client._users.begin(), client._users.end(),
 							[&](const Client& c) { return c._users._socket == userSocket; }), client._users.end()); */
+					} else { // Launch commands
+						buffer[bytes] = '\0';
+						std::cout << "buffer = " << buffer << std::endl;
+						std::string buf(buffer);
+						if (!(currentUser->getAuthentication()) && (currentUser->getNickname()).empty() && (currentUser->getUsername()).empty())
+							registerUser(*currentUser, buf);
+						std::istringstream iss(buf);
+						std::string command, args;
+						iss >> command;
+						std::getline(iss >> std::ws, args);
+						launchCommand(currentUser, command, args);
 					}
-					// Launch commands
-					else
-						launchCommand(buffer, bytes, currentUser);
 				}
 			}
         }

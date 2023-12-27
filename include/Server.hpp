@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 16:33:57 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/23 18:47:38 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/27 14:07:53 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ class Server {
 		void	start();
 		int		acceptConnection(sockaddr_in& userAddress);
 		int		addSocket(epoll_event& event, int socket, int epoll);
-		void	launchCommand(char* buffer, int bytes, User* user);
+		void	registerUser(User& user, const std::string& userInfos);
+		void	launchCommand(User* user, const std::string& cmd, const std::string& args);
 
 		/* COMMANDS */
 		void	pass(User& user, const std::string& password);

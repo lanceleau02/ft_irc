@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:42:59 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/23 16:39:39 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/27 15:44:56 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ ERR_USERNOTINCHANNEL	"<nick> <channel>: They aren't on that channel" */
 static bool	parsing(const User& user, const std::string& nickname) {
 	if (nickname.empty())
 		Server::clientLog(user, user.getSocket(), ERR_NONICKNAMEGIVEN, "NICK");
-	else if (!RegExr("^[a-zA-Z^{}|`-]{1}[a-zA-Z0-9^{}|`-]{0,8}\n$", nickname))
+	else if (!RegExr("^[a-zA-Z^{}|`-]{1}[a-zA-Z0-9^{}|`-]{0,8}$", nickname))
 		Server::clientLog(user, user.getSocket(), ERR_ERRONEUSNICKNAME, "NICK");
 	/* else if (ERR_NICKNAMEINUSE)
 		Server::clientLog(user, user.getSocket(), ERR_NICKNAMEINUSE, "NICK");
@@ -36,6 +36,6 @@ static bool	parsing(const User& user, const std::string& nickname) {
 }
 
 void	Server::nick(User& user, const std::string& nickname) {
-	if (parsing(user, nickname) && user.getAuthentification())
+	if (parsing(user, nickname) && user.getAuthentication())
 		user.setNickname(nickname);
 }
