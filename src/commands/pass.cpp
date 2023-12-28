@@ -6,13 +6,13 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 13:30:36 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/28 11:15:20 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/28 15:21:43 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-/* Errors cases to handle:
+/* Errors replies:
 461	ERR_NEEDMOREPARAMS		"<command> :Not enough parameters"
 462 ERR_ALREADYREGISTRED	":Unauthorized command (already registered)"
 464	ERR_PASSWDMISMATCH		":Password incorrect" */

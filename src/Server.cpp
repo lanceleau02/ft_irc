@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:09:56 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/28 11:39:46 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/28 15:55:56 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,11 +106,11 @@ void	Server::registerUser(User& user, const std::string& userInfos) {
 }
 
 void	Server::launchCommand(User* user, const std::string& cmd, const std::string& args) {
-	std::string		cmdNames[3] = {"pass", "nick", "user"};
+	std::string		cmdNames[4] = {"pass", "nick", "user", "join"};
 	typedef void	(Server::*cmds)(User&, const std::string&);
-	cmds			cmdFunc[3] = {&Server::pass, &Server::nick, &Server::user};
+	cmds			cmdFunc[4] = {&Server::pass, &Server::nick, &Server::user, &Server::join};
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 4; i++)
 		if (cmdNames[i] == cmd)
 			(this->*cmdFunc[i])(*user, args);
 }
