@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 13:10:53 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/28 13:43:02 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/28 16:36:54 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,14 @@ Channel::Channel(const User& op, const std::string& name) : _topic(), _password(
 }
 
 Channel::~Channel() {}
+
+int		Channel::getUserLimit() {
+	return _userLimit;
+}
+
+int		Channel::getNbUsers() {
+	return _users.size();
+}
 
 void	Channel::addOperator(const User& op) {
 	_operators.insert(std::pair<int, User>(op.getSocket(), op));

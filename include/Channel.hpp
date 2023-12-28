@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 12:38:30 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/28 13:42:15 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/28 16:34:40 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,9 @@ class Channel {
 	public:
 		Channel(const User& op, const std::string& name);
 		~Channel();
+
+		int		getUserLimit();
+		int		getNbUsers();
 
 		void	addOperator(const User& op);
 		void	addUser(const User& user);

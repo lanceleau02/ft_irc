@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 13:42:32 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/21 14:32:06 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/28 16:36:20 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ const User&	Client::getUser(int idx) const {
 	return _users[idx];
 }
 
-size_t	Client::getNbUsers() const {
+size_t		Client::getNbUsers() const {
 	return _users.size();
 }
 
-void	Client::addUser(const User& user) {
+void		Client::addUser(const User& user) {
 	_users.push_back(user);
 }

@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 12:55:54 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/28 13:27:20 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/28 16:35:51 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,15 @@ const std::string&	User::getUsername() const {
 	return _username;
 }
 
-bool			User::getAuthentication() const {
+bool				User::getAuthentication() const {
 	return _isAuthenticated;
 }
 
-bool			User::getRegistration() const {
+bool				User::getRegistration() const {
 	return _isRegistered;
 }
 
-int			User::getSocket() const {
+int					User::getSocket() const {
 	return _socket;
 }
 

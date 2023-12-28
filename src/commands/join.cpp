@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 15:08:15 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/28 15:57:22 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/28 16:40:38 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,24 +27,24 @@
 475	ERR_BADCHANNELKEY	"<channel> :Cannot join channel (+k)"
 476	ERR_BADCHANMASK		"<channel> :Bad Channel Mask" 								-> not handled */
 
-static bool parsing(const Server& server, const User& user, const std::string& channelName) {
+static bool parsing(const User& user, const std::string& channelName, const std::map<std::string, Channel>&	channels) {
 	std::string command = "JOIN";
 	if (channelName.empty())
 		Server::clientLog(user.getSocket(), ERR_NEEDMOREPARAMS(command));
-	else if ((server._channels).find(channelName) == (server._channels).end())
+	else if (channels.find(channelName) == channels.end())
 		Server::clientLog(user.getSocket(), ERR_NOSUCHCHANNEL(channelName));
-	/* else if (ERR_CHANNELISFULL)
-		clientLog(user.getSocket(), ERR_CHANNELISFULL(channelName));
-	else if (ERR_INVITEONLYCHAN)
+	else if (channels.find(channelName) != channels.end() /* && nbUsers < _userLimit */)
+		Server::clientLog(user.getSocket(), ERR_CHANNELISFULL(channelName));
+	/* else if (ERR_INVITEONLYCHAN)
 		clientLog(user.getSocket(), ERR_INVITEONLYCHAN(channelName));
 	else if (ERR_BADCHANNELKEY)
-		clientLog(user.getSocket(), ERR_BADCHANNELKEY(channelName));*/
+		clientLog(user.getSocket(), ERR_BADCHANNELKEY(channelName)); */
 	else
 		return true;
 	return false;
 }
 
 void	Server::join(User& user, const std::string& channelName) {
-	if (parsing(*this, user, username) && user.getRegistration())
-		user.setUsername(username);
+	if (parsing(user, channelName, _channels) && user.getRegistration())
+		std::cout << "It works" << std::endl;
 }
