@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 13:30:36 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/27 15:44:32 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/28 11:03:18 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,19 @@ ERR_NEEDMOREPARAMS		"<command>: Not enough parameters"
 ERR_ALREADYREGISTRED	"<command>: Unauthorized command (already registered)" */
 
 static bool parsing(const User& user, const std::string& userPass, const std::string& serverPass) {
+	std::string command = "PASS";
 	if (user.getAuthentication())
-		Server::clientLog(user, user.getSocket(), ERR_ALREADYREGISTRED, "PASS");
+		Server::clientLog(user.getSocket(), ERR_ALREADYREGISTRED());
 	else if (userPass.empty())
-		Server::clientLog(user, user.getSocket(), ERR_NEEDMOREPARAMS, "PASS");
+		Server::clientLog(user.getSocket(), ERR_NEEDMOREPARAMS(command));
 	else if (userPass != serverPass)
-		Server::clientLog(user, user.getSocket(), ERR_PASSWDMISMATCH, "PASS");
+		Server::clientLog(user.getSocket(), ERR_PASSWDMISMATCH());
 	else
 		return true;
 	return false;
 }
 
 void	Server::pass(User& user, const std::string& password) {
-	std::cerr << "password = " << password << std::endl;
 	if (parsing(user, password, _password) && !user.getAuthentication() && password == _password) {
 		user.setAuthentication();
 		serverLog(0, "Client successfully authentified!");

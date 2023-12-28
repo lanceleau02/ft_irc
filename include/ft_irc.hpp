@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 14:08:20 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/27 16:46:04 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/28 10:49:27 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,18 @@
 #define NONE	"\033[0m"
 
 // COMMAND REPLIES
-#define RPL_WELCOME(nick, user, host) (": 001 " + ":Welcome to the Internet Relay Network " + nick + "!" + user + "@" + host)
+#define RPL_WELCOME(nick, user, host)		("001 " + ":Welcome to the Internet Relay Network " + nick + "!" + user + "@" + host + "\r\n")
 
 // ERROR REPLIES
-#define ERR_ALREADYREGISTRED() (": 462 :Unauthorized command (already registered)")
-#define ERR_NEEDMOREPARAMS(command) (": 461 " + command + " :Not enough parameters")
-#define ERR_PASSWDMISMATCH() (": 464 :Password incorrect")
+#define ERR_NONICKNAMEGIVEN()				("431 :No nickname given\r\n")
+#define ERR_ERRONEUSNICKNAME(nick)			("432 " + nick + " :Erroneous nickname\r\n")
+#define ERR_NICKNAMEINUSE(nick)				("433 " + nick + " :Nickname is already in use\r\n")
+#define ERR_UNAVAILRESOURCE(param)			("437 " + param + " :Nick/channel is temporarily unavailable\r\n")
+#define ERR_USERNOTINCHANNEL(nick, channel)	("441 " + nick + " " + channel + " :They aren't on that channel\r\n")
+#define ERR_NEEDMOREPARAMS(command)			("461 " + command + " :Not enough parameters\r\n")
+#define ERR_ALREADYREGISTRED()				("462 :Unauthorized command (already registered)\r\n")
+#define ERR_PASSWDMISMATCH()				("464 :Password incorrect\r\n")
 
-#define MAX_EVENTS 10
+#define MAX_EVENTS 100
 
 bool	RegExr(const char* pattern, const std::string& input);

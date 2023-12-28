@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 16:33:57 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/27 16:38:37 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/28 10:51:11 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,6 @@
 # define SERVER_HPP
 
 #include "ft_irc.hpp"
-
-enum Logs {
-	/* WELCOME */
-	RPL_WELCOME,
-	/* PASSWORD */
-	ERR_PASSWDMISMATCH,
-	ERR_NEEDMOREPARAMS,
-	ERR_ALREADYREGISTRED,
-	/* NICK */
-	ERR_NONICKNAMEGIVEN,
-	ERR_ERRONEUSNICKNAME,
-	ERR_NICKNAMEINUSE,
-	ERR_UNAVAILRESOURCE,
-	ERR_USERNOTINCHANNEL,
-};
-
-enum Commands {
-	PASS
-};
 
 class Server {
 	private:
@@ -63,8 +44,8 @@ class Server {
 		void	privmsg();
 
 		/* UTILS */
-		static void	serverLog(int type, std::string log);
-		static void	clientLog(int socket, const char* log);
+		static void	serverLog(int type, const std::string& log);
+		static void	clientLog(int socket, const std::string& log);
 };
 
 #endif

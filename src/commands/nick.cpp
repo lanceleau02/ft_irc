@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:42:59 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/27 15:44:56 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/28 11:02:16 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,15 @@ ERR_USERNOTINCHANNEL	"<nick> <channel>: They aren't on that channel" */
 
 static bool	parsing(const User& user, const std::string& nickname) {
 	if (nickname.empty())
-		Server::clientLog(user, user.getSocket(), ERR_NONICKNAMEGIVEN, "NICK");
+		Server::clientLog(user.getSocket(), ERR_NONICKNAMEGIVEN());
 	else if (!RegExr("^[a-zA-Z^{}|`-]{1}[a-zA-Z0-9^{}|`-]{0,8}$", nickname))
-		Server::clientLog(user, user.getSocket(), ERR_ERRONEUSNICKNAME, "NICK");
+		Server::clientLog(user.getSocket(), ERR_ERRONEUSNICKNAME(nickname));
 	/* else if (ERR_NICKNAMEINUSE)
-		Server::clientLog(user, user.getSocket(), ERR_NICKNAMEINUSE, "NICK");
+		Server::clientLog(user.getSocket(), ERR_NICKNAMEINUSE);
 	else if (ERR_UNAVAILRESOURCE)
-		Server::clientLog(user, user.getSocket(), ERR_UNAVAILRESOURCE, "NICK");
+		Server::clientLog(user.getSocket(), ERR_UNAVAILRESOURCE);
 	else if (ERR_USERNOTINCHANNEL)
-		Server::clientLog(user, user.getSocket(), ERR_USERNOTINCHANNEL, "NICK"); */
+		Server::clientLog(user.getSocket(), ERR_USERNOTINCHANNEL); */
 	else
 		return true;
 	return false;
