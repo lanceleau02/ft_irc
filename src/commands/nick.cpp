@@ -6,18 +6,18 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:42:59 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/28 11:02:16 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/28 11:14:03 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
 /* Errors cases to handle:
-ERR_NONICKNAMEGIVEN		"<nick>: No nickname given"
-ERR_ERRONEUSNICKNAME	"<nick>: Erroneous nickname"
-ERR_NICKNAMEINUSE		"<nick>: Nickname is already in use"
-ERR_UNAVAILRESOURCE		"<nick/channel>: Nick/channel is temporarily unavailable"
-ERR_USERNOTINCHANNEL	"<nick> <channel>: They aren't on that channel" */
+431	ERR_NONICKNAMEGIVEN		":No nickname given"
+432	ERR_ERRONEUSNICKNAME	"<nick> :Erroneous nickname"
+433	ERR_NICKNAMEINUSE		"<nick> :Nickname is already in use"
+437	ERR_UNAVAILRESOURCE		"<nick/channel> :Nick/channel is temporarily unavailable"
+441	ERR_USERNOTINCHANNEL	"<nick> <channel> :They aren't on that channel" */
 
 static bool	parsing(const User& user, const std::string& nickname) {
 	if (nickname.empty())
