@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 14:08:20 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/28 10:49:27 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/28 13:12:02 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <map>
 #include <unistd.h>
 #include <sys/socket.h>
 #include <sys/epoll.h>
@@ -27,6 +28,7 @@
 #include "Server.hpp"
 #include "User.hpp"
 #include "Client.hpp"
+#include "Channel.hpp"
 
 #define RED		"\033[31m"
 #define GREEN	"\033[32m"
