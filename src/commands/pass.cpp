@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 13:30:36 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/28 15:21:43 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/29 16:12:52 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static bool parsing(const User& user, const std::string& userPass, const std::st
 }
 
 void	Server::pass(User& user, const std::string& password) {
+	std::cout << "\t**2**" << std::endl;
 	if (parsing(user, password, _password) && !user.getAuthentication() && password == _password) {
 		user.setAuthentication();
 		serverLog(0, "Client successfully authentified!");

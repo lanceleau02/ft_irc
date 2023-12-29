@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 12:38:30 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/29 13:07:43 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/29 15:32:41 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ class Channel {
 		int					getNbUsers();
 		bool				getInviteMode();
 		bool				getPasswordMode();
+		bool				isOnChannel(int userSocket);
 		const std::string&	getPassword();
 
 		void	addOperator(const User& op);

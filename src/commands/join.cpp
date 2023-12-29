@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 15:08:15 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/29 14:25:49 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/29 16:18:36 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,10 @@ static bool parsing(const User& user, const std::string& channelName, std::map<s
 	if (channelName.empty())
 		Server::clientLog(user.getSocket(), ERR_NEEDMOREPARAMS(command));
 	else if ((channels.find(channelName) == channels.end() && !user.getType())
-		|| (channelName[0] != '#' && channelName[0] != '+' && channelName[0] != '&'))
+		|| (channelName[0] != '#' && channelName[0] != '+' && channelName[0] != '&')) {
+		std::cout << "bite" << std::endl;
 		Server::clientLog(user.getSocket(), ERR_NOSUCHCHANNEL(channelName));
+	}
 	else if (channels.find(channelName) != channels.end()) {
 		std::map<std::string, Channel>::iterator it = channels.find(channelName);
 		if (it->second.getNbUsers() >= it->second.getUserLimit())
@@ -42,6 +44,8 @@ static bool parsing(const User& user, const std::string& channelName, std::map<s
 			Server::clientLog(user.getSocket(), ERR_INVITEONLYCHAN(channelName));
 		else if (it->second.getPasswordMode()/* && it->second.getPassword() != password */)
 			Server::clientLog(user.getSocket(), ERR_BADCHANNELKEY(channelName));
+		else if (it->second.isOnChannel(user.getSocket()))
+			Server::clientLog(user.getSocket(), ERR_USERONCHANNEL(user.getUsername(), channelName));
 	}
 	else
 		return true;
@@ -49,6 +53,15 @@ static bool parsing(const User& user, const std::string& channelName, std::map<s
 }
 
 void	Server::join(User& user, const std::string& channelName) {
-	if (parsing(user, channelName, _channels) && user.getRegistration())
-		std::cout << "It works" << std::endl;
+	std::cout << "\t**5**" << std::endl;
+	if (parsing(user, channelName, _channels) || !user.getRegistration()) {
+		std::cout << RPL_JOIN(user.getUsername(), channelName) << std::endl;
+		return ;
+	}
+	std::map<std::string, Channel>::iterator it = _channels.find(channelName);
+	if (it == _channels.end() && user.getType()) {
+		_channels.insert(std::pair<std::string, Channel>(channelName, Channel(user, channelName)));
+		Server::clientLog(user.getSocket(), RPL_JOIN(user.getUsername(), channelName));
+	}
+	clientLog(user.getSocket(), RPL_JOIN(user.getUsername(), channelName));
 }

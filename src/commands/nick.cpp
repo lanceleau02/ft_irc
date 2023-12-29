@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:42:59 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/28 15:53:14 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/29 16:12:59 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static bool	parsing(const User& user, const std::string& nickname) {
 }
 
 void	Server::nick(User& user, const std::string& nickname) {
+	std::cout << "\t**3**" << std::endl;
 	if (parsing(user, nickname) && user.getAuthentication())
 		user.setNickname(nickname);
 }

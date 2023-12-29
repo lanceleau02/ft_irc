@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 13:10:53 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/29 13:07:28 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/29 15:28:45 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,12 @@ bool	Channel::getInviteMode() {
 
 bool	Channel::getPasswordMode() {
 	return _channelKey;
+}
+
+bool	Channel::isOnChannel(int userSocket) {
+	if (_users.find(userSocket) != _users.end())
+		return true;
+	return false;
 }
 
 const std::string&	Channel::getPassword() {

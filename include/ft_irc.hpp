@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 14:08:20 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/28 15:42:35 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/29 15:51:23 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,11 @@
 #define BLUE	"\033[34m"
 #define NONE	"\033[0m"
 
+// CUSTOM COMMAND REPLIES
+#define RPL_JOIN(nick, channelName)			(":" + nick + " JOIN " + channelName + "\r\n")
+
 // COMMAND REPLIES
-#define RPL_WELCOME(nick, user, host)		("001 " + ":Welcome to the Internet Relay Network " + nick + "!" + user + "@" + host + "\r\n")
+#define RPL_WELCOME(nick, user, host)		("001 :Welcome to the Internet Relay Network " + nick + "!" + user + "@" + host + "\r\n")
 #define	RPL_TOPIC(channel, topic)			("332 " + channel + " :" + topic + "\r\n")
 
 // ERROR REPLIES
@@ -46,6 +49,7 @@
 #define ERR_ERRONEUSNICKNAME(nick)			("432 " + nick + " :Erroneous nickname\r\n")
 #define ERR_NICKNAMEINUSE(nick)				("433 " + nick + " :Nickname is already in use\r\n")
 #define ERR_USERNOTINCHANNEL(nick, channel)	("441 " + nick + " " + channel + " :They aren't on that channel\r\n")
+#define ERR_USERONCHANNEL(user, channel)	("443 " + user + " " + channel + " :is already on channel\r\n")
 #define ERR_NEEDMOREPARAMS(command)			("461 " + command + " :Not enough parameters\r\n")
 #define ERR_ALREADYREGISTRED()				("462 :Unauthorized command (already registered)\r\n")
 #define ERR_PASSWDMISMATCH()				("464 :Password incorrect\r\n")
