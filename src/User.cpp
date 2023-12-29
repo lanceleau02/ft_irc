@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 12:55:54 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/28 16:35:51 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/29 13:42:14 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,10 @@ bool				User::getRegistration() const {
 
 int					User::getSocket() const {
 	return _socket;
+}
+
+int					User::getType() const {
+	return _type;
 }
 
 const sockaddr_in&	User::getAddress() const {

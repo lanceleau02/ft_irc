@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 13:10:53 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/28 16:36:54 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/29 13:07:28 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 Channel::Channel(const User& op, const std::string& name) : _topic(), _password() {
 	_userLimit = 0;
-	_inviteMode = false;
-	_topicMode = false;
-	_passwordMode = false;
+	_inviteOnly = false;
+	_topicRestrictions = false;
+	_channelKey = false;
 	_name = name;
 	addOperator(op);
 	addUser(op);
@@ -30,6 +30,18 @@ int		Channel::getUserLimit() {
 
 int		Channel::getNbUsers() {
 	return _users.size();
+}
+
+bool	Channel::getInviteMode() {
+	return _inviteOnly;
+}
+
+bool	Channel::getPasswordMode() {
+	return _channelKey;
+}
+
+const std::string&	Channel::getPassword() {
+	return _password;
 }
 
 void	Channel::addOperator(const User& op) {

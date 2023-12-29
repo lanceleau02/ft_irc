@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 12:51:42 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/28 12:51:24 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/29 13:41:48 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ class User {
 		bool				getAuthentication() const;
 		bool				getRegistration() const;
 		int					getSocket() const;
+		int					getType() const;
 		const sockaddr_in&	getAddress() const;
 		void				setNickname(const std::string& nickname);
 		void				setUsername(const std::string& username);

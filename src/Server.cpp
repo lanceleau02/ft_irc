@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:09:56 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/28 15:55:56 by laprieur         ###   ########.fr       */
+/*   Updated: 2023/12/29 12:50:39 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,6 +199,5 @@ void	Server::serverLog(int type, const std::string& log) {
 }
 
 void	Server::clientLog(int socket, const std::string& log) {
-	std::cout << "je suis un client log" << std::endl;
 	send(socket, log.c_str(), log.size(), 0);
 }
