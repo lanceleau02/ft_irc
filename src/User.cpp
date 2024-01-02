@@ -6,16 +6,16 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 12:55:54 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/29 13:42:14 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/02 16:45:56 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "User.hpp"
 
-User::User(const std::string& nickname, const std::string& username, int type, int socket, bool isAuthenticated, bool isRegistered, const sockaddr_in& address) {
+User::User(const std::string& nickname, const std::string& username, int socket, bool isAuthenticated, bool isRegistered, const sockaddr_in& address) {
 	_nickname = nickname;
 	_username = username;
-	_type = type;
+	_type = REGULAR;
 	_socket = socket;
 	_isAuthenticated = isAuthenticated;
 	_isRegistered = isRegistered;
@@ -50,6 +50,10 @@ int					User::getType() const {
 
 const sockaddr_in&	User::getAddress() const {
 	return _address;
+}
+
+void	User::setType(int type) {
+	_type = type;
 }
 
 void	User::setNickname(const std::string& nickname) {

@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 12:38:30 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/29 15:32:41 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/02 15:46:19 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,12 @@
 enum AccessMode {
 	FREE_ACCESS,
 	INVITE_ONLY
+};
+
+enum MapType {
+	OPERATORS,
+	USERS,
+	INVITEES
 };
 
 class User;
@@ -39,12 +45,13 @@ class Channel {
 		Channel(const User& op, const std::string& name);
 		~Channel();
 
-		int					getUserLimit();
-		int					getNbUsers();
-		bool				getInviteMode();
-		bool				getPasswordMode();
-		bool				isOnChannel(int userSocket);
-		const std::string&	getPassword();
+		int							getUserLimit();
+		int							getNbUsers();
+		bool						getInviteMode();
+		bool						getPasswordMode();
+		bool						isOnChannel(int userSocket);
+		const std::string&			getPassword();
+		const std::map<int, User>&	getMap(int type);
 
 		void	addOperator(const User& op);
 		void	addUser(const User& user);

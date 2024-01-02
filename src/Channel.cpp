@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 13:10:53 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/29 15:28:45 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/02 15:46:10 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,15 @@ bool	Channel::isOnChannel(int userSocket) {
 const std::string&	Channel::getPassword() {
 	return _password;
 }
+
+const std::map<int, User>&	Channel::getMap(int type) {
+	if (type == OPERATORS)
+		return _operators;
+	if (type == USERS)
+		return _users;
+	return _invitees;
+}
+
 
 void	Channel::addOperator(const User& op) {
 	_operators.insert(std::pair<int, User>(op.getSocket(), op));

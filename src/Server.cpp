@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:09:56 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/29 16:15:16 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/02 15:25:33 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,13 +90,13 @@ void	Server::registerUser(User& user, const std::string& userInfos) {
 				std::string nickname = value;
 				if ((user.getNickname()).empty()) {
 					this->nick(user, nickname);
-					serverLog(0, "New nickname setted!");
+					serverLog(0, "New nickname set!");
 				}
 			} else if (command == "USER") {
 				std::string username = value;
 				if ((user.getUsername()).empty()) {
 					this->user(user, username);
-					serverLog(0, "New username setted!");
+					serverLog(0, "New username set!");
 				}
 			}
 		}
@@ -110,7 +110,6 @@ void	Server::launchCommand(User* user, const std::string& cmd, const std::string
 	typedef void	(Server::*cmds)(User&, const std::string&);
 	cmds			cmdFunc[4] = {&Server::pass, &Server::nick, &Server::user, &Server::join};
 
-	std::cout << "\t**1**" << std::endl;
 	for (int i = 0; i < 4; i++)
 		if (cmdNames[i] == cmd)
 			(this->*cmdFunc[i])(*user, args);
@@ -136,7 +135,7 @@ void	Server::start() {
 				}
 				serverLog(0, "New user connected!");
 				// Create new user
-				User newUser("", "", REGULAR, userSocket, false, false, userAddress);
+				User newUser("", "", userSocket, false, false, userAddress);
 				client.addUser(newUser);
 				// Add user socket to epoll
                 if (addSocket(_event, userSocket, _epoll) == -1) {
