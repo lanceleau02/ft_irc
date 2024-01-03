@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 11:18:58 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/03 11:33:42 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/03 11:55:07 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ bool	RegExr(const char* pattern, const std::string& input) {
 	return false;
 }
 
-std::string	createNickList(const std::map<int, User>& users, Channel channel) {
+std::string	createNickList(Channel channel) {
 	std::string nickList;
-	for (std::map<int, User>::const_iterator it = users.begin(); it != users.end(); it++) {
-		if (it != users.begin())
+	for (std::map<int, User>::const_iterator it = channel.getMap(USERS).begin(); it != channel.getMap(USERS).end(); it++) {
+		if (it != channel.getMap(USERS).begin())
 			nickList += " ";
 		if (it->second.isOperator(channel))
 			nickList += "@";

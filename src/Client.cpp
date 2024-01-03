@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 13:42:32 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/28 16:36:20 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/03 14:08:34 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@ const User&	Client::getUser(int idx) const {
 
 size_t		Client::getNbUsers() const {
 	return _users.size();
+}
+
+const std::vector<User>&	Client::getUsers() const {
+	return _users;
 }
 
 void		Client::addUser(const User& user) {

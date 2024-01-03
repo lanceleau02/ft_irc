@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   User.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 12:55:54 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/03 11:32:42 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/03 16:40:35 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,13 @@ void	User::setSocket(int socket) {
 
 void	User::setAddress(sockaddr_in address) {
 	_address = address;
+}
+
+void User::display() const {
+	std::cout << "Type : " << _type << std::endl;
+	std::cout << "socket : " << _socket << std::endl;
+	std::cout << "isAuthenticated : " << _isAuthenticated << std::endl;
+	std::cout << "isRegistered : " << _isRegistered << std::endl;
+	std::cout << "nickname : " << _nickname << std::endl;
+	std::cout << "username : " << _username << std::endl;
 }

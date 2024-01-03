@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:09:56 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/02 15:25:33 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/03 16:42:29 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,11 @@ Server::Server(char** params) {
 	_password = password;
 }
 
-Server::~Server() {}
+Server::~Server() {
+	std::cout << "je passe la" << std::endl;
+	close(_socket);
+	close(_epoll);
+}
 
 void	Server::setup() {
 	// Create a server socket
@@ -115,7 +119,14 @@ void	Server::launchCommand(User* user, const std::string& cmd, const std::string
 			(this->*cmdFunc[i])(*user, args);
 }
 
+void	signalHandler(int sig) {
+	(void)sig;
+	throw std::logic_error("server shutdown");
+}
+
 void	Server::start() {
+	std::signal(SIGINT, signalHandler);
+	std::signal(SIGHUP, signalHandler);
 	Client client;
 	// Main event loop
 	while (true) {
@@ -164,14 +175,26 @@ void	Server::start() {
 						else
 							serverLog(1, "Error or disconnection from client.");
 						close(userSocket);
-						epoll_ctl(_epoll, EPOLL_CTL_DEL, userSocket, NULL);
-						/* client._users.erase(std::remove_if(client._users.begin(), client._users.end(),
-							[&](const Client& c) { return c._users._socket == userSocket; }), client._users.end()); */
+						epoll_ctl(_epoll, EPOLL_CTL_DEL, userSocket, &_event);
+						close(currentUser->getSocket());
+						std::vector<User> users = client.getUsers();
+						std::vector<User>::iterator it = users.begin();
+						// Find the user based on the socket value
+						while (it != users.end()) {
+							if (it->getSocket() == userSocket) {
+								std::cout << "J'erase " << it->getNickname() << std::endl;
+								close(it->getSocket());
+								users.erase(it);
+								break; // Break once the user is erased
+							}
+							++it;
+						}
 					} else { // Launch commands
+						currentUser->display();
 						buffer[bytes] = '\0';
 						std::cout << "buffer = " << buffer << std::endl;
 						std::string buf(buffer);
-						if (!(currentUser->getAuthentication()) && (currentUser->getNickname()).empty() && (currentUser->getUsername()).empty())
+						if (buf.find("PASS") && !buf.find("NICK") && !buf.find("USER") && !(currentUser->getAuthentication()) && (currentUser->getNickname()).empty() && (currentUser->getUsername()).empty())
 							registerUser(*currentUser, buf);
 						std::istringstream iss(buf);
 						std::string command, args;
@@ -183,8 +206,6 @@ void	Server::start() {
 			}
         }
     }
-	close(_socket);
-	close(_epoll);
 }
 
 /* ************************************************************************** */

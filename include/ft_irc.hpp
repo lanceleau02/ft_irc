@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_irc.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 14:08:20 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/03 11:34:14 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/03 14:26:19 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <csignal>
 #include <map>
 #include <unistd.h>
 #include <sys/socket.h>
@@ -85,4 +86,4 @@ class Channel;
 #define MAX_EVENTS 100
 
 bool		RegExr(const char* pattern, const std::string& input);
-std::string	createNickList(const std::map<int, User>& users, Channel channel);
+std::string	createNickList(Channel channel);

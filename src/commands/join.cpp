@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 15:08:15 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/03 11:34:53 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/03 12:40:20 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ void	Server::join(User& user, const std::string& channelName) {
 			_channels.at(channelName).addOperator(user);
 			_channels.at(channelName).addUser(user);
 		}
+		std::cout << "je suis la" << std::endl;
 		Server::clientLog(user.getSocket(), RPL_JOIN(user.getNickname(), user.getUsername(), channelName));
-		Server::clientLog(user.getSocket(), RPL_NAMEREPLY(user.getNickname(), channelName, createNickList(_channels.at(channelName).getMap(USERS), _channels.at(channelName))));
+		Server::clientLog(user.getSocket(), RPL_NAMEREPLY(user.getNickname(), channelName, createNickList(_channels.at(channelName))));
 	}
 }

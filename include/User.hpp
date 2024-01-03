@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   User.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 12:51:42 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/03 11:19:41 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/03 14:50:49 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ class User {
 		void				setRegistration();
 		void				setSocket(int socket);
 		void				setAddress(sockaddr_in address);
-
+		void				display() const;
 };
 
 #endif

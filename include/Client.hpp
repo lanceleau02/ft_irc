@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:56:15 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/21 14:32:10 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/03 14:08:25 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,9 @@ class Client {
 		Client();
 		~Client();
 
-		const User&	getUser(int idx) const;
-		size_t		getNbUsers() const;
+		const User&			getUser(int idx) const;
+		size_t				getNbUsers() const;
+		const std::vector<User>&	getUsers() const;
 		void		addUser(const User& user);
 };
 
