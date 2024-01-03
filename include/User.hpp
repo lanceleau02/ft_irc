@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   User.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 12:51:42 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/02 16:45:31 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/03 11:19:41 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ class User {
 		const std::string&	getUsername() const;
 		bool				getAuthentication() const;
 		bool				getRegistration() const;
+		bool				isOperator(Channel channel) const;
 		int					getSocket() const;
 		int					getType() const;
 		const sockaddr_in&	getAddress() const;
@@ -48,6 +49,7 @@ class User {
 		void				setRegistration();
 		void				setSocket(int socket);
 		void				setAddress(sockaddr_in address);
+
 };
 
 #endif

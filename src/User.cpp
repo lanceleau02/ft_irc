@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   User.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 12:55:54 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/02 16:45:56 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/03 11:32:42 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,13 @@ bool				User::getAuthentication() const {
 
 bool				User::getRegistration() const {
 	return _isRegistered;
+}
+
+bool				User::isOperator(Channel channel) const {
+	std::map<int, User>::const_iterator i = (channel.getMap(OPERATORS)).find(_socket);
+	if (i != channel.getMap(OPERATORS).end())
+		return (true);
+	return (false);
 }
 
 int					User::getSocket() const {

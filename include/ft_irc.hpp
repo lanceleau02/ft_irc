@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_irc.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 14:08:20 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/02 15:55:39 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/03 11:34:14 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 #define NONE	"\033[0m"
 
 class User;
+class Channel;
 
 // COMMAND REPLIES
 #define RPL_JOIN(nick, user, channel)				(":" + nick + " JOIN " + channel + "\r\n")
@@ -84,4 +85,4 @@ class User;
 #define MAX_EVENTS 100
 
 bool		RegExr(const char* pattern, const std::string& input);
-std::string	createNickList(const std::map<int, User>& users);
+std::string	createNickList(const std::map<int, User>& users, Channel channel);
