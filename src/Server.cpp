@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:09:56 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/04 17:16:10 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/04 17:26:14 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,28 +114,29 @@ void	Server::start() {
 				// Manage events
 				int	userSocket = _events[i].data.fd;
 				// Select current user using its socket
-				User currentUser = client.getUser(userSocket);
-				std::cout << "Je reinitialise currentUser parce que je suis con lol." << std::endl;
-				std::cout << "bite" << std::endl;
-				char	buffer[1024];
-				int		bytes = recv(userSocket, buffer, sizeof(buffer), 0);
-				// Handle error or disconnection
-				if (bytes <= 0) {
-					if (bytes == 0)
-						serverLog(1, "User disconnected!");
-					else
-						serverLog(1, "Error or disconnection from client.");
-					epoll_ctl(_epoll, EPOLL_CTL_DEL, userSocket, &_event);
-					close(userSocket);
-					std::map<int, User> users = client.getUsers();
-					users.erase(currentUser.getSocket());
-					close(currentUser.getSocket());
-					//currentUser.setAuthentication(false);
-				} else { // Launch commands
-					buffer[bytes] = '\0';
-					std::cout << "buffer = " << buffer << std::endl;
-					executor(buffer, currentUser);
-					currentUser.display();
+				User* currentUser = const_cast<User*>(&client.getUser(userSocket));
+				if (currentUser) {
+					std::cout << "bite" << std::endl;
+					char	buffer[1024];
+					int		bytes = recv(userSocket, buffer, sizeof(buffer), 0);
+					// Handle error or disconnection
+					if (bytes <= 0) {
+						if (bytes == 0)
+							serverLog(1, "User disconnected!");
+						else
+							serverLog(1, "Error or disconnection from client.");
+						epoll_ctl(_epoll, EPOLL_CTL_DEL, userSocket, &_event);
+						close(userSocket);
+						std::map<int, User> users = client.getUsers();
+						users.erase(currentUser->getSocket());
+						close(currentUser->getSocket());
+						currentUser->setAuthentication(false);
+					} else { // Launch commands
+						buffer[bytes] = '\0';
+						std::cout << "buffer = " << buffer << std::endl;
+						executor(buffer, *currentUser);
+						currentUser->display();
+					}
 				}
 			}
         }
@@ -173,18 +174,18 @@ void	Server::executor(const char* buf, User& user) {
 		line_stream >> command >> arg;
 
 		std::cout << "command = \"" << command << "\" | arg = \"" << arg << "\"" << std::endl;
-		launchCommand(user, command, arg);
+		launchCommand(&user, command, arg);
 	}
 }
 
-void	Server::launchCommand(User& user, const std::string& cmd, const std::string& args) {
+void	Server::launchCommand(User* user, const std::string& cmd, const std::string& args) {
 	std::string		cmdNames[4] = {"PASS", "NICK", "USER", "JOIN"};
 	typedef void	(Server::*cmds)(User&, const std::string&);
 	cmds			cmdFunc[4] = {&Server::pass, &Server::nick, &Server::user, &Server::join};
 
 	for (int i = 0; i < 4; i++)
 		if (cmdNames[i] == cmd)
-			(this->*cmdFunc[i])(user, args);
+			(this->*cmdFunc[i])(*user, args);
 }
 
 void	Server::serverLog(int type, const std::string& log) {
