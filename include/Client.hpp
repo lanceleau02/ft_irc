@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:56:15 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/03 14:08:25 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/04 10:48:07 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,16 @@ class User;
 
 class Client {
 	private:
-		std::vector<User>	_users;
+		std::map<int, User>	_users;
 
 	public:
 		Client();
 		~Client();
 
-		const User&			getUser(int idx) const;
-		size_t				getNbUsers() const;
-		const std::vector<User>&	getUsers() const;
-		void		addUser(const User& user);
+		const User&					getUser(int socket) const;
+		size_t						getNbUsers() const;
+		const std::map<int, User>&	getUsers() const;
+		void						addUser(int socket, const User& user);
 };
 
 #endif

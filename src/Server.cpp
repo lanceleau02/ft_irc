@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:09:56 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/03 16:42:29 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/04 11:27:35 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ int		Server::addSocket(epoll_event& event, int socket, int epoll) {
 }
 
 void	Server::registerUser(User& user, const std::string& userInfos) {
+	std::cout << "Je cree un user avec ces infos : " << userInfos << std::endl;
 	std::istringstream iss(userInfos);
 	std::string line;
 	while (std::getline(iss, line)) {
@@ -138,6 +139,7 @@ void	Server::start() {
 			// Handle new users
             if (_events[i].data.fd == _socket) {
                 // Accept new user connection
+				std::cout << client.getNbUsers() << std::endl;
 				struct sockaddr_in	userAddress;
 				int userSocket = acceptConnection(userAddress);
                 if (userSocket == -1) {
@@ -147,7 +149,8 @@ void	Server::start() {
 				serverLog(0, "New user connected!");
 				// Create new user
 				User newUser("", "", userSocket, false, false, userAddress);
-				client.addUser(newUser);
+				client.addUser(userSocket, newUser);
+				std::cout << client.getNbUsers() << std::endl;
 				// Add user socket to epoll
                 if (addSocket(_event, userSocket, _epoll) == -1) {
 					serverLog(1, "Failed to add user socket to epoll instance.");
@@ -157,15 +160,10 @@ void	Server::start() {
             } else { // Handle incoming data or other events: authenticate, set a nickname, a username, join a channel...
 				// Manage events
 				int		userSocket = _events[i].data.fd;
-				User*	currentUser = NULL;
 				// Select current user using its socket
-				for (size_t j = 0; j < client.getNbUsers(); ++j) {
-					if (client.getUser(j).getSocket() == userSocket) {
-						currentUser = const_cast<User*>(&client.getUser(j));
-						break;
-					}
-				}
+				User	*currentUser = const_cast<User*>(&client.getUser(userSocket));
 				if (currentUser) {
+					std::cout << "bite" << std::endl;
 					char	buffer[1024];
 					int		bytes = recv(userSocket, buffer, sizeof(buffer), 0);
 					// Handle error or disconnection
@@ -174,23 +172,12 @@ void	Server::start() {
 							serverLog(1, "User disconnected!");
 						else
 							serverLog(1, "Error or disconnection from client.");
-						close(userSocket);
 						epoll_ctl(_epoll, EPOLL_CTL_DEL, userSocket, &_event);
+						close(userSocket);
+						std::map<int, User> users = client.getUsers();
+						users.erase(currentUser->getSocket());
 						close(currentUser->getSocket());
-						std::vector<User> users = client.getUsers();
-						std::vector<User>::iterator it = users.begin();
-						// Find the user based on the socket value
-						while (it != users.end()) {
-							if (it->getSocket() == userSocket) {
-								std::cout << "J'erase " << it->getNickname() << std::endl;
-								close(it->getSocket());
-								users.erase(it);
-								break; // Break once the user is erased
-							}
-							++it;
-						}
 					} else { // Launch commands
-						currentUser->display();
 						buffer[bytes] = '\0';
 						std::cout << "buffer = " << buffer << std::endl;
 						std::string buf(buffer);
@@ -201,6 +188,7 @@ void	Server::start() {
 						iss >> command;
 						std::getline(iss >> std::ws, args);
 						launchCommand(currentUser, command, args);
+						currentUser->display();
 					}
 				}
 			}
