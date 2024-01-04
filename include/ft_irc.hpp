@@ -6,41 +6,39 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 14:08:20 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/03 14:26:19 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/04 14:00:22 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
-#include <cstring>
-#include <cstdlib>
-#include <string>
-#include <sstream>
-#include <vector>
-#include <csignal>
+/* ************************************************************************** */
+/*                                  INCLUDES                                  */
+/* ************************************************************************** */
+
 #include <map>
-#include <unistd.h>
-#include <sys/socket.h>
+#include <cstdlib>
+#include <csignal>
+#include <cstring>
+#include <sstream>
+#include <iostream>
+#include <regex.h>
 #include <sys/epoll.h>
 #include <netinet/in.h>
-#include <arpa/inet.h>
-#include <netdb.h>
-#include <regex.h>
 
+#include "Channel.hpp"
+#include "Client.hpp"
 #include "Server.hpp"
 #include "User.hpp"
-#include "Client.hpp"
-#include "Channel.hpp"
+
+/* ************************************************************************** */
+/*                                  DEFINES                                   */
+/* ************************************************************************** */
+
+#define MAX_EVENTS 100
 
 #define RED		"\033[31m"
 #define GREEN	"\033[32m"
-#define YELLOW	"\033[33m"
-#define BLUE	"\033[34m"
 #define NONE	"\033[0m"
 
-class User;
-class Channel;
-
-// COMMAND REPLIES
 #define RPL_JOIN(nick, user, channel)				(":" + nick + " JOIN " + channel + "\r\n")
 #define RPL_PART(client, channel)					(":" + client + " PART " + channel + "\r\n")
 #define RPL_MODE(client, channel, mode, name)		(":" + client + " MODE " + channel + " " + mode + " " + name + "\r\n")
@@ -54,7 +52,6 @@ class Channel;
 #define RPL_INVITESNDR(client, invitee, channel)	(": 341 " + client + " " + invitee + " " + channel + "\r\n")
 #define RPL_NAMEREPLY(nick, channel, nicknames)		(": 353 " + nick + " = " + channel + " :" + nicknames + "\r\n")
 
-// ERROR REPLIES
 #define ERR_TOOMUCHPARAMS(client, cmd)				(client + " " + cmd + " :Too much parameters\r\n")
 #define ERR_NOSUCHNICK(client, nickname)			(": 401 " + client + " " + nickname + " :No such nickname\r\n")
 #define ERR_NOSUCHCHANNEL(client, channel)			(": 403 " + client + " " + channel + " :No such channel\r\n")
@@ -79,11 +76,21 @@ class Channel;
 #define ERR_NORECIPIENT(client)						(": 411 " + client + " :No recipient given PRIVMSG\r\n")
 #define ERR_NONICKNAMEGIVEN(client, nick)			(": 431 " + client + " " + nick + " :No nickname given\r\n")
 
-// PRIVMSG BUILDERS
 #define CHANNEL_MESSAGES(client, channel, msg)		(":" + client + " PRIVMSG " + channel + " :" + msg + "\r\n")
 #define USER_MESSAGES(client, target, msg)			(":" + client + " PRIVMSG " + target + " :" +  msg + "\r\n")
 
-#define MAX_EVENTS 100
+/* ************************************************************************** */
+/*                                  CLASSES                                   */
+/* ************************************************************************** */
+
+class Channel;
+class Client;
+class Server;
+class User;
+
+/* ************************************************************************** */
+/*                                 FUNCTIONS                                  */
+/* ************************************************************************** */
 
 bool		RegExr(const char* pattern, const std::string& input);
 std::string	createNickList(Channel channel);
