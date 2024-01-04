@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 12:38:30 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/02 15:46:19 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/04 13:11:17 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,6 @@
 # define CHANNEL_HPP
 
 #include "ft_irc.hpp"
-
-enum AccessMode {
-	FREE_ACCESS,
-	INVITE_ONLY
-};
 
 enum MapType {
 	OPERATORS,
@@ -49,10 +44,10 @@ class Channel {
 		int							getNbUsers();
 		bool						getInviteMode();
 		bool						getPasswordMode();
-		bool						isOnChannel(int userSocket);
 		const std::string&			getPassword();
 		const std::map<int, User>&	getMap(int type);
 
+		bool	isOnChannel(int userSocket);
 		void	addOperator(const User& op);
 		void	addUser(const User& user);
 		void	addInvitee(const User& invitee);

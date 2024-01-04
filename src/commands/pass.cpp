@@ -6,16 +6,18 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 13:30:36 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/03 16:44:34 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/04 13:38:04 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-/* Errors replies:
-461	ERR_NEEDMOREPARAMS		"<command> :Not enough parameters"
-462 ERR_ALREADYREGISTRED	":Unauthorized command (already registered)"
-464	ERR_PASSWDMISMATCH		":Password incorrect" */
+/* ************************************************************************** */
+/* Error Replies:                                                             */
+/* 461	ERR_NEEDMOREPARAMS		"<command> :Not enough parameters"            */
+/* 462	ERR_ALREADYREGISTRED	":Unauthorized command (already registered)"  */
+/* 464	ERR_PASSWDMISMATCH		":Password incorrect"                         */
+/* ************************************************************************** */
 
 static bool parsing(const User& user, const std::string& userPass, const std::string& serverPass) {
 	std::string command = "PASS";

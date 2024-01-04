@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 16:33:57 by laprieur          #+#    #+#             */
-/*   Updated: 2023/12/28 15:56:44 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/04 13:31:51 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,25 +30,22 @@ class Server {
 	public:
 		Server(char** params);
 		~Server();
-		
-		/* INITIALIZATION */
+
 		void	setup();
 		void	start();
-		int		acceptConnection(sockaddr_in& userAddress);
-		int		addSocket(epoll_event& event, int socket, int epoll);
-		void	registerUser(User& user, const std::string& userInfos);
-		void	launchCommand(User* user, const std::string& cmd, const std::string& args);
 
-		/* COMMANDS */
+		int			acceptConnection(sockaddr_in& userAddress);
+		int			addSocket(epoll_event& event, int socket, int epoll);
+		void		registerUser(User& user, const std::string& userInfos);
+		void		launchCommand(User* user, const std::string& cmd, const std::string& args);
+		static void	serverLog(int type, const std::string& log);
+		static void	clientLog(int socket, const std::string& log);
+
 		void	pass(User& user, const std::string& password);
 		void	nick(User& user, const std::string& nickname);
 		void	user(User& user, const std::string& username);
 		void	join(User& user, const std::string& channelName);
 		void	privmsg();
-
-		/* UTILS */
-		static void	serverLog(int type, const std::string& log);
-		static void	clientLog(int socket, const std::string& log);
 };
 
 #endif

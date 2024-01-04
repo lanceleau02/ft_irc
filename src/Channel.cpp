@@ -6,11 +6,15 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 13:10:53 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/03 12:48:25 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/04 13:09:51 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Channel.hpp"
+
+/* ************************************************************************** */
+/*                              CLASS FUNCTIONS                               */
+/* ************************************************************************** */
 
 Channel::Channel(const User& op, const std::string& name) : _topic(), _password() {
 	_userLimit = 0;
@@ -23,6 +27,10 @@ Channel::Channel(const User& op, const std::string& name) : _topic(), _password(
 }
 
 Channel::~Channel() {}
+
+/* ************************************************************************** */
+/*                             GETTERS FUNCTIONS                              */
+/* ************************************************************************** */
 
 int		Channel::getUserLimit() {
 	return _userLimit;
@@ -40,12 +48,6 @@ bool	Channel::getPasswordMode() {
 	return _channelKey;
 }
 
-bool	Channel::isOnChannel(int userSocket) {
-	if (_users.find(userSocket) != _users.end())
-		return true;
-	return false;
-}
-
 const std::string&	Channel::getPassword() {
 	return _password;
 }
@@ -56,6 +58,16 @@ const std::map<int, User>&	Channel::getMap(int type) {
 	if (type == USERS)
 		return _users;
 	return _invitees;
+}
+
+/* ************************************************************************** */
+/*                              MEMBER FUNCTIONS                              */
+/* ************************************************************************** */
+
+bool	Channel::isOnChannel(int userSocket) {
+	if (_users.find(userSocket) != _users.end())
+		return true;
+	return false;
 }
 
 void	Channel::addOperator(const User& op) {
