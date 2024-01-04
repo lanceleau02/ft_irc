@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 12:55:54 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/04 13:18:20 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/04 17:20:21 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@
 /*                              CLASS FUNCTIONS                               */
 /* ************************************************************************** */
 
-User::User(const std::string& nickname, const std::string& username, int socket, bool isAuthenticated, bool isRegistered, const sockaddr_in& address) {
+User::User(const std::string& nickname, const std::string& username, int socket, const sockaddr_in& address) {
 	_nickname = nickname;
 	_username = username;
 	_type = REGULAR;
 	_socket = socket;
-	_isAuthenticated = isAuthenticated;
-	_isRegistered = isRegistered;
+	_isAuthenticated = false;
+	_isRegistered = false;
 	_address = address;
 }
 
@@ -76,8 +76,8 @@ void	User::setUsername(const std::string& username) {
 	_username = username;
 }
 
-void	User::setAuthentication() {
-	_isAuthenticated = true;
+void	User::setAuthentication(bool type) {
+	_isAuthenticated = type;
 }
 
 void	User::setRegistration() {
