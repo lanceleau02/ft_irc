@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 12:38:30 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/05 13:29:12 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/05 15:31:39 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ class Channel {
 		void	addOperator(const Client& op);
 		void	addUser(const Client& user);
 		void	addInvitee(const Client& invitee);
+		void	sendMessage(const std::string& msg);
 };
 
 #endif

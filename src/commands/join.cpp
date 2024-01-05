@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 15:08:15 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/05 14:01:14 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/05 15:32:33 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ static bool parsing(const Client& client, const std::string& channelName, std::m
 			Server::clientLog(client.getSocket(), ERR_BADCHANNELKEY(client.getUsername(), channelName));
 		else if (it->second.isOnChannel(client.getSocket()))
 			Server::clientLog(client.getSocket(), ERR_USERONCHANNEL(client.getUsername(), client.getNickname(), channelName));
+		else
+			return true;
 	}
 	else
 		return true;
@@ -54,7 +56,7 @@ void	Server::join(Client& client, const std::string& channelName) {
 			_channels.at(channelName).addOperator(client);
 		}
 		_channels.at(channelName).addUser(client);
-		Server::clientLog(client.getSocket(), RPL_JOIN(client.getNickname(), client.getUsername(), channelName));
-		Server::clientLog(client.getSocket(), RPL_NAMEREPLY(client.getNickname(), channelName, createNickList(_channels.at(channelName))));
+		_channels.at(channelName).sendMessage(RPL_JOIN(client.getNickname(), client.getUsername(), channelName));
+		_channels.at(channelName).sendMessage(RPL_NAMEREPLY(client.getNickname(), channelName, createNickList(_channels.at(channelName))));
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 13:10:53 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/05 13:23:00 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/05 15:31:00 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,4 +80,9 @@ void	Channel::addUser(const Client& user) {
 
 void	Channel::addInvitee(const Client& invitee) {
 	_invitees.insert(std::pair<int, Client>(invitee.getSocket(), invitee));
+}
+
+void	Channel::sendMessage(const std::string& msg) {
+	for (std::map<int, Client>::iterator it = _users.begin(); it != _users.end(); it++)
+		Server::clientLog(it->second.getSocket(), msg);
 }
