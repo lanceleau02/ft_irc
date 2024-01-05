@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 13:10:53 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/04 13:09:51 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/05 11:38:42 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 /* ************************************************************************** */
 
 Channel::Channel(const User& op, const std::string& name) : _topic(), _password() {
-	_userLimit = 0;
+	_userLimit = 100;
 	_inviteOnly = false;
 	_topicRestrictions = false;
 	_channelKey = false;
