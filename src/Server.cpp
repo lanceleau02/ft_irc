@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:09:56 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/04 17:26:14 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/05 10:38:27 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ void	Server::start() {
 			// Handle new users
             if (_events[i].data.fd == _socket) {
                 // Accept new user connection
-				std::cout << client.getNbUsers() << std::endl;
 				struct sockaddr_in	userAddress;
 				int userSocket = acceptConnection(userAddress);
                 if (userSocket == -1) {
@@ -103,20 +102,19 @@ void	Server::start() {
 				// Create new user
 				User newUser("", "", userSocket, userAddress);
 				client.addUser(userSocket, newUser);
-				std::cout << client.getNbUsers() << std::endl;
 				// Add user socket to epoll
                 if (addSocket(_event, userSocket, _epoll) == -1) {
 					serverLog(1, "Failed to add user socket to epoll instance.");
                     close(userSocket);
                     continue;
                 }
-            } else { // Handle incoming data or other events: authenticate, set a nickname, a username, join a channel...
+            } 
+			else { // Handle incoming data or other events: authenticate, set a nickname, a username, join a channel...
 				// Manage events
 				int	userSocket = _events[i].data.fd;
 				// Select current user using its socket
 				User* currentUser = const_cast<User*>(&client.getUser(userSocket));
 				if (currentUser) {
-					std::cout << "bite" << std::endl;
 					char	buffer[1024];
 					int		bytes = recv(userSocket, buffer, sizeof(buffer), 0);
 					// Handle error or disconnection
@@ -126,12 +124,11 @@ void	Server::start() {
 						else
 							serverLog(1, "Error or disconnection from client.");
 						epoll_ctl(_epoll, EPOLL_CTL_DEL, userSocket, &_event);
-						close(userSocket);
-						std::map<int, User> users = client.getUsers();
-						users.erase(currentUser->getSocket());
+						close(userSocket); 
+						client.eraseUser(currentUser->getSocket());
 						close(currentUser->getSocket());
-						currentUser->setAuthentication(false);
-					} else { // Launch commands
+					}
+					else {
 						buffer[bytes] = '\0';
 						std::cout << "buffer = " << buffer << std::endl;
 						executor(buffer, *currentUser);
@@ -164,7 +161,6 @@ void	Server::executor(const char* buf, User& user) {
 	std::string			line;
 
 	while (std::getline(iss, line)) {
-		std::cout << "line: " << line << std::endl;
 		if (line.find("CAP LS 302") != std::string::npos)
 			continue;
 		std::istringstream line_stream(line);
@@ -172,8 +168,6 @@ void	Server::executor(const char* buf, User& user) {
 		std::string arg;
 
 		line_stream >> command >> arg;
-
-		std::cout << "command = \"" << command << "\" | arg = \"" << arg << "\"" << std::endl;
 		launchCommand(&user, command, arg);
 	}
 }

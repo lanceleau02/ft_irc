@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 13:42:32 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/04 13:31:09 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/05 10:32:49 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,10 @@ const User&	Client::getUser(int socket) const {
 
 const std::map<int, User>&	Client::getUsers() const {
 	return _users;
+}
+
+void	Client::eraseUser(int userSocket) {
+	_users.erase(userSocket);
 }
 
 /* ************************************************************************** */
