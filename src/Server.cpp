@@ -6,7 +6,7 @@
 /*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:09:56 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/05 10:38:27 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/05 10:53:57 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,6 +169,8 @@ void	Server::executor(const char* buf, User& user) {
 
 		line_stream >> command >> arg;
 		launchCommand(&user, command, arg);
+		if (!user.getNickname().empty() && !user.getUsername().empty())
+			user.setRegistration();
 	}
 }
 
