@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:42:59 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/04 13:40:13 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/05 13:26:19 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,22 @@
 /* 484	ERR_RESTRICTED			":Your connection is restricted!"             */
 /* ************************************************************************** */
 
-static bool	parsing(const User& user, const std::string& nickname) {
+static bool	parsing(const Client& client, const std::string& nickname) {
 	std::cout << "\'" << nickname << "\'" << std::endl;
 	if (nickname.empty())
-		Server::clientLog(user.getSocket(), ERR_NONICKNAMEGIVEN(user.getUsername(), nickname));
+		Server::clientLog(client.getSocket(), ERR_NONICKNAMEGIVEN(client.getUsername(), nickname));
 	else if (!RegExr("^[a-zA-Z^{}|`-]{1}[a-zA-Z0-9^{}|`-]{0,8}[\n\r]?$", nickname))
-		Server::clientLog(user.getSocket(), ERR_ERRONEUSNICKNAME(user.getUsername(), nickname));
+		Server::clientLog(client.getSocket(), ERR_ERRONEUSNICKNAME(client.getUsername(), nickname));
 	/*else if (ERR_NICKNAMEINUSE)
-		Server::clientLog(user.getSocket(), ERR_NICKNAMEINUSE);
+		Server::clientLog(client.getSocket(), ERR_NICKNAMEINUSE);
 	else if (ERR_USERNOTINCHANNEL)
-		Server::clientLog(user.getSocket(), ERR_USERNOTINCHANNEL); */
+		Server::clientLog(client.getSocket(), ERR_USERNOTINCHANNEL); */
 	else
 		return true;
 	return false;
 }
 
-void	Server::nick(User& user, const std::string& nickname) {
-	if (parsing(user, nickname) && user.getAuthentication())
-		user.setNickname(nickname);
+void	Server::nick(Client& client, const std::string& nickname) {
+	if (parsing(client, nickname) && client.getAuthentication())
+		client.setNickname(nickname);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 13:42:32 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/05 10:32:49 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/05 14:00:19 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,12 @@
 /*                              CLASS FUNCTIONS                               */
 /* ************************************************************************** */
 
-Client::Client() {}
+Client::Client(int socket, const sockaddr_in& address) : _nickname(), _username() {
+	_socket = socket;
+	_isAuthenticated = false;
+	_isRegistered = false;
+	_address = address;
+}
 
 Client::~Client() {}
 
@@ -24,26 +29,73 @@ Client::~Client() {}
 /*                             GETTERS FUNCTIONS                              */
 /* ************************************************************************** */
 
-size_t	Client::getNbUsers() const {
-	return _users.size();
+int	Client::getSocket() const {
+	return _socket;
 }
 
-const User&	Client::getUser(int socket) const {
-	return ((_users.find(socket))->second);
+bool	Client::getAuthentication() const {
+	return _isAuthenticated;
 }
 
-const std::map<int, User>&	Client::getUsers() const {
-	return _users;
+bool	Client::getRegistration() const {
+	return _isRegistered;
 }
 
-void	Client::eraseUser(int userSocket) {
-	_users.erase(userSocket);
+const std::string&	Client::getNickname() const {
+	return _nickname;
+}
+
+const std::string&	Client::getUsername() const {
+	return _username;
+}
+
+const sockaddr_in&	Client::getAddress() const {
+	return _address;
+}
+
+/* ************************************************************************** */
+/*                             SETTERS FUNCTIONS                              */
+/* ************************************************************************** */
+
+void	Client::setNickname(const std::string& nickname) {
+	_nickname = nickname;
+}
+
+void	Client::setUsername(const std::string& username) {
+	_username = username;
+}
+
+void	Client::setAuthentication(bool type) {
+	_isAuthenticated = type;
+}
+
+void	Client::setRegistration() {
+	_isRegistered = true;
+}
+
+void	Client::setSocket(int socket) {
+	_socket = socket;
+}
+
+void	Client::setAddress(sockaddr_in address) {
+	_address = address;
 }
 
 /* ************************************************************************** */
 /*                              MEMBER FUNCTIONS                              */
 /* ************************************************************************** */
 
-void	Client::addUser(int socket, const User& user) {
-	_users.insert(std::pair<int, User>(socket, user));
+bool	Client::isOperator(Channel channel) const {
+	std::map<int, Client>::const_iterator it = (channel.getMap(OPERATORS)).find(_socket);
+	if (it != channel.getMap(OPERATORS).end())
+		return (true);
+	return (false);
+}
+
+void	Client::display() const {
+	std::cout << "Socket : " << _socket << std::endl;
+	std::cout << "isAuthenticated : " << _isAuthenticated << std::endl;
+	std::cout << "isRegistered : " << _isRegistered << std::endl;
+	std::cout << "Nickname : " << _nickname << std::endl;
+	std::cout << "Username : " << _username << std::endl;
 }

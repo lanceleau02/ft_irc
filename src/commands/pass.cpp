@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 13:30:36 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/04 15:53:40 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/05 13:25:49 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,22 @@
 /* 464	ERR_PASSWDMISMATCH		":Password incorrect"                         */
 /* ************************************************************************** */
 
-static bool parsing(const User& user, const std::string& userPass, const std::string& serverPass) {
+static bool parsing(const Client& client, const std::string& userPass, const std::string& serverPass) {
 	std::string command = "PASS";
-	if (user.getAuthentication())
-		Server::clientLog(user.getSocket(), ERR_ALREADYREGISTRED(user.getUsername()));
+	if (client.getAuthentication())
+		Server::clientLog(client.getSocket(), ERR_ALREADYREGISTRED(client.getUsername()));
 	else if (userPass.empty())
-		Server::clientLog(user.getSocket(), ERR_NEEDMOREPARAMS(user.getUsername(), command));
+		Server::clientLog(client.getSocket(), ERR_NEEDMOREPARAMS(client.getUsername(), command));
 	else if (userPass != serverPass)
-		Server::clientLog(user.getSocket(), ERR_PASSWDMISMATCH(user.getUsername()));
+		Server::clientLog(client.getSocket(), ERR_PASSWDMISMATCH(client.getUsername()));
 	else
 		return true;
 	return false;
 }
 
-void	Server::pass(User& user, const std::string& password) {
-	if (parsing(user, password, _password) && !user.getAuthentication() && password == _password) {
-		user.setAuthentication(true);
+void	Server::pass(Client& client, const std::string& password) {
+	if (parsing(client, password, _password) && !client.getAuthentication() && password == _password) {
+		client.setAuthentication(true);
 		serverLog(0, "Client successfully authentified!");
 	}
 }

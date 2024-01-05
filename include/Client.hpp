@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:56:15 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/05 10:32:13 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/05 14:00:14 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,35 @@
 
 #include "ft_irc.hpp"
 
-class User;
-
 class Client {
 	private:
-		std::map<int, User>	_users;
+		int					_socket;
+		bool				_isAuthenticated;
+		bool				_isRegistered;
+		std::string			_nickname;
+		std::string			_username;
+		struct sockaddr_in	_address;
 
 	public:
-		Client();
+		Client(int socket, const sockaddr_in& address);
 		~Client();
 
-		size_t						getNbUsers() const;
-		const User&					getUser(int socket) const;
-		const std::map<int, User>&	getUsers() const;
+		int					getSocket() const;
+		bool				getAuthentication() const;
+		bool				getRegistration() const;
+		const std::string&	getNickname() const;
+		const std::string&	getUsername() const;
+		const sockaddr_in&	getAddress() const;
+
+		void	setSocket(int socket);
+		void	setAuthentication(bool type);
+		void	setRegistration();
+		void	setNickname(const std::string& nickname);
+		void	setUsername(const std::string& username);
+		void	setAddress(sockaddr_in address);
 		
-		void	addUser(int socket, const User& user);
-		void	eraseUser(int userSocket);
+		bool	isOperator(Channel channel) const;
+		void	display() const;
 };
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 09:51:01 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/04 13:36:30 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/05 13:25:01 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,18 @@
 /* 462	ERR_ALREADYREGISTRED	":Unauthorized command (already registered)"  */
 /* ************************************************************************** */
 
-static bool parsing(const User& user, const std::string& username) {
+static bool parsing(const Client& client, const std::string& username) {
 	std::string command = "USER";
-	if (!(user.getUsername()).empty())
-		Server::clientLog(user.getSocket(), ERR_ALREADYREGISTRED(user.getUsername()));
+	if (!(client.getUsername()).empty())
+		Server::clientLog(client.getSocket(), ERR_ALREADYREGISTRED(client.getUsername()));
 	else if (username.empty())
-		Server::clientLog(user.getSocket(), ERR_NEEDMOREPARAMS(user.getUsername(), command));
+		Server::clientLog(client.getSocket(), ERR_NEEDMOREPARAMS(client.getUsername(), command));
 	else
 		return true;
 	return false;
 }
 
-void	Server::user(User& user, const std::string& username) {
-	if (parsing(user, username) && user.getAuthentication())
-		user.setUsername(username);
+void	Server::user(Client& client, const std::string& username) {
+	if (parsing(client, username) && client.getAuthentication())
+		client.setUsername(username);
 }

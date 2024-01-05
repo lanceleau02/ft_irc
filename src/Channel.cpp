@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 13:10:53 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/05 11:38:42 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/05 13:23:00 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 /*                              CLASS FUNCTIONS                               */
 /* ************************************************************************** */
 
-Channel::Channel(const User& op, const std::string& name) : _topic(), _password() {
+Channel::Channel(const Client& op, const std::string& name) : _topic(), _password() {
 	_userLimit = 100;
 	_inviteOnly = false;
 	_topicRestrictions = false;
@@ -52,7 +52,7 @@ const std::string&	Channel::getPassword() {
 	return _password;
 }
 
-const std::map<int, User>&	Channel::getMap(int type) {
+const std::map<int, Client>&	Channel::getMap(int type) {
 	if (type == OPERATORS)
 		return _operators;
 	if (type == USERS)
@@ -64,20 +64,20 @@ const std::map<int, User>&	Channel::getMap(int type) {
 /*                              MEMBER FUNCTIONS                              */
 /* ************************************************************************** */
 
-bool	Channel::isOnChannel(int userSocket) {
-	if (_users.find(userSocket) != _users.end())
+bool	Channel::isOnChannel(int clientSocket) {
+	if (_users.find(clientSocket) != _users.end())
 		return true;
 	return false;
 }
 
-void	Channel::addOperator(const User& op) {
-	_operators.insert(std::pair<int, User>(op.getSocket(), op));
+void	Channel::addOperator(const Client& op) {
+	_operators.insert(std::pair<int, Client>(op.getSocket(), op));
 }
 
-void	Channel::addUser(const User& user) {
-	_users.insert(std::pair<int, User>(user.getSocket(), user));
+void	Channel::addUser(const Client& user) {
+	_users.insert(std::pair<int, Client>(user.getSocket(), user));
 }
 
-void	Channel::addInvitee(const User& invitee) {
-	_invitees.insert(std::pair<int, User>(invitee.getSocket(), invitee));
+void	Channel::addInvitee(const Client& invitee) {
+	_invitees.insert(std::pair<int, Client>(invitee.getSocket(), invitee));
 }

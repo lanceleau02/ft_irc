@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_irc.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 14:08:20 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/05 11:32:14 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/05 13:19:45 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@
 #include "Channel.hpp"
 #include "Client.hpp"
 #include "Server.hpp"
-#include "User.hpp"
 
 /* ************************************************************************** */
 /*                                  DEFINES                                   */
@@ -85,7 +84,6 @@
 class Channel;
 class Client;
 class Server;
-class User;
 
 /* ************************************************************************** */
 /*                                 FUNCTIONS                                  */
