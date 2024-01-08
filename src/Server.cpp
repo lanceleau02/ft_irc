@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:09:56 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/08 14:51:51 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/08 15:46:05 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,14 @@ int	Server::addSocket(epoll_event& event, int socket, int epoll) {
 	return epoll_ctl(epoll, EPOLL_CTL_ADD, socket, &event);
 }
 
+bool	Server::findClientByNick(const Client& client) {
+	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++) {
+		if (it->second.getNickname() == client.getNickname())
+			return true;
+	}
+	return false;
+}
+
 void	Server::executor(const char* buf, Client& client) {
 	std::string			buffer(buf);
 	std::istringstream	iss(buffer);
@@ -162,9 +170,7 @@ void	Server::executor(const char* buf, Client& client) {
 		if (line.find("CAP LS 302") != std::string::npos)
 			continue;
 		std::string command = line.substr(0, line.find(" "));
-		std::cout << "commmand: " << command << std::endl;
 		std::string args = line.substr(line.find(" ") + 1, line.size());
-		std::cout << "args: " << args << std::endl;
 		launchCommand(client, command, args);
 		if (client.getAuthentication() && !client.getNickname().empty() && !client.getUsername().empty())
 			client.setRegistration();

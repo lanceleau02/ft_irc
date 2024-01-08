@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 16:33:57 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/08 15:06:03 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/08 15:45:28 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ class Server {
 		void		launchCommand(Client& client, const std::string& cmd, const std::string& args);
 		void		addClient(const Client& client);
 		void		eraseClient(int socket);
+		static void	serverLog(int type, const std::string& log);
 		static void	serverLog(int type, const std::string& log);
 		static void	clientLog(int socket, const std::string& log);
 

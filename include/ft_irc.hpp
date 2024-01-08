@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 14:08:20 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/05 13:19:45 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/08 15:44:19 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,3 +91,4 @@ class Server;
 
 bool		RegExr(const char* pattern, const std::string& input);
 std::string	createNickList(Channel channel);
+bool		findClientByNick(const std::map<int, Client>& clients, const Client& client);
