@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:42:59 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/05 13:26:19 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/08 15:04:58 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 /* ************************************************************************** */
 
 static bool	parsing(const Client& client, const std::string& nickname) {
-	std::cout << "\'" << nickname << "\'" << std::endl;
 	if (nickname.empty())
 		Server::clientLog(client.getSocket(), ERR_NONICKNAMEGIVEN(client.getUsername(), nickname));
 	else if (!RegExr("^[a-zA-Z^{}|`-]{1}[a-zA-Z0-9^{}|`-]{0,8}[\n\r]?$", nickname))
@@ -36,7 +35,10 @@ static bool	parsing(const Client& client, const std::string& nickname) {
 	return false;
 }
 
-void	Server::nick(Client& client, const std::string& nickname) {
+void	Server::nick(Client& client, const std::string& nick) {
+	std::istringstream iss(nick);
+	std::string nickname;
+	iss >> nickname;
 	if (parsing(client, nickname) && client.getAuthentication())
 		client.setNickname(nickname);
 }
