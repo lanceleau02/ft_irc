@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/18 16:33:57 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/08 15:45:28 by laprieur         ###   ########.fr       */
+/*   Created: 2024/01/08 15:47:18 by laprieur          #+#    #+#             */
+/*   Updated: 2024/01/08 15:47:19 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,11 @@ class Server {
 		static void	serverLog(int type, const std::string& log);
 		static void	clientLog(int socket, const std::string& log);
 
-		void	pass(Client& client, const std::string& pass);
-		void	nick(Client& client, const std::string& nick);
-		void	user(Client& client, const std::string& user);
-		void	join(Client& client, const std::string& args);
-		void	privmsg();
+		void	pass(Client& client, const std::string& password);
+		void	nick(Client& client, const std::string& nickname);
+		void	user(Client& client, const std::string& username);
+		void	join(Client& client, const std::string& channelName);
+		void	privmsg(Client& client, const std::string& args);
 };
 
 #endif

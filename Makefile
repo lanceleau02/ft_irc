@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+         #
+#    By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/14 13:54:59 by laprieur          #+#    #+#              #
-#    Updated: 2024/01/05 14:00:40 by laprieur         ###   ########.fr        #
+#    Updated: 2024/01/08 15:16:27 by hsebille         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,15 +16,16 @@ NAME			:= ircserv
 #                                 INGREDIENTS                                  #
 # **************************************************************************** #
 
-SRC				:=	src/main.cpp			\
-					src/Server.cpp			\
-					src/Client.cpp			\
-					src/Channel.cpp			\
-					src/utils.cpp			\
-					src/commands/pass.cpp	\
-					src/commands/nick.cpp	\
-					src/commands/user.cpp	\
-					src/commands/join.cpp	\
+SRC				:=	src/main.cpp				\
+					src/Server.cpp				\
+					src/Client.cpp				\
+					src/Channel.cpp				\
+					src/utils.cpp				\
+					src/commands/pass.cpp		\
+					src/commands/nick.cpp		\
+					src/commands/user.cpp		\
+					src/commands/join.cpp		\
+					src/commands/privmsg.cpp	\
 					
 SRC_OBJS		:=	$(SRC:%.cpp=.build/%.o)
 DEPS			:=	$(SRC_OBJS:%.o=%.d)
