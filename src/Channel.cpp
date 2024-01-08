@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 13:10:53 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/05 15:31:00 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/08 11:02:58 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 /*                              CLASS FUNCTIONS                               */
 /* ************************************************************************** */
 
-Channel::Channel(const Client& op, const std::string& name) : _topic(), _password() {
+Channel::Channel(const Client& op, const std::string& name) : _topic(), _key() {
 	_userLimit = 100;
 	_inviteOnly = false;
 	_topicRestrictions = false;
@@ -44,12 +44,12 @@ bool	Channel::getInviteMode() {
 	return _inviteOnly;
 }
 
-bool	Channel::getPasswordMode() {
+bool	Channel::getKeyMode() {
 	return _channelKey;
 }
 
-const std::string&	Channel::getPassword() {
-	return _password;
+const std::string&	Channel::getKey() {
+	return _key;
 }
 
 const std::map<int, Client>&	Channel::getMap(int type) {
@@ -66,6 +66,12 @@ const std::map<int, Client>&	Channel::getMap(int type) {
 
 bool	Channel::isOnChannel(int clientSocket) {
 	if (_users.find(clientSocket) != _users.end())
+		return true;
+	return false;
+}
+
+bool	Channel::isInvited(int clientSocket) {
+	if (_invitees.find(clientSocket) != _invitees.end())
 		return true;
 	return false;
 }

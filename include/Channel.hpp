@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 12:38:30 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/05 15:31:39 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/08 11:01:09 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ class Channel {
 		bool					_channelKey;
 		std::string				_name;
 		std::string				_topic;
-		std::string				_password;
+		std::string				_key;
 		std::map<int, Client>	_operators;
 		std::map<int, Client>	_users;
 		std::map<int, Client>	_invitees;
@@ -43,11 +43,12 @@ class Channel {
 		int								getUserLimit();
 		int								getNbUsers();
 		bool							getInviteMode();
-		bool							getPasswordMode();
-		const std::string&				getPassword();
+		bool							getKeyMode();
+		const std::string&				getKey();
 		const std::map<int, Client>&	getMap(int type);
 
 		bool	isOnChannel(int clientSocket);
+		bool	isInvited(int clientSocket);
 		void	addOperator(const Client& op);
 		void	addUser(const Client& user);
 		void	addInvitee(const Client& invitee);

@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:09:56 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/05 14:00:31 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/08 11:25:09 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,15 +157,13 @@ void	Server::executor(const char* buf, Client& client) {
 	std::string			line;
 
 	while (std::getline(iss, line)) {
+		if (client.getAuthentication() && !client.getNickname().empty() && !client.getUsername().empty())
+			client.setRegistration();
 		if (line.find("CAP LS 302") != std::string::npos)
 			continue;
-		std::istringstream line_stream(line);
-		std::string command;
-		std::string arg;
-		line_stream >> command >> arg;
-		launchCommand(client, command, arg);
-		if (!client.getNickname().empty() && !client.getUsername().empty())
-			client.setRegistration();
+		std::string command = line.substr(0, line.find(" "));
+		std::string args = line.substr(line.find(" ") + 1, line.size());
+		launchCommand(client, command, args);
 	}
 }
 
