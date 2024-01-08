@@ -5,12 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/18 16:33:57 by laprieur          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/01/08 15:05:03 by hsebille         ###   ########.fr       */
-=======
-/*   Updated: 2024/01/08 15:06:03 by laprieur         ###   ########.fr       */
->>>>>>> refs/remotes/origin/main
+/*   Created: 2024/01/08 15:14:53 by hsebille          #+#    #+#             */
+/*   Updated: 2024/01/08 15:29:20 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +49,7 @@ class Server {
 		void	nick(Client& client, const std::string& nickname);
 		void	user(Client& client, const std::string& username);
 		void	join(Client& client, const std::string& channelName);
-		void	privmsg(Client& client, std::string args);
+		void	privmsg(Client& client, const std::string& args);
 };
 
 #endif
