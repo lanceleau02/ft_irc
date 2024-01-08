@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 16:33:57 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/05 13:53:19 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/08 15:05:03 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ class Server {
 		void	nick(Client& client, const std::string& nickname);
 		void	user(Client& client, const std::string& username);
 		void	join(Client& client, const std::string& channelName);
-		void	privmsg();
+		void	privmsg(Client& client, std::string args);
 };
 
 #endif
