@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:42:59 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/08 15:24:30 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/08 15:57:51 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@
 /* 484	ERR_RESTRICTED			":Your connection is restricted!"             */
 /* ************************************************************************** */
 
-static bool	parsing(const Client& client, const std::string& nickname) {
+static bool	parsing(Server& server, const Client& client, const std::string& nickname) {
 	if (nickname.empty())
 		Server::clientLog(client.getSocket(), ERR_NONICKNAMEGIVEN(client.getUsername(), nickname));
 	else if (!RegExr("^[a-zA-Z^{}|`-]{1}[a-zA-Z0-9^{}|`-]{0,8}[\n\r]?$", nickname))
 		Server::clientLog(client.getSocket(), ERR_ERRONEUSNICKNAME(client.getUsername(), nickname));
-	else if (findClientByNick(client))
+	else if (server.findClientByNick(nickname))
 		Server::clientLog(client.getSocket(), ERR_NICKNAMEINUSE(client.getUsername(), nickname));
 	/* else if (ERR_USERNOTINCHANNEL)
 		Server::clientLog(client.getSocket(), ERR_USERNOTINCHANNEL); */
@@ -39,6 +39,6 @@ void	Server::nick(Client& client, const std::string& nick) {
 	std::istringstream iss(nick);
 	std::string nickname;
 	iss >> nickname;
-	if (parsing(client, nickname) && client.getAuthentication())
+	if (parsing(*this, client, nickname) && client.getAuthentication())
 		client.setNickname(nickname);
 }

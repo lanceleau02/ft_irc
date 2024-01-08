@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 15:47:27 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/08 15:47:28 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/08 16:44:00 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,11 +153,10 @@ int	Server::addSocket(epoll_event& event, int socket, int epoll) {
 	return epoll_ctl(epoll, EPOLL_CTL_ADD, socket, &event);
 }
 
-bool	Server::findClientByNick(const Client& client) {
-	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++) {
-		if (it->second.getNickname() == client.getNickname())
+bool	Server::findClientByNick(std::string nickname) {
+	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++)
+		if (it->second.getNickname() == nickname)
 			return true;
-	}
 	return false;
 }
 
@@ -178,7 +177,7 @@ void	Server::executor(const char* buf, Client& client) {
 }
 
 void	Server::launchCommand(Client& client, const std::string& cmd, const std::string& args) {
-	std::string		cmdNames[5] = {"PASS", "NICK", "USER", "JOIN", "PRIVMSG"};
+	std::string		cmdNames[5] = {"PASS", "NICK", "USER", "JOIN", "MSG"};
 	typedef void	(Server::*cmds)(Client&, const std::string&);
 	cmds			cmdFunc[5] = {&Server::pass, &Server::nick, &Server::user, &Server::join, &Server::privmsg};
 

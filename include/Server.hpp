@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 15:47:18 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/08 15:47:19 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/08 15:58:29 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,11 @@ class Server {
 
 		int			acceptConnection(sockaddr_in& clientAddress);
 		int			addSocket(epoll_event& event, int socket, int epoll);
+		bool		findClientByNick(std::string nickname);
 		void		executor(const char* buf, Client& client);
 		void		launchCommand(Client& client, const std::string& cmd, const std::string& args);
 		void		addClient(const Client& client);
 		void		eraseClient(int socket);
-		static void	serverLog(int type, const std::string& log);
 		static void	serverLog(int type, const std::string& log);
 		static void	clientLog(int socket, const std::string& log);
 
