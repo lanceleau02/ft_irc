@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 15:08:15 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/08 11:11:52 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/08 14:06:28 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,9 @@
 /* 475	ERR_BADCHANNELKEY	"<channel> :Cannot join channel (+k)"             */
 /* ************************************************************************** */
 
-static bool parsing(const Client& client, const std::string& args, std::map<std::string, Channel>& channels) {
-	std::istringstream iss(args);
-	std::string channel;
-	std::string key;
-	iss >> channel;
-	iss >> key;
-	std::string command = "JOIN";
+static bool parsing(const Client& client, std::map<std::string, Channel>& channels, std::string cmd, std::string channel, std::string key) {
 	if (channel.empty())
-		Server::clientLog(client.getSocket(), ERR_NEEDMOREPARAMS(client.getUsername(), command));
+		Server::clientLog(client.getSocket(), ERR_NEEDMOREPARAMS(client.getUsername(), cmd));
 	else if (channels.find(channel) != channels.end()) {
 		std::map<std::string, Channel>::iterator it = channels.find(channel);
 		if (it->second.getNbUsers() >= it->second.getUserLimit())
@@ -56,8 +50,10 @@ static bool parsing(const Client& client, const std::string& args, std::map<std:
 void	Server::join(Client& client, const std::string& args) {
 	std::istringstream iss(args);
 	std::string channel;
+	std::string key;
 	iss >> channel;
-	if (parsing(client, channel, _channels) && client.getRegistration()) {
+	iss >> key;
+	if (parsing(client, _channels, "JOIN", channel, key) && client.getRegistration()) {
 		std::map<std::string, Channel>::iterator it = _channels.find(channel);
 		if (it == _channels.end()) {
 			_channels.insert(std::pair<std::string, Channel>(channel, Channel(client, channel)));
