@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:09:56 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/08 13:52:08 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/08 14:51:51 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	Server::setup() {
 	if (_socket == -1)
 		throw std::runtime_error("impossible to create the server socket.");
 	// Set up the socket structure
+	int opt = 1;
+    setsockopt(this->_socket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
 	memset(&_serverAddress, 0, sizeof(_serverAddress));
 	_serverAddress.sin_family = AF_INET;
 	_serverAddress.sin_addr.s_addr = INADDR_ANY;
@@ -157,13 +159,15 @@ void	Server::executor(const char* buf, Client& client) {
 	std::string			line;
 
 	while (std::getline(iss, line)) {
-		if (client.getAuthentication() && !client.getNickname().empty() && !client.getUsername().empty())
-			client.setRegistration();
 		if (line.find("CAP LS 302") != std::string::npos)
 			continue;
 		std::string command = line.substr(0, line.find(" "));
+		std::cout << "commmand: " << command << std::endl;
 		std::string args = line.substr(line.find(" ") + 1, line.size());
+		std::cout << "args: " << args << std::endl;
 		launchCommand(client, command, args);
+		if (client.getAuthentication() && !client.getNickname().empty() && !client.getUsername().empty())
+			client.setRegistration();
 	}
 }
 
