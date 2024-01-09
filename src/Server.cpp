@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 15:47:27 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/08 16:44:00 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/09 11:23:50 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,47 +37,12 @@ Server::~Server() {
 /* ************************************************************************** */
 
 void	Server::setup() {
-	// Create a server socket
-	_socket = socket(AF_INET, SOCK_STREAM, 0);
-	if (_socket == -1)
-		throw std::runtime_error("impossible to create the server socket.");
-	// Set up the socket structure
-	int opt = 1;
-    setsockopt(this->_socket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
-	memset(&_serverAddress, 0, sizeof(_serverAddress));
-	_serverAddress.sin_family = AF_INET;
-	_serverAddress.sin_addr.s_addr = INADDR_ANY;
-	_serverAddress.sin_port = htons(_port);
-	// Bind the server socket to a port
-	if (bind(_socket, reinterpret_cast<sockaddr*>(&_serverAddress), sizeof(_serverAddress)) == -1) {
-		close(_socket);
-		throw std::runtime_error("failed to bind socket.");
-	}
-	// Listen for incoming connections
-	if (listen(_socket, 5) == -1) {
-		close(_socket);
-		throw std::runtime_error("failed to listen.");
-    }
-	// Create an epoll() instance
-	_epoll = epoll_create1(0);
-	if (_epoll == -1) {
-		close(_socket);
-		throw std::runtime_error("failed to create epoll instance.");
-	}
-	// Set up the epoll structure
-	_event.events = EPOLLIN;
-	_event.data.fd = _socket;
-	// Add server socket to epoll
-	if (epoll_ctl(_epoll, EPOLL_CTL_ADD, _socket, &_event) == -1) {
-		close(_epoll);
-		close(_socket);
-		throw std::runtime_error("failed to add socket to epoll.");
-	}
-}
-
-void	signalHandler(int sig) {
-	(void)sig;
-	throw std::logic_error("server shutdown");
+	createSocket();
+	setupSocket();
+	bindSocket();
+	listenConnections();
+	createEpoll();
+	addSocketToEpoll();
 }
 
 void	Server::start() {
@@ -141,6 +106,53 @@ void	Server::start() {
 /* ************************************************************************** */
 /*                              UTILS FUNCTIONS                               */
 /* ************************************************************************** */
+
+void	Server::createSocket() {
+	_socket = socket(AF_INET, SOCK_STREAM, 0);
+	if (_socket == -1)
+		throw std::runtime_error("impossible to create the server socket.");
+}
+
+void	Server::setupSocket() {
+	int opt = 1;
+	setsockopt(_socket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
+	memset(&_serverAddress, 0, sizeof(_serverAddress));
+	_serverAddress.sin_family = AF_INET;
+	_serverAddress.sin_addr.s_addr = INADDR_ANY;
+	_serverAddress.sin_port = htons(_port);
+}
+
+void	Server::bindSocket() {
+	if (bind(_socket, reinterpret_cast<sockaddr*>(&_serverAddress), sizeof(_serverAddress)) == -1) {
+		close(_socket);
+		throw std::runtime_error("failed to bind socket.");
+	}
+}
+
+void	Server::listenConnections() {
+	if (listen(_socket, 5) == -1) {
+		close(_socket);
+		throw std::runtime_error("failed to listen.");
+    }
+}
+
+void	Server::createEpoll() {
+	_epoll = epoll_create1(0);
+	if (_epoll == -1) {
+		close(_socket);
+		throw std::runtime_error("failed to create epoll instance.");
+	}
+	_event.events = EPOLLIN;
+	_event.data.fd = _socket;
+}
+
+void	Server::addSocketToEpoll() {
+	if (epoll_ctl(_epoll, EPOLL_CTL_ADD, _socket, &_event) == -1) {
+		close(_epoll);
+		close(_socket);
+		throw std::runtime_error("failed to add socket to epoll.");
+	}
+}
 
 int	Server::acceptConnection(sockaddr_in& clientAddress) {
 	socklen_t clientAddressLength = sizeof(clientAddress);

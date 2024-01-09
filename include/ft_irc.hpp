@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 14:08:20 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/08 15:48:58 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/09 11:13:11 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@
 #define RPL_INVITERCVR(client, invitee, channel)	(":" + client + " INVITE " + invitee + " " + channel + "\r\n")
 #define RPL_NICK(oldNick, newNick)					(":" + oldNick + " NICK " + newNick + "\r\n")
 #define RPL_WELCOME(client)							(": 001 " + client + " :Welcome in the IRC world, " + client + "\r\n")
+#define RPL_AWAY(nick, msg)							(": 301 " + nick + " :" + msg + "\r\n")
 #define RPL_CHANNELMODEIS(client, channel, mode)	(": 324 " + client + " MODE " + channel + " " + mode + "\r\n")
 #define RPL_NOTOPIC(client, channel)				(": 331 " + client + " " + channel + " :No topic is set\r\n")
 #define RPL_TOPIC(client, channel, topic)			(": 332 " + client + " " + channel + " :" + topic + "\r\n")
@@ -89,5 +90,6 @@ class Server;
 /*                                 FUNCTIONS                                  */
 /* ************************************************************************** */
 
+void		signalHandler(int sig);
 bool		RegExr(const char* pattern, const std::string& input);
 std::string	createNickList(Channel channel);

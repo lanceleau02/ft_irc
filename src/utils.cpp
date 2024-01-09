@@ -6,11 +6,16 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 11:18:58 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/08 15:45:36 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/09 11:12:47 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_irc.hpp"
+
+void	signalHandler(int sig) {
+	(void)sig;
+	throw std::logic_error("server shutdown");
+}
 
 bool	RegExr(const char* pattern, const std::string& input) {
 	regex_t		regex;
