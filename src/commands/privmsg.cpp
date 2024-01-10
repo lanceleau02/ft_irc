@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   privmsg.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:26:34 by hsebille          #+#    #+#             */
-/*   Updated: 2024/01/10 11:51:39 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/10 12:39:32 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static bool	parsing(const Server& server, std::map<std::string, Channel> _channe
 	else if (msg[0] != '#' && !server.findClientByNick(msgtarget))
 		Server::clientLog(client.getSocket(), ERR_NOSUCHNICK(client.getUsername(), msg));
 	else if (_channels.find(msgtarget) != _channels.end())
-		Server::clientLog(client.getSocket(), ERR_NOSUCHNICK(client.getUsername(), msg));
+		Server::clientLog(client.getSocket(), ERR_CANNOTSENDTOCHAN(client.getUsername(), msgtarget));
 	else
 		return true;
 	return false;
