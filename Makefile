@@ -6,7 +6,7 @@
 #    By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/14 13:54:59 by laprieur          #+#    #+#              #
-#    Updated: 2024/01/10 12:01:49 by laprieur         ###   ########.fr        #
+#    Updated: 2024/01/10 14:06:16 by laprieur         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,10 @@ SRC				:=	src/main.cpp				\
 					src/commands/user.cpp		\
 					src/commands/join.cpp		\
 					src/commands/privmsg.cpp	\
-					src/commands/kick.cpp	\
+					src/commands/kick.cpp		\
+					src/commands/invite.cpp		\
+					src/commands/topic.cpp		\
+					src/commands/mode.cpp		\
 					
 SRC_OBJS		:=	$(SRC:%.cpp=.build/%.o)
 DEPS			:=	$(SRC_OBJS:%.o=%.d)
