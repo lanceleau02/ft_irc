@@ -6,7 +6,7 @@
 /*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:26:34 by hsebille          #+#    #+#             */
-/*   Updated: 2024/01/10 13:13:05 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/10 15:52:37 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,7 @@ void	Server::privmsg(Client& client, const std::string& args) {
 	iss >> msg;
 	if (parsing(*this, _channels, client, msgtarget, msg)) {
 		if (_channels.find(msgtarget) != _channels.end()) {
-			Channel& final_target = _channels.at(msgtarget);
-			if (final_target.getMap(OPERATORS).find(client.getSocket()) != final_target.getMap(OPERATORS).end())
-				_channels.at(msgtarget).sendMessage(RPL_AWAY(client.getNickname(), msg));
+			_channels.at(msgtarget).sendMessage(":" + client.getNickname() + " PRIVMSG " + msgtarget + " :" + msg + "\r\n");
 		}
 		for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++) {
 			if (it->second.getNickname() == msgtarget)

@@ -6,7 +6,7 @@
 /*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 15:47:27 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/10 12:55:24 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/10 15:14:44 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	Server::start() {
 					buffer[bytes] = '\0';
 					std::cout << "buffer = " << buffer << std::endl;
 					executor(buffer, _clients.at(clientSocket));
-					_clients.at(clientSocket).display();
+					//_clients.at(clientSocket).display();
 				}
 			}
         }
