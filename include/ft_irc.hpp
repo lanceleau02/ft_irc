@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/14 14:08:20 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/10 15:24:30 by laprieur         ###   ########.fr       */
+/*   Created: 2024/01/10 16:50:59 by laprieur          #+#    #+#             */
+/*   Updated: 2024/01/10 16:51:01 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,21 +42,22 @@
 #define RPL_PART(client, channel)					(":" + client + " PART " + channel + "\r\n")
 #define RPL_MODE(client, channel, mode, name)		(":" + client + " MODE " + channel + " " + mode + " " + name + "\r\n")
 #define RPL_KICK(client, channel, target, reason)	(":" + client + " KICK " + channel + " " + target + " :" + reason + "\r\n")
+#define RPL_INVITERCVR(client, invitee, channel)	(":" + client + " INVITE " + invitee + " " + channel + "\r\n")
 #define RPL_NICK(oldNick, newNick)					(":" + oldNick + " NICK " + newNick + "\r\n")
 #define RPL_WELCOME(client)							(": 001 " + client + " :Welcome in the IRC world, " + client + "\r\n")
 #define RPL_AWAY(nick, msg)							(": 301 " + nick + " :" + msg + "\r\n")
 #define RPL_CHANNELMODEIS(client, channel, mode)	(": 324 " + client + " MODE " + channel + " " + mode + "\r\n")
 #define RPL_NOTOPIC(client, channel)				(": 331 " + client + " " + channel + " :No topic is set\r\n")
 #define RPL_TOPIC(client, channel, topic)			(": 332 " + client + " " + channel + " :" + topic + "\r\n")
-#define RPL_INVITING(channel, nick)					(": 341 " + channel + " " + nick + "\r\n")
+#define RPL_INVITESNDR(client, invitee, channel)	(": 341 " + client + " " + invitee + " " + channel + "\r\n")
 #define RPL_NAMEREPLY(nick, channel, nicknames)		(": 353 " + nick + " = " + channel + " :" + nicknames + "\r\n")
 
 #define ERR_TOOMUCHPARAMS(client, cmd)				(client + " " + cmd + " :Too much parameters\r\n")
 #define ERR_USERONCHANNEL(client, nick, channel)	(": 303 " + client + " " + nick + " " + channel + " :is already on channel\r\n")
 #define ERR_NOSUCHNICK(client, nickname)			(": 401 " + client + " " + nickname + " :No such nickname\r\n")
-#define ERR_NOSUCHCHANNEL(channel)					(": 403 " + channel + " :No such channel\r\n")
 #define ERR_CANNOTSENDTOCHAN(client, channel)		(": 404 " + client + " " + channel + " :Cannot send to channel\r\n")
 #define ERR_CANNOTKICKYSLF(client, channel)			(": 404 " + client + " " + channel + " :Cannot kick yourself\r\n")
+#define ERR_NORECIPIENT(client)						(": 411 " + client + " :No recipient given PRIVMSG\r\n")
 #define ERR_NOTEXTTOSEND(client)					(": 412 " + client + " :No text to send\r\n")
 #define ERR_CMDNOTFOUND(client)						(": 421 " + client + " :Command not found\r\n")
 #define ERR_NONICKNAMEGIVEN(client, nick)			(": 431 " + client + " " + nick + " :No nickname given\r\n")

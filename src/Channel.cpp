@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/28 13:10:53 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/10 16:30:37 by laprieur         ###   ########.fr       */
+/*   Created: 2024/01/10 16:51:07 by laprieur          #+#    #+#             */
+/*   Updated: 2024/01/10 16:51:07 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,8 @@ void	Channel::addInvitee(const Client& invitee) {
 }
 
 void	Channel::sendMessage(const std::string& msg) {
-	for (std::map<int, Client>::iterator it = _users.begin(); it != _users.end(); it++)
+	for (std::map<int, Client>::iterator it = _users.begin(); it != _users.end(); it++) {
+		std::cout << "\tJ'envoie le message a ce socket : " << it->second.getSocket() << std::endl;
 		Server::clientLog(it->second.getSocket(), msg);
+	}
 }
