@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   privmsg.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:26:34 by hsebille          #+#    #+#             */
-/*   Updated: 2024/01/10 11:48:06 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/10 11:51:39 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@ static bool	parsing(const Server& server, std::map<std::string, Channel> _channe
 	return false;
 }
 
-void	Server::privmsg(Client& client, const std::string& args)
-{
-	std::istringstream iss(args);
-	std::string msgtarget;
-	std::string msg;
+void	Server::privmsg(Client& client, const std::string& args) {
+	std::istringstream	iss(args);
+	std::string			msgtarget;
+	std::string			msg;
+	
 	iss >> msgtarget;
 	iss >> msg;
 	if (parsing(*this, _channels, client, msgtarget, msg)) {

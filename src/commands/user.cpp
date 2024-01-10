@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 09:51:01 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/08 15:07:20 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/10 11:51:22 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,9 @@ static bool parsing(const Client& client, std::string cmd, const std::string& us
 }
 
 void	Server::user(Client& client, const std::string& user) {
-	std::istringstream iss(user);
-	std::string username;
+	std::istringstream	iss(user);
+	std::string			username;
+	
 	iss >> username;
 	if (parsing(client, "USER", username) && client.getAuthentication() && !client.getNickname().empty())
 		client.setUsername(username);

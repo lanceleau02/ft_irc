@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 15:47:27 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/10 11:36:57 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/10 11:49:53 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,14 @@ void	Server::start() {
             if (_events[i].data.fd == _socket) {
                 // Accept new client connection
 				struct sockaddr_in	clientAddress;
-				int clientSocket = acceptConnection(clientAddress);
+				int	clientSocket = acceptConnection(clientAddress);
                 if (clientSocket == -1) {
                     serverLog(1, "Failed to accept client connection.");
                     continue;
 				}
 				serverLog(0, "New client connected!");
 				// Create new client
-				Client newClient(clientSocket, clientAddress);
+				Client	newClient(clientSocket, clientAddress);
 				addClient(newClient);
 				// Add client socket to epoll
                 if (addSocket(_event, clientSocket, _epoll) == -1) {
@@ -72,25 +72,18 @@ void	Server::start() {
                     close(clientSocket);
                     continue;
                 }
-            } 
-			else { // Handle incoming data or other events: authenticate, set a nickname, a username, join a channel...
+            } else { // Handle incoming data or other events: authenticate, set a nickname, a username, join a channel...
 				// Manage events
-				int	clientSocket = _events[i].data.fd;
-				// Select current client using its socket
+				int		clientSocket = _events[i].data.fd;
 				char	buffer[1024];
 				int		bytes = recv(clientSocket, buffer, sizeof(buffer), 0);
 				// Handle error or disconnection
 				if (bytes <= 0) {
-					if (bytes == 0)
-						serverLog(1, "User disconnected!");
-					else
-						serverLog(1, "Error or disconnection from client.");
+					serverLog(1, "Client disconnected!");
 					epoll_ctl(_epoll, EPOLL_CTL_DEL, clientSocket, &_event);
-					close(clientSocket); 
 					eraseClient(clientSocket);
 					close(clientSocket);
-				}
-				else {
+				} else {
 					buffer[bytes] = '\0';
 					std::cout << "buffer = " << buffer << std::endl;
 					executor(buffer, _clients.at(clientSocket));
@@ -112,7 +105,7 @@ void	Server::createSocket() {
 }
 
 void	Server::setupSocket() {
-	int opt = 1;
+	int	opt = 1;
 	setsockopt(_socket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
 	memset(&_serverAddress, 0, sizeof(_serverAddress));
 	_serverAddress.sin_family = AF_INET;
@@ -185,8 +178,8 @@ void	Server::executor(const char* buf, Client& client) {
 	while (std::getline(iss, line)) {
 		if (line.find("CAP LS 302") != std::string::npos)
 			continue;
-		std::string command = line.substr(0, line.find(" "));
-		std::string args = line.substr(line.find(" ") + 1, line.size());
+		std::string	command = line.substr(0, line.find(" "));
+		std::string	args = line.substr(line.find(" ") + 1, line.size());
 		launchCommand(client, command, args);
 		if (client.getAuthentication() && !client.getNickname().empty() && !client.getUsername().empty())
 			client.setRegistration();

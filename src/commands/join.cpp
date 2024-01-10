@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 15:08:15 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/08 14:06:28 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/10 11:52:28 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,10 @@ static bool parsing(const Client& client, std::map<std::string, Channel>& channe
 }
 
 void	Server::join(Client& client, const std::string& args) {
-	std::istringstream iss(args);
-	std::string channel;
-	std::string key;
+	std::istringstream	iss(args);
+	std::string			channel;
+	std::string			key;
+	
 	iss >> channel;
 	iss >> key;
 	if (parsing(client, _channels, "JOIN", channel, key) && client.getRegistration()) {
