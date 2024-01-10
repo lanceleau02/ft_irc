@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:42:59 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/08 15:57:51 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/10 11:30:44 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 /* 484	ERR_RESTRICTED			":Your connection is restricted!"             */
 /* ************************************************************************** */
 
-static bool	parsing(Server& server, const Client& client, const std::string& nickname) {
+static bool	parsing(const Server& server, const Client& client, const std::string& nickname) {
 	if (nickname.empty())
 		Server::clientLog(client.getSocket(), ERR_NONICKNAMEGIVEN(client.getUsername(), nickname));
 	else if (!RegExr("^[a-zA-Z^{}|`-]{1}[a-zA-Z0-9^{}|`-]{0,8}[\n\r]?$", nickname))
