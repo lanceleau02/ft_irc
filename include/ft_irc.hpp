@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 14:08:20 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/10 13:04:46 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/10 13:44:01 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@
 #define ERR_INVITEONLYCHAN(client, channel)			(": 473 " + client + " " + channel + " :Cannot join channel (+i)\r\n")
 #define ERR_BADCHANNELKEY(client, channel)			(": 475 " + client + " " + channel + " :Cannot join channel (+k)\r\n")
 #define ERR_CHANOPRIVSNEEDED(client, channel)		(": 482 " + client + " " + channel + " :You're not channel operator\r\n")
-#define ERR_UMODEUNKNOWNFLAG(client)				(": 501 " + client + " :Unknown MODE flag\r\n")
+#define ERR_UNKNOWNMODE(client)						(": 501 " + client + " :Unknown MODE flag\r\n")
 
 #define CHANNEL_MESSAGES(client, channel, msg)		(":" + client + " PRIVMSG " + channel + " :" + msg + "\r\n")
 #define USER_MESSAGES(client, target, msg)			(":" + client + " PRIVMSG " + target + " :" +  msg + "\r\n")
