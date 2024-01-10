@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_irc.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 14:08:20 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/10 11:57:39 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/10 13:14:47 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@
 #define ERR_TOOMUCHPARAMS(client, cmd)				(client + " " + cmd + " :Too much parameters\r\n")
 #define ERR_USERONCHANNEL(client, nick, channel)	(": 303 " + client + " " + nick + " " + channel + " :is already on channel\r\n")
 #define ERR_NOSUCHNICK(client, nickname)			(": 401 " + client + " " + nickname + " :No such nickname\r\n")
-#define ERR_NOSUCHCHANNEL(channel)					(": 403 " + channel + " :No such channel\r\n")
 #define ERR_CANNOTSENDTOCHAN(client, channel)		(": 404 " + client + " " + channel + " :Cannot send to channel\r\n")
 #define ERR_CANNOTKICKYSLF(client, channel)			(": 404 " + client + " " + channel + " :Cannot kick yourself\r\n")
 #define ERR_NORECIPIENT(client)						(": 411 " + client + " :No recipient given PRIVMSG\r\n")

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 15:47:27 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/10 11:49:53 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/10 12:55:24 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,7 +187,7 @@ void	Server::executor(const char* buf, Client& client) {
 }
 
 void	Server::launchCommand(Client& client, const std::string& cmd, const std::string& args) {
-	std::string		cmdNames[5] = {"PASS", "NICK", "USER", "JOIN", "MSG"};
+	std::string		cmdNames[5] = {"PASS", "NICK", "USER", "JOIN", "PRIVMSG"};
 	typedef void	(Server::*cmds)(Client&, const std::string&);
 	cmds			cmdFunc[5] = {&Server::pass, &Server::nick, &Server::user, &Server::join, &Server::privmsg};
 
