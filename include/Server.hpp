@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 15:47:18 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/10 11:30:27 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/10 11:33:27 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ class Server {
 		void	setup();
 		void	start();
 
+		int			waitEvents();
 		int			acceptConnection(sockaddr_in& clientAddress);
 		int			addSocket(epoll_event& event, int socket, int epoll);
 		bool		findClientByNick(std::string nickname) const;

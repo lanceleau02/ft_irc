@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 15:47:27 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/10 11:31:04 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/10 11:36:57 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,21 +45,14 @@ void	Server::setup() {
 	addSocketToEpoll();
 }
 
-int	Server::waitEvents() {
-	int numEvents = epoll_wait(_epoll, _events, 10, -1);
-    if (numEvents == -1)
-		throw std::runtime_error("failed to wait for events.");
-	return numEvents;
-}
-
 void	Server::start() {
 	std::signal(SIGINT, signalHandler);
 	std::signal(SIGHUP, signalHandler);
 	// Main event loop
 	while (true) {
 		// Wait for events on the epoll instance
-        
-        for (int i = 0; i < numEvents; ++i) {
+        int nbEvents = waitEvents();
+        for (int i = 0; i < nbEvents; ++i) {
 			// Handle new clients
             if (_events[i].data.fd == _socket) {
                 // Accept new client connection
@@ -159,6 +152,13 @@ void	Server::addSocketToEpoll() {
 	}
 }
 
+int	Server::waitEvents() {
+	int nbEvents = epoll_wait(_epoll, _events, 10, -1);
+    if (nbEvents == -1)
+		throw std::runtime_error("failed to wait for events.");
+	return nbEvents;
+}
+
 int	Server::acceptConnection(sockaddr_in& clientAddress) {
 	socklen_t clientAddressLength = sizeof(clientAddress);
 	return accept(_socket, reinterpret_cast<sockaddr*>(&clientAddress), &clientAddressLength);
@@ -171,7 +171,7 @@ int	Server::addSocket(epoll_event& event, int socket, int epoll) {
 }
 
 bool	Server::findClientByNick(std::string nickname) const {
-	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++)
+	for (std::map<int, Client>::const_iterator it = _clients.begin(); it != _clients.end(); it++)
 		if (it->second.getNickname() == nickname)
 			return true;
 	return false;
