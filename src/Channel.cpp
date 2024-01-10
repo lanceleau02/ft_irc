@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 13:10:53 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/08 11:02:58 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/10 16:30:37 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,16 @@ bool	Channel::getInviteMode() {
 	return _inviteOnly;
 }
 
+bool	Channel::getTopicRestrictions() {
+	return _topicRestrictions;
+}
+
 bool	Channel::getKeyMode() {
 	return _channelKey;
+}
+
+const std::string&	Channel::getTopic() {
+	return _topic;
 }
 
 const std::string&	Channel::getKey() {
@@ -58,6 +66,14 @@ const std::map<int, Client>&	Channel::getMap(int type) {
 	if (type == USERS)
 		return _users;
 	return _invitees;
+}
+
+/* ************************************************************************** */
+/*                             SETTERS FUNCTIONS                              */
+/* ************************************************************************** */
+
+void	Channel::setTopic(std::string topic) {
+	_topic = topic;
 }
 
 /* ************************************************************************** */

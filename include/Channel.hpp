@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 12:38:30 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/08 11:01:09 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/10 16:32:21 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,13 @@ class Channel {
 		int								getUserLimit();
 		int								getNbUsers();
 		bool							getInviteMode();
+		bool							getTopicRestrictions();
 		bool							getKeyMode();
+		const std::string&				getTopic();
 		const std::string&				getKey();
 		const std::map<int, Client>&	getMap(int type);
+		
+		void	setTopic(std::string topic);
 
 		bool	isOnChannel(int clientSocket);
 		bool	isInvited(int clientSocket);
