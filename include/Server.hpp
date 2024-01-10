@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/10 11:32:08 by hsebille          #+#    #+#             */
-/*   Updated: 2024/01/10 11:32:10 by hsebille         ###   ########.fr       */
+/*   Created: 2024/01/10 11:38:26 by hsebille          #+#    #+#             */
+/*   Updated: 2024/01/10 11:38:29 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ class Server {
 		void	setup();
 		void	start();
 
+		int			waitEvents();
 		int			acceptConnection(sockaddr_in& clientAddress);
 		int			addSocket(epoll_event& event, int socket, int epoll);
 		bool		findClientByNick(std::string nickname) const;
