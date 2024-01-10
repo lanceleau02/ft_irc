@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   privmsg.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:26:34 by hsebille          #+#    #+#             */
-/*   Updated: 2024/01/09 10:45:02 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/10 11:30:56 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,13 @@
 /* 412	ERR_NOTEXTTOSEND		":No text to send"                            */
 /* ************************************************************************** */
 
-static bool	parsing(const Client& client, std::string msgtarget, std::string msg) {
+static bool	parsing(const Server& server, const Client& client, std::string msgtarget, std::string msg) {
 	(void)msgtarget;
 	(void)msg;
 	if (msg.empty())
 		Server::clientLog(client.getSocket(), ERR_NOTEXTTOSEND(client.getUsername()));
-	else
+	else if (msg[0] != '#' && !server.findClientByNick(msgtarget))
+		Server::clientLog(client.getSocket(), ERR_NOSUCHNICK(client.getUsername()));		
 		return true;
 	return false;
 }
