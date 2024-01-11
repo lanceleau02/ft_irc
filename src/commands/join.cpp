@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 15:08:15 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/10 11:52:28 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/11 11:10:39 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 /* ************************************************************************** */
 /* Error Replies:                                                             */
+/* 403	ERR_NOSUCHCHANNEL	"<channel name> :No such channel"                 */
 /* 443	ERR_USERONCHANNEL	"<user> <channel> :is already on channel"         */
 /* 461	ERR_NEEDMOREPARAMS	"<command> :Not enough parameters"                */
 /* 471	ERR_CHANNELISFULL	"<channel> :Cannot join channel (+l)"             */
@@ -29,6 +30,8 @@
 static bool parsing(const Client& client, std::map<std::string, Channel>& channels, std::string cmd, std::string channel, std::string key) {
 	if (channel.empty())
 		Server::clientLog(client.getSocket(), ERR_NEEDMOREPARAMS(client.getUsername(), cmd));
+	else if (channel[0] != '#' && channel[0] != '&')
+		Server::clientLog(client.getSocket(), ERR_NOSUCHCHANNEL(channel));
 	else if (channels.find(channel) != channels.end()) {
 		std::map<std::string, Channel>::iterator it = channels.find(channel);
 		if (it->second.getNbUsers() >= it->second.getUserLimit())
@@ -62,6 +65,7 @@ void	Server::join(Client& client, const std::string& args) {
 		}
 		_channels.at(channel).addUser(client);
 		_channels.at(channel).sendMessage(RPL_JOIN(client.getNickname(), client.getUsername(), channel));
+		_channels.at(channel).sendMessage(RPL_TOPIC(client.getUsername(), channel, _channels.at(channel).getTopic()));
 		_channels.at(channel).sendMessage(RPL_NAMEREPLY(client.getNickname(), channel, createNickList(_channels.at(channel))));
 	}
 }
