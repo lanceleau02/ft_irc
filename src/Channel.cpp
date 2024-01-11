@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 16:51:07 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/11 14:54:06 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/11 17:12:13 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ Channel::Channel(const Client& op, const std::string& name) : _topic(), _key() {
 	_inviteOnly = false;
 	_topicRestrictions = false;
 	_channelKey = false;
+	_isUserLimit = false;
 	_name = name;
 	addOperator(op);
 	addUser(op);
@@ -68,6 +69,13 @@ const std::map<int, Client>&	Channel::getMap(int type) {
 	return _invitees;
 }
 
+int	Channel::getClient(std::string nickname) {
+	for (std::map<int, Client>::const_iterator it = _users.begin(); it != _users.end(); it++)
+		if (it->second.getNickname() == nickname)
+			return it->second.getSocket();
+	return -1;
+}
+
 /* ************************************************************************** */
 /*                             SETTERS FUNCTIONS                              */
 /* ************************************************************************** */
@@ -76,9 +84,46 @@ void	Channel::setTopic(std::string topic) {
 	_topic = topic;
 }
 
+void	Channel::setInviteMode(int mode) {
+	if (mode == INVITE_MODE)
+		_inviteOnly = true;
+	else if (mode == NON_INVITE_MODE)
+		_inviteOnly = false;
+}
+
+void	Channel::setTopicRestrictions(int mode) {
+	if (mode == OP_ONLY)
+		_topicRestrictions = false;
+	else if (mode == EVERYONE)
+		_topicRestrictions = true;
+}
+
+void	Channel::setKey(int mode, std::string key) {
+	if (mode == ADD_KEY)
+		_key = key;
+	else if (mode == REMOVE_KEY)
+		_key = "";
+}
+
+void	Channel::setUserLimit(int mode, int limit) {
+	if (mode == UNSET_USER_LIMIT)
+		_isUserLimit = false;
+	else if (mode == SET_USER_LIMIT)
+		_isUserLimit = true;
+	else if (mode == CHANGE_USER_LIMIT)
+		_userLimit = limit;
+}
+
 /* ************************************************************************** */
 /*                              MEMBER FUNCTIONS                              */
 /* ************************************************************************** */
+
+void	Channel::addOrRemove(int mode, int clientSocket) {
+	if (mode == ADD_OPERATOR)
+		addOperator(_users.at(clientSocket));
+	else if (mode == REMOVE_OPERATOR)
+		_operators.erase(clientSocket);
+}
 
 bool	Channel::isOnChannel(int clientSocket) {
 	if (_users.find(clientSocket) != _users.end())
@@ -115,7 +160,6 @@ void	Channel::deleteUser(std::string nickname) {
 	if (socket != -1)
 		_users.erase(socket);
 }
-
 
 void	Channel::addInvitee(const Client& invitee) {
 	_invitees.insert(std::pair<int, Client>(invitee.getSocket(), invitee));
