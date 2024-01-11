@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:42:59 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/11 13:57:48 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/11 14:49:55 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@
 /* 431	ERR_NONICKNAMEGIVEN		":No nickname given"                          */
 /* 432	ERR_ERRONEUSNICKNAME	"<nick> :Erroneous nickname"                  */
 /* 433	ERR_NICKNAMEINUSE		"<nick> :Nickname is already in use"          */
-/* 441	ERR_USERNOTINCHANNEL	"<nick> <chan> :They aren't on that channel"  */
-/* 484	ERR_RESTRICTED			":Your connection is restricted!"             */
 /* ************************************************************************** */
 
 static bool	parsing(const Server& server, const Client& client, const std::string& nickname) {
@@ -28,8 +26,6 @@ static bool	parsing(const Server& server, const Client& client, const std::strin
 		Server::clientLog(client.getSocket(), ERR_ERRONEUSNICKNAME(client.getUsername(), nickname));
 	else if (server.findClientByNick(nickname))
 		Server::clientLog(client.getSocket(), ERR_NICKNAMEINUSE(client.getUsername(), nickname));
-	/* else if (ERR_USERNOTINCHANNEL)
-		Server::clientLog(client.getSocket(), ERR_USERNOTINCHANNEL); */
 	else
 		return true;
 	return false;

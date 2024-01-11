@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 16:51:07 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/11 13:17:12 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/11 14:54:06 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,14 +108,12 @@ void	Channel::addUser(const Client& user) {
 }
 
 void	Channel::deleteUser(std::string nickname) {
-	int socket;
-
-	for (std::map<int, Client>::iterator it = _users.begin(); it != _users.end(); it++) {
+	int socket = -1;
+	for (std::map<int, Client>::iterator it = _users.begin(); it != _users.end(); it++)
 		if (it->second.getNickname() == nickname)
 			socket = it->second.getSocket();
-	}
-	
-	_users.erase(socket);
+	if (socket != -1)
+		_users.erase(socket);
 }
 
 
