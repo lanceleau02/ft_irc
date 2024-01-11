@@ -6,7 +6,7 @@
 /*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:26:34 by hsebille          #+#    #+#             */
-/*   Updated: 2024/01/10 15:52:37 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/11 10:48:26 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,12 @@
 static bool	parsing(const Server& server, std::map<std::string, Channel> _channels, const Client& client, std::string msgtarget, std::string msg) {
 	if (msg.empty())
 		Server::clientLog(client.getSocket(), ERR_NOTEXTTOSEND(client.getUsername()));
-	else if (msgtarget[0] != '#' && !server.findClientByNick(msgtarget))
+	else if ((msgtarget[0] != '#' || msgtarget[0] != '&') && !server.findClientByNick(msgtarget))
 		Server::clientLog(client.getSocket(), ERR_NOSUCHNICK(client.getUsername(), msgtarget));
-	else if (msgtarget[0] == '#' && _channels.find(msgtarget) == _channels.end())
+	else if ((msgtarget[0] == '#' || msgtarget[0] == '&') && _channels.find(msgtarget) == _channels.end())
 		Server::clientLog(client.getSocket(), ERR_CANNOTSENDTOCHAN(client.getUsername(), msgtarget));
+	else if ((msgtarget[0] == '#' || msgtarget[0] == '&') && _channels.at(msgtarget).getMap(USERS).find(client.getSocket()) != _channels.at(msgtarget).getMap(USERS).end())
+		Server::clientLog(client.getSocket(), ERR_CANNOTSENDTOCHAN(client.getUsername(), msgtarget));	
 	else
 		return true;
 	return false;
