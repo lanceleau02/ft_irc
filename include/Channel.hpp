@@ -6,7 +6,7 @@
 /*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 12:38:30 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/11 11:18:48 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/11 13:15:19 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,11 @@ class Channel {
 		void	setTopic(std::string topic);
 
 		bool	isOnChannel(int clientSocket);
+		bool	findClient(std::string user) const;
 		bool	isInvited(int clientSocket);
 		void	addOperator(const Client& op);
 		void	addUser(const Client& user);
+		void	deleteUser(std::string nickname);
 		void	addInvitee(const Client& invitee);
 		void	sendMessage(int mode, int clientSocket, const std::string& msg);
 };

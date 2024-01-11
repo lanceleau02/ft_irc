@@ -6,7 +6,7 @@
 /*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 16:51:07 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/11 11:23:58 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/11 13:17:12 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,13 @@ bool	Channel::isOnChannel(int clientSocket) {
 	return false;
 }
 
+bool	Channel::findClient(std::string user) const {
+	for (std::map<int, Client>::const_iterator it = _users.begin(); it != _users.end(); it++)
+		if (it->second.getNickname() == user)
+			return true;
+	return false;
+}
+
 bool	Channel::isInvited(int clientSocket) {
 	if (_invitees.find(clientSocket) != _invitees.end())
 		return true;
@@ -99,6 +106,18 @@ void	Channel::addOperator(const Client& op) {
 void	Channel::addUser(const Client& user) {
 	_users.insert(std::pair<int, Client>(user.getSocket(), user));
 }
+
+void	Channel::deleteUser(std::string nickname) {
+	int socket;
+
+	for (std::map<int, Client>::iterator it = _users.begin(); it != _users.end(); it++) {
+		if (it->second.getNickname() == nickname)
+			socket = it->second.getSocket();
+	}
+	
+	_users.erase(socket);
+}
+
 
 void	Channel::addInvitee(const Client& invitee) {
 	_invitees.insert(std::pair<int, Client>(invitee.getSocket(), invitee));

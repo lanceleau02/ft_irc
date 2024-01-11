@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/11 11:40:35 by hsebille          #+#    #+#             */
-/*   Updated: 2024/01/11 11:45:08 by laprieur         ###   ########.fr       */
+/*   Created: 2024/01/11 14:30:52 by laprieur          #+#    #+#             */
+/*   Updated: 2024/01/11 14:30:53 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	Server::join(Client& client, const std::string& args) {
 	
 	iss >> channel;
 	iss >> key;
-	if (parsing(client, _channels, "JOIN", channel, key) && client.getRegistration()) {
+	if (client.getRegistration() && parsing(client, _channels, "JOIN", channel, key)) {
 		std::map<std::string, Channel>::iterator it = _channels.find(channel);
 		if (it == _channels.end()) {
 			_channels.insert(std::pair<std::string, Channel>(channel, Channel(client, channel)));

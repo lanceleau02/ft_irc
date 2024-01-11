@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   user.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 09:51:01 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/10 11:51:22 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/11 14:08:08 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	Server::user(Client& client, const std::string& user) {
 	std::string			username;
 	
 	iss >> username;
-	if (parsing(client, "USER", username) && client.getAuthentication() && !client.getNickname().empty())
+	if (client.getAuthentication() && parsing(client, "USER", username) && !client.getNickname().empty()) {
 		client.setUsername(username);
+	}
 }

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/10 16:50:59 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/11 12:42:08 by laprieur         ###   ########.fr       */
+/*   Created: 2024/01/11 14:30:18 by laprieur          #+#    #+#             */
+/*   Updated: 2024/01/11 14:30:19 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@
 #define RPL_JOIN(nick, user, channel)				(":" + nick + " JOIN " + channel + "\r\n")
 #define RPL_PART(client, channel)					(":" + client + " PART " + channel + "\r\n")
 #define RPL_MODE(client, channel, mode, name)		(":" + client + " MODE " + channel + " " + mode + " " + name + "\r\n")
-#define RPL_KICK(client, channel, target, reason)	(":" + client + " KICK " + channel + " " + target + " :" + reason + "\r\n")
+#define RPL_KICK(client, channel, target)			(":" + client + " KICK " + channel + " " + target + "\r\n")
 #define RPL_INVITERCVR(client, invitee, channel)	(":" + client + " INVITE " + invitee + " " + channel + "\r\n")
 #define RPL_NICK(oldNick, newNick)					(":" + oldNick + " NICK " + newNick + "\r\n")
 #define RPL_TOPIC(client, channel, topic)			(":" + client + " TOPIC " + channel + " :" + topic + "\r\n")
