@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:31:04 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/11 14:31:05 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/11 14:43:03 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,24 +48,18 @@ void	Server::topic(Client& client, const std::string& args) {
 	std::istringstream	iss(args);
 	std::string			channelName;
 	std::string			topic;
-	
-	std::cout << "Je suis au debut de TOPIC" << std::endl;	
+
 	iss >> channelName;
 	iss >> topic;
 	if (client.getRegistration() && parsing(client, _channels, "TOPIC", channelName, topic)) {
 		Channel channel = _channels.at(channelName);
-		std::cout << "J'ai passe le parsing" << std::endl;
-		std::cout << "channel name: " << channelName << std::endl;
-		std::cout << "channel topic: " << channel.getTopic() << std::endl;
-		std::cout << "topic: " << topic << std::endl;
-		if (topic.empty() && (channel.getTopic()).empty())
+		if (topic.empty() && (_channels.at(channelName).getTopic()).empty())
 			Server::clientLog(client.getSocket(), RPL_NOTOPIC(client.getUsername(), channelName));
-		else if (topic.empty() && !(channel.getTopic()).empty())
-			Server::clientLog(client.getSocket(), RPL_SEETOPIC(client.getUsername(), channelName, topic));
+		else if (topic.empty() && !(_channels.at(channelName).getTopic()).empty())
+			Server::clientLog(client.getSocket(), RPL_SEETOPIC(client.getUsername(), channelName, _channels.at(channelName).getTopic()));
 		else if (!topic.empty()) {
-			channel.setTopic(topic);
-			Server::clientLog(client.getSocket(), RPL_TOPIC(client.getUsername(), channelName, channel.getTopic()));
+			_channels.at(channelName).setTopic(topic);
+			Server::clientLog(client.getSocket(), RPL_TOPIC(client.getUsername(), channelName, _channels.at(channelName).getTopic()));
 		}
-		std::cout << "topic a la fin de topic: " << channel.getTopic() << std::endl;
 	}
 }
