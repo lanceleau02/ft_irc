@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   topic.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:31:10 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/11 10:58:27 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/11 13:58:09 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	Server::topic(Client& client, const std::string& args) {
 	std::cout << "Je suis au debut de TOPIC" << std::endl;	
 	iss >> channelName;
 	iss >> topic;
-	if (parsing(client, _channels, "TOPIC", channelName, topic) && client.getRegistration()) {
+	if (client.getRegistration() && parsing(client, _channels, "TOPIC", channelName, topic)) {
 		Channel channel = _channels.at(channelName);
 		std::cout << "J'ai passe le parsing" << std::endl;	
 		if (topic.empty() && (channel.getTopic()).empty())

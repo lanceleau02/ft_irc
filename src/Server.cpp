@@ -6,7 +6,7 @@
 /*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 10:24:24 by hsebille          #+#    #+#             */
-/*   Updated: 2024/01/11 10:24:26 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/11 13:54:52 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,11 +187,11 @@ void	Server::executor(const char* buf, Client& client) {
 }
 
 void	Server::launchCommand(Client& client, const std::string& cmd, const std::string& args) {
-	std::string		cmdNames[6] = {"PASS", "NICK", "USER", "JOIN", "PRIVMSG", "TOPIC"};
+	std::string		cmdNames[7] = {"PASS", "NICK", "USER", "JOIN", "PRIVMSG", "TOPIC", "KICK"};
 	typedef void	(Server::*cmds)(Client&, const std::string&);
-	cmds			cmdFunc[6] = {&Server::pass, &Server::nick, &Server::user, &Server::join, &Server::privmsg};
+	cmds			cmdFunc[7] = {&Server::pass, &Server::nick, &Server::user, &Server::join, &Server::privmsg, &Server::topic, &Server::kick};
 
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < 7; i++)
 		if (cmdNames[i] == cmd)
 			(this->*cmdFunc[i])(client, args);
 }

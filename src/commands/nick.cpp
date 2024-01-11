@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:42:59 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/10 11:52:16 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/11 13:57:48 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,6 @@ void	Server::nick(Client& client, const std::string& nick) {
 	std::string			nickname;
 	
 	iss >> nickname;
-	if (parsing(*this, client, nickname) && client.getAuthentication())
+	if (client.getAuthentication() && parsing(*this, client, nickname))
 		client.setNickname(nickname);
 }

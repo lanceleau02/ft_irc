@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pass.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 13:30:36 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/10 11:52:02 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/11 14:09:30 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	Server::pass(Client& client, const std::string& pass) {
 	std::string			password;
 	
 	iss >> password;
-	if (parsing(client, "PASS", password, _password) && !client.getAuthentication() && password == _password) {
+	if (!client.getAuthentication() && parsing(client, "PASS", password, _password) && password == _password) {
 		client.setAuthentication(true);
 		serverLog(0, "Client successfully authentified!");
 	}

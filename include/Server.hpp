@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:38:26 by hsebille          #+#    #+#             */
-/*   Updated: 2024/01/10 15:30:30 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/11 11:54:42 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ class Server {
 		static void	clientLog(int socket, const std::string& log);
 
 		void	pass(Client& client, const std::string& password);
+		void	kick(Client& client, const std::string& args);
 		void	nick(Client& client, const std::string& nickname);
 		void	user(Client& client, const std::string& username);
 		void	join(Client& client, const std::string& channelName);
