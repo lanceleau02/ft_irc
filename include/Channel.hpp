@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 12:38:30 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/10 16:32:21 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/11 11:18:48 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@ enum MapType {
 	OPERATORS,
 	USERS,
 	INVITEES
+};
+
+enum MessageType {
+	SEND_TO_ALL,
+	EXCLUDE_SENDER
 };
 
 class Client;
@@ -56,7 +61,7 @@ class Channel {
 		void	addOperator(const Client& op);
 		void	addUser(const Client& user);
 		void	addInvitee(const Client& invitee);
-		void	sendMessage(const std::string& msg);
+		void	sendMessage(int mode, int clientSocket, const std::string& msg);
 };
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 16:51:07 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/10 16:51:07 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/11 11:23:58 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,9 @@ void	Channel::addInvitee(const Client& invitee) {
 	_invitees.insert(std::pair<int, Client>(invitee.getSocket(), invitee));
 }
 
-void	Channel::sendMessage(const std::string& msg) {
+void	Channel::sendMessage(int mode, int clientSocket, const std::string& msg) {
 	for (std::map<int, Client>::iterator it = _users.begin(); it != _users.end(); it++) {
-		std::cout << "\tJ'envoie le message a ce socket : " << it->second.getSocket() << std::endl;
-		Server::clientLog(it->second.getSocket(), msg);
+		if (mode == SEND_TO_ALL || (mode == EXCLUDE_SENDER && it->second.getSocket() != clientSocket))
+			Server::clientLog(it->second.getSocket(), msg);
 	}
 }

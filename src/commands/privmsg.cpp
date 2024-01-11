@@ -6,7 +6,7 @@
 /*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:26:34 by hsebille          #+#    #+#             */
-/*   Updated: 2024/01/11 10:48:26 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/11 11:29:49 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@
 static bool	parsing(const Server& server, std::map<std::string, Channel> _channels, const Client& client, std::string msgtarget, std::string msg) {
 	if (msg.empty())
 		Server::clientLog(client.getSocket(), ERR_NOTEXTTOSEND(client.getUsername()));
-	else if ((msgtarget[0] != '#' || msgtarget[0] != '&') && !server.findClientByNick(msgtarget))
+	else if ((msgtarget[0] != '#' && msgtarget[0] != '&') && !server.findClientByNick(msgtarget))
 		Server::clientLog(client.getSocket(), ERR_NOSUCHNICK(client.getUsername(), msgtarget));
 	else if ((msgtarget[0] == '#' || msgtarget[0] == '&') && _channels.find(msgtarget) == _channels.end())
 		Server::clientLog(client.getSocket(), ERR_CANNOTSENDTOCHAN(client.getUsername(), msgtarget));
-	else if ((msgtarget[0] == '#' || msgtarget[0] == '&') && _channels.at(msgtarget).getMap(USERS).find(client.getSocket()) != _channels.at(msgtarget).getMap(USERS).end())
+	else if ((msgtarget[0] == '#' || msgtarget[0] == '&') && _channels.at(msgtarget).getMap(USERS).find(client.getSocket()) == _channels.at(msgtarget).getMap(USERS).end())
 		Server::clientLog(client.getSocket(), ERR_CANNOTSENDTOCHAN(client.getUsername(), msgtarget));	
 	else
 		return true;
@@ -44,14 +44,14 @@ void	Server::privmsg(Client& client, const std::string& args) {
 	std::string			msg;
 	
 	iss >> msgtarget;
-	iss >> msg;
+	std::getline(iss, msg);
 	if (parsing(*this, _channels, client, msgtarget, msg)) {
 		if (_channels.find(msgtarget) != _channels.end()) {
-			_channels.at(msgtarget).sendMessage(":" + client.getNickname() + " PRIVMSG " + msgtarget + " :" + msg + "\r\n");
+			_channels.at(msgtarget).sendMessage(EXCLUDE_SENDER, client.getSocket(), ":" + client.getNickname() + " PRIVMSG " + msgtarget + " :" + msg + "\r\n");
 		}
 		for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++) {
 			if (it->second.getNickname() == msgtarget)
-				RPL_AWAY(client.getNickname(), msg);
+				Server::clientLog(it->second.getSocket(), ":" + client.getNickname() + " PRIVMSG " + msgtarget + " :" + msg + "\r\n");
 		}		
 	}
 }
