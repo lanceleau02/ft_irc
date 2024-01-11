@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   privmsg.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:26:34 by hsebille          #+#    #+#             */
-/*   Updated: 2024/01/11 15:04:48 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/12 00:00:22 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	Server::privmsg(Client& client, const std::string& args) {
 		for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++) {
 			if (it->second.getNickname() == msgtarget)
 				Server::clientLog(it->second.getSocket(), ":" + client.getNickname() + " PRIVMSG " + msgtarget + " :" + msg + "\r\n");
-		}		
+		}
+		serverLog(0, "PRIVMSG command successful!");
 	}
 }

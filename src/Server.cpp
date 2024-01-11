@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:32:37 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/11 17:14:45 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/12 00:04:30 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	Server::start() {
                     serverLog(1, "Failed to accept client connection.");
                     continue;
 				}
-				serverLog(0, "New client connected!");
+				serverLog(0, "Client connected!");
 				// Create new client
 				Client	newClient(clientSocket, clientAddress);
 				addClient(newClient);
@@ -85,9 +85,8 @@ void	Server::start() {
 					close(clientSocket);
 				} else {
 					buffer[bytes] = '\0';
-					std::cout << "buffer = " << buffer << std::endl;
+					std::cout << buffer;
 					executor(buffer, _clients.at(clientSocket));
-					//_clients.at(clientSocket).display();
 				}
 			}
         }
@@ -206,9 +205,9 @@ void	Server::eraseClient(int socket) {
 
 void	Server::serverLog(int type, const std::string& log) {
 	if (type == 0)
-		std::cout << GREEN << log << NONE << std::endl;
+		std::cout << GREEN << log << NONE << std::endl << std::endl;
 	else if (type == 1)
-		std::cerr << RED << log << NONE << std::endl;
+		std::cerr << RED << log << NONE << std::endl << std::endl;
 }
 
 void	Server::clientLog(int socket, const std::string& log) {

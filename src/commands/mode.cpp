@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mode.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:37:20 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/11 17:13:41 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/12 00:01:19 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void Server::mode(Client& client, const std::string& args) {
 		else if (mode[1] == 'l' && mode[0] == '+' && param.empty())
 			_channels.at(channel).setUserLimit(SET_USER_LIMIT, 0);
 		else if (mode[1] == 'l' && mode[0] == '-' && !param.empty())
-			_channels.at(channel).setUserLimit(UNSET_USER_LIMIT, 0);		
+			_channels.at(channel).setUserLimit(UNSET_USER_LIMIT, 0);
+		serverLog(0, "MODE command successful!");
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_irc.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:30:18 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/11 15:45:38 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/12 00:02:07 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include <sstream>
 #include <iostream>
 #include <regex.h>
+#include <unistd.h>
 #include <sys/epoll.h>
 #include <netinet/in.h>
 

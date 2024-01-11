@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   topic.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:31:04 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/11 14:56:40 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/11 22:09:52 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ static bool	parsing(const Client& client, std::map<std::string, Channel> channel
 		Server::clientLog(client.getSocket(), ERR_NEEDMOREPARAMS(client.getUsername(), cmd));
 	else if (channels.find(channelName) != channels.end()) {
 		Channel channel = channels.at(channelName);
-		if (!(channel.isOnChannel(client.getSocket())))
+		if (!(channel.isUser(client.getSocket())))
 			Server::clientLog(client.getSocket(), ERR_NOTONCHANNEL(client.getUsername(), channelName));
 		else if (channel.getTopicRestrictions())
 			Server::clientLog(client.getSocket(), ERR_NOCHANMODES(channelName));
-		else if (!client.isOperator(channel) && !topic.empty())
+		else if (!channel.isOperator(client.getSocket()) && !topic.empty())
 			Server::clientLog(client.getSocket(), ERR_CHANOPRIVSNEEDED(client.getUsername(), channelName));
 		else
 			return true;
@@ -62,5 +62,6 @@ void	Server::topic(Client& client, const std::string& args) {
 			_channels.at(channelName).setTopic(topic);
 			Server::clientLog(client.getSocket(), RPL_TOPIC(client.getUsername(), channelName, _channels.at(channelName).getTopic()));
 		}
+		serverLog(0, "TOPIC command successful!");
 	}
 }

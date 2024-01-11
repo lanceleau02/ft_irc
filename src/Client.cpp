@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 13:42:32 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/05 14:00:19 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/11 21:13:01 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,8 @@ const sockaddr_in&	Client::getAddress() const {
 /*                             SETTERS FUNCTIONS                              */
 /* ************************************************************************** */
 
-void	Client::setNickname(const std::string& nickname) {
-	_nickname = nickname;
-}
-
-void	Client::setUsername(const std::string& username) {
-	_username = username;
+void	Client::setSocket(int socket) {
+	_socket = socket;
 }
 
 void	Client::setAuthentication(bool type) {
@@ -73,8 +69,12 @@ void	Client::setRegistration() {
 	_isRegistered = true;
 }
 
-void	Client::setSocket(int socket) {
-	_socket = socket;
+void	Client::setNickname(const std::string& nickname) {
+	_nickname = nickname;
+}
+
+void	Client::setUsername(const std::string& username) {
+	_username = username;
 }
 
 void	Client::setAddress(sockaddr_in address) {
@@ -84,13 +84,6 @@ void	Client::setAddress(sockaddr_in address) {
 /* ************************************************************************** */
 /*                              MEMBER FUNCTIONS                              */
 /* ************************************************************************** */
-
-bool	Client::isOperator(Channel channel) const {
-	std::map<int, Client>::const_iterator it = (channel.getMap(OPERATORS)).find(_socket);
-	if (it != channel.getMap(OPERATORS).end())
-		return (true);
-	return (false);
-}
 
 void	Client::display() const {
 	std::cout << "Socket : " << _socket << std::endl;

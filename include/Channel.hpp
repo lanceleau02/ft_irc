@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 12:38:30 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/11 17:10:28 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/12 00:07:24 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,30 +60,31 @@ class Channel {
 		Channel(const Client& op, const std::string& name);
 		~Channel();
 
-		int								getUserLimit();
-		int								getNbUsers();
-		int								getClient(std::string nickname);
-		bool							getInviteMode();
-		bool							getTopicRestrictions();
-		bool							getKeyMode();
-		const std::string&				getTopic();
-		const std::string&				getKey();
-		const std::map<int, Client>&	getMap(int type);
+		int								getUserLimit() const;
+		int								getNbUsers() const;
+		int								getClient(std::string nickname) const;
+		bool							getInviteMode() const;
+		bool							getTopicRestrictions() const;
+		bool							getKeyMode() const;
+		const std::string&				getTopic() const;
+		const std::string&				getKey() const;
+		const std::map<int, Client>&	getMap(int type) const;
 		
-		void	setTopic(std::string topic);
+		void	setUserLimit(int mode, int limit);
 		void	setInviteMode(int mode);
 		void	setTopicRestrictions(int mode);
+		void	setTopic(std::string topic);
 		void	setKey(int mode, std::string key);
-		void	setUserLimit(int mode, int limit);
 
-		bool	isOnChannel(int clientSocket);
+		bool	isOperator(int clientSocket);
+		bool	isUser(int clientSocket);
+		bool	isInvitee(int clientSocket);
 		bool	findClient(std::string user) const;
-		bool	isInvited(int clientSocket);
 		void	addOperator(const Client& op);
-		void	addOrRemove(int mode, int clientSocket);
 		void	addUser(const Client& user);
-		void	deleteUser(std::string nickname);
 		void	addInvitee(const Client& invitee);
+		void	addOrRemove(int mode, int clientSocket);
+		void	deleteUser(std::string nickname);
 		void	sendMessage(int mode, int clientSocket, const std::string& msg);
 };
 
