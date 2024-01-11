@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:40:35 by hsebille          #+#    #+#             */
-/*   Updated: 2024/01/11 11:40:37 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/11 11:45:08 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,9 @@ void	Server::join(Client& client, const std::string& args) {
 		_channels.at(channel).addUser(client);
 		_channels.at(channel).sendMessage(SEND_TO_ALL, client.getSocket(), RPL_JOIN(client.getNickname(), client.getUsername(), channel));
 		_channels.at(channel).sendMessage(SEND_TO_ALL, client.getSocket(), RPL_NAMEREPLY(client.getNickname(), channel, createNickList(_channels.at(channel))));
-		_channels.at(channel).sendMessage(SEND_TO_ALL, client.getSocket(), RPL_TOPIC(client.getUsername(), channel, _channels.at(channel).getTopic()));
+		if ((_channels.at(channel).getTopic()).empty())
+			_channels.at(channel).sendMessage(SEND_TO_ALL, client.getSocket(), RPL_NOTOPIC(client.getUsername(), channel));
+		else
+			_channels.at(channel).sendMessage(SEND_TO_ALL, client.getSocket(), RPL_TOPIC(client.getUsername(), channel, _channels.at(channel).getTopic()));
 	}
 }

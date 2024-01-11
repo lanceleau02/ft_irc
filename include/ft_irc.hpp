@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 16:50:59 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/11 11:02:38 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/11 12:42:08 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,12 @@
 #define RPL_KICK(client, channel, target, reason)	(":" + client + " KICK " + channel + " " + target + " :" + reason + "\r\n")
 #define RPL_INVITERCVR(client, invitee, channel)	(":" + client + " INVITE " + invitee + " " + channel + "\r\n")
 #define RPL_NICK(oldNick, newNick)					(":" + oldNick + " NICK " + newNick + "\r\n")
+#define RPL_TOPIC(client, channel, topic)			(":" + client + " TOPIC " + channel + " :" + topic + "\r\n")
 #define RPL_WELCOME(client)							(": 001 " + client + " :Welcome in the IRC world, " + client + "\r\n")
 #define RPL_AWAY(nick, msg)							(": 301 " + nick + " :" + msg + "\r\n")
 #define RPL_CHANNELMODEIS(client, channel, mode)	(": 324 " + client + " MODE " + channel + " " + mode + "\r\n")
 #define RPL_NOTOPIC(client, channel)				(": 331 " + client + " " + channel + " :No topic is set\r\n")
-#define RPL_TOPIC(client, channel, topic)			(": 332 " + client + " " + channel + " :" + topic + "\r\n")
+#define RPL_SEETOPIC(client, channel, topic)			(": 332 " + client + " " + channel + " :" + topic + "\r\n")
 #define RPL_INVITESNDR(client, invitee, channel)	(": 341 " + client + " " + invitee + " " + channel + "\r\n")
 #define RPL_NAMEREPLY(nick, channel, nicknames)		(": 353 " + nick + " = " + channel + " :" + nicknames + "\r\n")
 

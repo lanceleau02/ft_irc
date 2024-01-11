@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:31:10 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/11 10:58:27 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/11 13:10:27 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,18 @@ void	Server::topic(Client& client, const std::string& args) {
 	iss >> topic;
 	if (parsing(client, _channels, "TOPIC", channelName, topic) && client.getRegistration()) {
 		Channel channel = _channels.at(channelName);
-		std::cout << "J'ai passe le parsing" << std::endl;	
+		std::cout << "J'ai passe le parsing" << std::endl;
+		std::cout << "channel name: " << channelName << std::endl;
+		std::cout << "channel topic: " << channel.getTopic() << std::endl;
+		std::cout << "topic: " << topic << std::endl;
 		if (topic.empty() && (channel.getTopic()).empty())
 			Server::clientLog(client.getSocket(), RPL_NOTOPIC(client.getUsername(), channelName));
-		else if (!(channel.getTopic()).empty())
-			Server::clientLog(client.getSocket(), RPL_TOPIC(client.getUsername(), channelName, topic));
-		else if (!topic.empty())
+		else if (topic.empty() && !(channel.getTopic()).empty())
+			Server::clientLog(client.getSocket(), RPL_SEETOPIC(client.getUsername(), channelName, topic));
+		else if (!topic.empty()) {
 			channel.setTopic(topic);
+			Server::clientLog(client.getSocket(), RPL_TOPIC(client.getUsername(), channelName, channel.getTopic()));
+		}
+		std::cout << "topic a la fin de topic: " << channel.getTopic() << std::endl;
 	}
 }

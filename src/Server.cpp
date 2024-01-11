@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 10:24:24 by hsebille          #+#    #+#             */
-/*   Updated: 2024/01/11 10:24:26 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/11 11:42:41 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,7 +189,7 @@ void	Server::executor(const char* buf, Client& client) {
 void	Server::launchCommand(Client& client, const std::string& cmd, const std::string& args) {
 	std::string		cmdNames[6] = {"PASS", "NICK", "USER", "JOIN", "PRIVMSG", "TOPIC"};
 	typedef void	(Server::*cmds)(Client&, const std::string&);
-	cmds			cmdFunc[6] = {&Server::pass, &Server::nick, &Server::user, &Server::join, &Server::privmsg};
+	cmds			cmdFunc[6] = {&Server::pass, &Server::nick, &Server::user, &Server::join, &Server::privmsg, &Server::topic};
 
 	for (int i = 0; i < 6; i++)
 		if (cmdNames[i] == cmd)
