@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:32:37 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/12 00:04:30 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/12 13:24:03 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,11 +177,19 @@ void	Server::executor(const char* buf, Client& client) {
 	while (std::getline(iss, line)) {
 		if (line.find("CAP LS 302") != std::string::npos)
 			continue;
-		std::string	command = line.substr(0, line.find(" "));
-		std::string	args = line.substr(line.find(" ") + 1, line.size());
+		std::istringstream cmd(line);
+		std::string command;
+		std::string args;
+
+		cmd >> command;
+		std::getline(cmd, args);
+
 		launchCommand(client, command, args);
-		if (client.getAuthentication() && !client.getNickname().empty() && !client.getUsername().empty())
+		if (client.getAuthentication() && !client.getNickname().empty() && !client.getUsername().empty() && !client.getRegistration()) {
 			client.setRegistration();
+			serverLog(0, client.getNickname() + " just arrived!");
+			clientLog(client.getSocket(), RPL_WELCOME(client.getUsername()));
+		}
 	}
 }
 
