@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mode.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:37:20 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/12 00:01:19 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/12 15:54:29 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,14 @@ void Server::mode(Client& client, const std::string& args) {
 		else if (mode[1] == 'k')
 			_channels.at(channel).setKey((mode[0] == '+' ? ADD_KEY : REMOVE_KEY), param);
 		else if (mode[1] == 'o')
-			_channels.at(channel).addOrRemove((mode[0] == '+' ? ADD_OPERATOR : REMOVE_OPERATOR), _channels.at(channel).getClient(client.getNickname()));
+			_channels.at(channel).addOrRemove((mode[0] == '+' ? ADD_OPERATOR : REMOVE_OPERATOR), _channels.at(channel).getClient(param));
 		else if (mode[1] == 'l' && mode[0] == '+' && !param.empty())
 			_channels.at(channel).setUserLimit(CHANGE_USER_LIMIT, std::atoi(param.c_str()));
 		else if (mode[1] == 'l' && mode[0] == '+' && param.empty())
 			_channels.at(channel).setUserLimit(SET_USER_LIMIT, 0);
-		else if (mode[1] == 'l' && mode[0] == '-' && !param.empty())
+		else if (mode[1] == 'l' && mode[0] == '-' && param.empty())
 			_channels.at(channel).setUserLimit(UNSET_USER_LIMIT, 0);
+		Server::clientLog(client.getSocket(), RPL_MODE(client.getUsername(), channel, mode, param));
 		serverLog(0, "MODE command successful!");
 	}
 }
