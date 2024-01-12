@@ -6,7 +6,7 @@
 /*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:31:04 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/12 13:35:06 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/12 16:50:58 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,7 @@ static bool	parsing(const Client& client, std::map<std::string, Channel> channel
 	Channel channel = channels.at(channelName);
 	if (!(channel.isUser(client.getSocket())))
 		Server::clientLog(client.getSocket(), ERR_NOTONCHANNEL(client.getUsername(), channelName));
-	else if (channel.getTopicRestrictions())
-		Server::clientLog(client.getSocket(), ERR_NOCHANMODES(channelName));
-	else if (!channel.isOperator(client.getSocket()) && !topic.empty())
+	else if (channel.getTopicRestrictions() && !channel.isOperator(client.getSocket()) && !topic.empty())
 		Server::clientLog(client.getSocket(), ERR_CHANOPRIVSNEEDED(client.getUsername(), channelName));
 	else
 		return true;
@@ -52,14 +50,13 @@ void	Server::topic(Client& client, const std::string& args) {
 	iss >> channelName;
 	iss >> topic;
 	if (client.getRegistration() && parsing(client, _channels, "TOPIC", channelName, topic)) {
-		//Channel channel = _channels.at(channelName);
 		if (topic.empty() && (_channels.at(channelName).getTopic()).empty())
 			Server::clientLog(client.getSocket(), RPL_NOTOPIC(client.getUsername(), channelName));
 		else if (topic.empty() && !(_channels.at(channelName).getTopic()).empty())
 			Server::clientLog(client.getSocket(), RPL_SEETOPIC(client.getUsername(), channelName, _channels.at(channelName).getTopic()));
 		else if (!topic.empty()) {
 			_channels.at(channelName).setTopic(topic);
-			Server::clientLog(client.getSocket(), RPL_TOPIC(client.getUsername(), channelName, _channels.at(channelName).getTopic()));
+			_channels.at(channelName).sendMessage(SEND_TO_ALL, client.getSocket(), RPL_TOPIC(client.getUsername(), channelName, _channels.at(channelName).getTopic()));
 		}
 		serverLog(0, "TOPIC command successful!");
 	}
