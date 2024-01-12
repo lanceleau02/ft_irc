@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   kick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:54:49 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/11 14:28:46 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/12 00:07:08 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,6 @@ void Server::kick(Client& client, const std::string& args) {
 	if (client.getRegistration() && parsing(client, _channels, channel, user)) {
 		_channels.at(channel).sendMessage(SEND_TO_ALL, client.getSocket(), RPL_KICK(client.getUsername(), channel, user));
 		_channels.at(channel).deleteUser(user);
+		serverLog(0, "KICK command successful!");
 	}
 }

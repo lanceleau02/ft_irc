@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:30:52 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/11 14:30:53 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/11 22:12:21 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ static bool parsing(const Client& client, std::map<std::string, Channel>& channe
 		std::map<std::string, Channel>::iterator it = channels.find(channel);
 		if (it->second.getNbUsers() >= it->second.getUserLimit())
 			Server::clientLog(client.getSocket(), ERR_CHANNELISFULL(client.getUsername(), channel));
-		else if ((it->second.getInviteMode()) && !it->second.isInvited(client.getSocket()))
+		else if ((it->second.getInviteMode()) && !it->second.isInvitee(client.getSocket()))
 			Server::clientLog(client.getSocket(), ERR_INVITEONLYCHAN(client.getUsername(), channel));
 		else if (it->second.getKeyMode() && !key.empty() && it->second.getKey() != key)
 			Server::clientLog(client.getSocket(), ERR_BADCHANNELKEY(client.getUsername(), channel));
-		else if (it->second.isOnChannel(client.getSocket()))
+		else if (it->second.isUser(client.getSocket()))
 			Server::clientLog(client.getSocket(), ERR_USERONCHANNEL(client.getUsername(), client.getNickname(), channel));
 		else
 			return true;
@@ -70,5 +70,6 @@ void	Server::join(Client& client, const std::string& args) {
 			_channels.at(channel).sendMessage(SEND_TO_ALL, client.getSocket(), RPL_NOTOPIC(client.getUsername(), channel));
 		else
 			_channels.at(channel).sendMessage(SEND_TO_ALL, client.getSocket(), RPL_TOPIC(client.getUsername(), channel, _channels.at(channel).getTopic()));
+		serverLog(0, "JOIN command successful!");
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:30:18 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/11 14:47:06 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/12 00:02:07 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include <sstream>
 #include <iostream>
 #include <regex.h>
+#include <unistd.h>
 #include <sys/epoll.h>
 #include <netinet/in.h>
 
@@ -71,12 +72,12 @@
 #define ERR_NEEDMOREPARAMS(client, cmd)				(": 461 " + client + " " + cmd + " :Not enough parameters\r\n")
 #define ERR_ALREADYREGISTRED(client)				(": 462 " + client + " :You may not reregister\r\n")
 #define ERR_PASSWDMISMATCH(client)					(": 464 " + client + " :Password incorrect\r\n")
+#define ERR_KEYSET(channel)							(": 467 " + channel + " :Channel key already set\r\n")
 #define ERR_CHANNELISFULL(client, channel)			(": 471 " + client + " " + channel + " :Cannot join channel (+l)\r\n")
 #define ERR_INVITEONLYCHAN(client, channel)			(": 473 " + client + " " + channel + " :Cannot join channel (+i)\r\n")
 #define ERR_BADCHANNELKEY(client, channel)			(": 475 " + client + " " + channel + " :Cannot join channel (+k)\r\n")
 #define ERR_NOCHANMODES(channel)					(": 477 " + channel + " :Channel doesn't support modes\r\n")
 #define ERR_CHANOPRIVSNEEDED(client, channel)		(": 482 " + client + " " + channel + " :You're not channel operator\r\n")
-#define ERR_UNKNOWNMODE(client)						(": 501 " + client + " :Unknown MODE flag\r\n")
 
 #define CHANNEL_MESSAGES(client, channel, msg)		(":" + client + " PRIVMSG " + channel + " :" + msg + "\r\n")
 #define USER_MESSAGES(client, target, msg)			(":" + client + " PRIVMSG " + target + " :" +  msg + "\r\n")

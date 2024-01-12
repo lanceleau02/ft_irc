@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:32:37 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/11 14:32:38 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/12 13:24:03 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	Server::start() {
                     serverLog(1, "Failed to accept client connection.");
                     continue;
 				}
-				serverLog(0, "New client connected!");
+				serverLog(0, "Client connected!");
 				// Create new client
 				Client	newClient(clientSocket, clientAddress);
 				addClient(newClient);
@@ -85,9 +85,8 @@ void	Server::start() {
 					close(clientSocket);
 				} else {
 					buffer[bytes] = '\0';
-					std::cout << "buffer = " << buffer << std::endl;
+					std::cout << buffer;
 					executor(buffer, _clients.at(clientSocket));
-					//_clients.at(clientSocket).display();
 				}
 			}
         }
@@ -178,20 +177,28 @@ void	Server::executor(const char* buf, Client& client) {
 	while (std::getline(iss, line)) {
 		if (line.find("CAP LS 302") != std::string::npos)
 			continue;
-		std::string	command = line.substr(0, line.find(" "));
-		std::string	args = line.substr(line.find(" ") + 1, line.size());
+		std::istringstream cmd(line);
+		std::string command;
+		std::string args;
+
+		cmd >> command;
+		std::getline(cmd, args);
+
 		launchCommand(client, command, args);
-		if (client.getAuthentication() && !client.getNickname().empty() && !client.getUsername().empty())
+		if (client.getAuthentication() && !client.getNickname().empty() && !client.getUsername().empty() && !client.getRegistration()) {
 			client.setRegistration();
+			serverLog(0, client.getNickname() + " just arrived!");
+			clientLog(client.getSocket(), RPL_WELCOME(client.getUsername()));
+		}
 	}
 }
 
 void	Server::launchCommand(Client& client, const std::string& cmd, const std::string& args) {
-	std::string		cmdNames[7] = {"PASS", "NICK", "USER", "JOIN", "PRIVMSG", "TOPIC", "KICK"};
+	std::string		cmdNames[8] = {"PASS", "NICK", "USER", "JOIN", "PRIVMSG", "TOPIC", "KICK", "MODE"};
 	typedef void	(Server::*cmds)(Client&, const std::string&);
-	cmds			cmdFunc[7] = {&Server::pass, &Server::nick, &Server::user, &Server::join, &Server::privmsg, &Server::topic, &Server::kick};
+	cmds			cmdFunc[8] = {&Server::pass, &Server::nick, &Server::user, &Server::join, &Server::privmsg, &Server::topic, &Server::kick, &Server::mode};
 
-	for (int i = 0; i < 7; i++)
+	for (int i = 0; i < 8; i++)
 		if (cmdNames[i] == cmd)
 			(this->*cmdFunc[i])(client, args);
 }
@@ -206,9 +213,9 @@ void	Server::eraseClient(int socket) {
 
 void	Server::serverLog(int type, const std::string& log) {
 	if (type == 0)
-		std::cout << GREEN << log << NONE << std::endl;
+		std::cout << GREEN << log << NONE << std::endl << std::endl;
 	else if (type == 1)
-		std::cerr << RED << log << NONE << std::endl;
+		std::cerr << RED << log << NONE << std::endl << std::endl;
 }
 
 void	Server::clientLog(int socket, const std::string& log) {

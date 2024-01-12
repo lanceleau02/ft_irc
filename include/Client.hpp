@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:56:15 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/05 14:00:14 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/11 21:11:56 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,7 @@ class Client {
 		void	setNickname(const std::string& nickname);
 		void	setUsername(const std::string& username);
 		void	setAddress(sockaddr_in address);
-		
-		bool	isOperator(Channel channel) const;
+
 		void	display() const;
 };
 

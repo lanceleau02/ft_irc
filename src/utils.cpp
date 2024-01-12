@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 11:18:58 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/10 11:52:50 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/11 23:42:52 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ std::string	createNickList(Channel channel) {
 	for (std::map<int, Client>::const_iterator it = channel.getMap(USERS).begin(); it != channel.getMap(USERS).end(); it++) {
 		if (it != channel.getMap(USERS).begin())
 			nickList += " ";
-		if (it->second.isOperator(channel))
+		if (channel.isOperator(it->second.getSocket()))
 			nickList += "@";
 		nickList += it->second.getNickname();
 	}
