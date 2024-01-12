@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:38:26 by hsebille          #+#    #+#             */
-/*   Updated: 2024/01/12 00:03:51 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/12 16:34:31 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ class Server {
 		void	privmsg(Client& client, const std::string& args);
 		void	topic(Client& client, const std::string& args);
 		void	mode(Client& client, const std::string& args);
+		void	invite(Client& client, const std::string& args);
 };
 
 #endif
