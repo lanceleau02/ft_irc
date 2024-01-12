@@ -6,7 +6,7 @@
 /*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:32:37 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/12 13:24:03 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/12 14:14:25 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,7 +188,6 @@ void	Server::executor(const char* buf, Client& client) {
 		if (client.getAuthentication() && !client.getNickname().empty() && !client.getUsername().empty() && !client.getRegistration()) {
 			client.setRegistration();
 			serverLog(0, client.getNickname() + " just arrived!");
-			clientLog(client.getSocket(), RPL_WELCOME(client.getUsername()));
 		}
 	}
 }

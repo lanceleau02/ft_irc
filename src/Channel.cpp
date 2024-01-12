@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 16:51:07 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/12 00:07:29 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/12 15:56:01 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ Channel::Channel(const Client& op, const std::string& name) : _topic(), _key() {
 	_inviteOnly = false;
 	_topicRestrictions = false;
 	_channelKey = false;
-	_isUserLimit = false;
+	_isUserLimit = true;
 	_name = name;
 	addOperator(op);
 	addUser(op);
@@ -70,6 +70,10 @@ int	Channel::getClient(std::string nickname) const {
 		if (it->second.getNickname() == nickname)
 			return it->second.getSocket();
 	return -1;
+}
+
+bool	Channel::getIsUserLimit() const {
+	return _isUserLimit;
 }
 
 /* ************************************************************************** */
@@ -138,6 +142,8 @@ void	Channel::addOrRemove(int mode, int clientSocket) {
 		addOperator(_users.at(clientSocket));
 	else if (mode == REMOVE_OPERATOR)
 		_operators.erase(clientSocket);
+	sendMessage(SEND_TO_ALL, clientSocket, RPL_JOIN(_users.at(clientSocket).getNickname(), _users.at(clientSocket).getUsername(), _name));
+	sendMessage(SEND_TO_ALL, clientSocket, RPL_NAMEREPLY(_users.at(clientSocket).getNickname(), _name, createNickList(*this)));
 }
 
 void	Channel::deleteUser(std::string nickname) {

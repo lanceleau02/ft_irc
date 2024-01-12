@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:30:52 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/11 22:12:21 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/12 15:51:32 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,10 @@ static bool parsing(const Client& client, std::map<std::string, Channel>& channe
 		Server::clientLog(client.getSocket(), ERR_NOSUCHCHANNEL(channel));
 	else if (channels.find(channel) != channels.end()) {
 		std::map<std::string, Channel>::iterator it = channels.find(channel);
-		if (it->second.getNbUsers() >= it->second.getUserLimit())
+		if (it->second.getIsUserLimit() && it->second.getNbUsers() >= it->second.getUserLimit()) {
+			std::cout << "Est-ce qu'il y a un user limit ? : " << it->second.getIsUserLimit() << std::endl;
 			Server::clientLog(client.getSocket(), ERR_CHANNELISFULL(client.getUsername(), channel));
+		}
 		else if ((it->second.getInviteMode()) && !it->second.isInvitee(client.getSocket()))
 			Server::clientLog(client.getSocket(), ERR_INVITEONLYCHAN(client.getUsername(), channel));
 		else if (it->second.getKeyMode() && !key.empty() && it->second.getKey() != key)
@@ -67,9 +69,9 @@ void	Server::join(Client& client, const std::string& args) {
 		_channels.at(channel).sendMessage(SEND_TO_ALL, client.getSocket(), RPL_JOIN(client.getNickname(), client.getUsername(), channel));
 		_channels.at(channel).sendMessage(SEND_TO_ALL, client.getSocket(), RPL_NAMEREPLY(client.getNickname(), channel, createNickList(_channels.at(channel))));
 		if ((_channels.at(channel).getTopic()).empty())
-			_channels.at(channel).sendMessage(SEND_TO_ALL, client.getSocket(), RPL_NOTOPIC(client.getUsername(), channel));
+			Server::clientLog(client.getSocket(), RPL_NOTOPIC(client.getUsername(), channel));
 		else
-			_channels.at(channel).sendMessage(SEND_TO_ALL, client.getSocket(), RPL_TOPIC(client.getUsername(), channel, _channels.at(channel).getTopic()));
+			Server::clientLog(client.getSocket(), RPL_TOPIC(client.getUsername(), channel, _channels.at(channel).getTopic()));
 		serverLog(0, "JOIN command successful!");
 	}
 }
