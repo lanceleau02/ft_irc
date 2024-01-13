@@ -6,7 +6,7 @@
 /*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:31:04 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/12 16:50:58 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/13 09:26:06 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ void	Server::topic(Client& client, const std::string& args) {
 	iss >> channelName;
 	iss >> topic;
 	if (client.getRegistration() && parsing(client, _channels, "TOPIC", channelName, topic)) {
+		if (topic[0] == ':')
+			topic = topic.substr(1);
 		if (topic.empty() && (_channels.at(channelName).getTopic()).empty())
 			Server::clientLog(client.getSocket(), RPL_NOTOPIC(client.getUsername(), channelName));
 		else if (topic.empty() && !(_channels.at(channelName).getTopic()).empty())
