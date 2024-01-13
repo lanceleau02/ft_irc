@@ -6,7 +6,7 @@
 /*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 12:38:30 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/12 15:12:40 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/13 09:44:02 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ class Channel {
 		int						_userLimit;
 		bool					_inviteOnly;
 		bool					_topicRestrictions;
-		bool					_channelKey;
 		bool					_isUserLimit;
 		std::string				_name;
 		std::string				_topic;
@@ -66,7 +65,6 @@ class Channel {
 		bool							getInviteMode() const;
 		bool							getTopicRestrictions() const;
 		bool							getIsUserLimit() const;
-		bool							getKeyMode() const;
 		const std::string&				getTopic() const;
 		const std::string&				getKey() const;
 		const std::map<int, Client>&	getMap(int type) const;

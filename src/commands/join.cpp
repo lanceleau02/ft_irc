@@ -6,7 +6,7 @@
 /*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:30:52 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/12 15:51:32 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/13 09:48:04 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,11 @@ static bool parsing(const Client& client, std::map<std::string, Channel>& channe
 		Server::clientLog(client.getSocket(), ERR_NOSUCHCHANNEL(channel));
 	else if (channels.find(channel) != channels.end()) {
 		std::map<std::string, Channel>::iterator it = channels.find(channel);
-		if (it->second.getIsUserLimit() && it->second.getNbUsers() >= it->second.getUserLimit()) {
-			std::cout << "Est-ce qu'il y a un user limit ? : " << it->second.getIsUserLimit() << std::endl;
+		if (it->second.getIsUserLimit() && it->second.getNbUsers() >= it->second.getUserLimit())
 			Server::clientLog(client.getSocket(), ERR_CHANNELISFULL(client.getUsername(), channel));
-		}
 		else if ((it->second.getInviteMode()) && !it->second.isInvitee(client.getSocket()))
 			Server::clientLog(client.getSocket(), ERR_INVITEONLYCHAN(client.getUsername(), channel));
-		else if (it->second.getKeyMode() && !key.empty() && it->second.getKey() != key)
+		else if (!it->second.getKey().empty() && it->second.getKey() != key)
 			Server::clientLog(client.getSocket(), ERR_BADCHANNELKEY(client.getUsername(), channel));
 		else if (it->second.isUser(client.getSocket()))
 			Server::clientLog(client.getSocket(), ERR_USERONCHANNEL(client.getUsername(), client.getNickname(), channel));

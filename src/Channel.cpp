@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 15:59:15 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/12 15:59:16 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/13 09:44:15 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ Channel::Channel(const Client& op, const std::string& name) : _topic(), _key() {
 	_userLimit = 100;
 	_inviteOnly = false;
 	_topicRestrictions = false;
-	_channelKey = false;
 	_isUserLimit = true;
 	_name = name;
 	addOperator(op);
@@ -47,10 +46,6 @@ bool	Channel::getInviteMode() const {
 
 bool	Channel::getTopicRestrictions() const {
 	return _topicRestrictions;
-}
-
-bool	Channel::getKeyMode() const {
-	return _channelKey;
 }
 
 const std::string&	Channel::getTopic() const {
