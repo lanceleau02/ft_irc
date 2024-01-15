@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 15:59:15 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/15 10:33:22 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/15 11:43:34 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,10 @@ bool	Channel::getInviteMode() const {
 
 bool	Channel::getTopicRestrictions() const {
 	return _topicRestrictions;
+}
+
+const std::string&	Channel::getName() const {
+	return _name;
 }
 
 const std::string&	Channel::getTopic() const {
