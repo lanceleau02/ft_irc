@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:32:37 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/15 11:44:51 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/15 13:19:29 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,11 +90,17 @@ void	Server::start() {
 				buffer[bytes] = '\0';
 				_clients.at(clientSocket).addToBuffer(buffer);
 				if (bytes <= 0) {
+					std::vector<std::string>	channelsToRemove;
 					for (std::map<std::string, Channel>::iterator it = _channels.begin(); it != _channels.end(); it++) {
 						if (findClient(it->second.getMap(USERS), _clients.at(clientSocket).getNickname())) {
+							it->second.addOrRemove(REMOVE_OPERATOR, clientSocket);
 							it->second.deleteUser(_clients.at(clientSocket).getNickname());
-							_channels.at(it->second.getName()).sendMessage(SEND_TO_ALL, clientSocket, RPL_NAMEREPLY(_clients.at(clientSocket).getNickname(), it->second.getName(), createNickList(_channels.at(it->second.getName()))));
 						}
+						if (it->second.getMap(USERS).empty())
+							channelsToRemove.push_back(it->first);
+					}
+					for (std::vector<std::string>::iterator it = channelsToRemove.begin(); it != channelsToRemove.end(); ++it) {
+    					_channels.erase(*it);
 					}
 					serverLog(1, "Client disconnected!");
 					epoll_ctl(_epoll, EPOLL_CTL_DEL, clientSocket, &_event);
