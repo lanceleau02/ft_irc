@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:38:26 by hsebille          #+#    #+#             */
-/*   Updated: 2024/01/15 10:33:14 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/15 10:47:49 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ class Server {
 		Server(char** params);
 		~Server();
 
+		const std::map<int, Client>&	getClients() const;
+		
 		void	setup();
 		void	start();
 
@@ -51,7 +53,6 @@ class Server {
 		void		eraseClient(int socket);
 		static void	serverLog(int type, const std::string& log);
 		static void	clientLog(int socket, const std::string& log);
-		const std::map<int, Client>&	getClients() const;
 
 		void	pass(Client& client, const std::string& password);
 		void	kick(Client& client, const std::string& args);
