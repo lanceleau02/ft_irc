@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 13:42:32 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/11 21:13:01 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/15 11:25:21 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 /*                              CLASS FUNCTIONS                               */
 /* ************************************************************************** */
 
-Client::Client(int socket, const sockaddr_in& address) : _nickname(), _username() {
+Client::Client(int socket, const sockaddr_in& address) : _nickname(), _username(), _buffer() {
 	_socket = socket;
 	_isAuthenticated = false;
 	_isRegistered = false;
@@ -47,6 +47,10 @@ const std::string&	Client::getNickname() const {
 
 const std::string&	Client::getUsername() const {
 	return _username;
+}
+
+const std::string&	Client::getBuffer() const {
+	return _buffer;
 }
 
 const sockaddr_in&	Client::getAddress() const {
@@ -84,6 +88,14 @@ void	Client::setAddress(sockaddr_in address) {
 /* ************************************************************************** */
 /*                              MEMBER FUNCTIONS                              */
 /* ************************************************************************** */
+
+void	Client::addToBuffer(std::string buffer) {
+	_buffer += buffer;
+}
+
+void	Client::cleanBuffer() {
+	_buffer = "";
+}
 
 void	Client::display() const {
 	std::cout << "Socket : " << _socket << std::endl;

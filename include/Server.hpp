@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:38:26 by hsebille          #+#    #+#             */
-/*   Updated: 2024/01/15 10:47:49 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/15 11:22:58 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ class Server {
 		void		listenConnections();
 		void		createEpoll();
 		void		addSocketToEpoll();
-		void		executor(const char* buf, Client& client);
+		void		executor(std::string buffer, Client& client);
 		void		launchCommand(Client& client, const std::string& cmd, const std::string& args);
 		void		addClient(const Client& client);
 		void		eraseClient(int socket);

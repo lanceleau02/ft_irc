@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:32:37 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/15 10:33:57 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/15 11:29:02 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,17 +84,20 @@ void	Server::start() {
 				// Manage events
 				int		clientSocket = _events[i].data.fd;
 				char	buffer[1024];
-				int		bytes = recv(clientSocket, buffer, sizeof(buffer), 0);
-				// Handle error or disconnection
+				int		bytes;
+				
+				bytes = recv(clientSocket, buffer, sizeof(buffer), 0);
+				buffer[bytes] = '\0';
+				_clients.at(clientSocket).addToBuffer(buffer);
 				if (bytes <= 0) {
 					serverLog(1, "Client disconnected!");
 					epoll_ctl(_epoll, EPOLL_CTL_DEL, clientSocket, &_event);
 					eraseClient(clientSocket);
 					close(clientSocket);
-				} else {
-					buffer[bytes] = '\0';
-					std::cout << buffer;
-					executor(buffer, _clients.at(clientSocket));
+				} else if (_clients.at(clientSocket).getBuffer().find('\n') != std::string::npos) {
+					std::cout << _clients.at(clientSocket).getBuffer();
+					executor(_clients.at(clientSocket).getBuffer(), _clients.at(clientSocket));
+					_clients.at(clientSocket).cleanBuffer();
 				}
 			}
         }
@@ -170,8 +173,7 @@ int	Server::addSocket(epoll_event& event, int socket, int epoll) {
 	return epoll_ctl(epoll, EPOLL_CTL_ADD, socket, &event);
 }
 
-void	Server::executor(const char* buf, Client& client) {
-	std::string			buffer(buf);
+void	Server::executor(std::string buffer, Client& client) {
 	std::istringstream	iss(buffer);
 	std::string			line;
 	std::string			command;

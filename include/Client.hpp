@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:56:15 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/11 21:11:56 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/15 11:23:18 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ class Client {
 		bool				_isRegistered;
 		std::string			_nickname;
 		std::string			_username;
+		std::string			_buffer;
 		struct sockaddr_in	_address;
 
 	public:
@@ -33,6 +34,7 @@ class Client {
 		bool				getRegistration() const;
 		const std::string&	getNickname() const;
 		const std::string&	getUsername() const;
+		const std::string&	getBuffer() const;
 		const sockaddr_in&	getAddress() const;
 
 		void	setSocket(int socket);
@@ -42,6 +44,8 @@ class Client {
 		void	setUsername(const std::string& username);
 		void	setAddress(sockaddr_in address);
 
+		void	addToBuffer(std::string buffer);
+		void	cleanBuffer();
 		void	display() const;
 };
 
