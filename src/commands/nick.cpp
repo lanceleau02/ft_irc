@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:42:59 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/12 13:11:59 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/15 10:23:56 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static bool	parsing(const Server& server, const Client& client, const std::strin
 		Server::clientLog(client.getSocket(), ERR_NONICKNAMEGIVEN(client.getUsername(), nickname));
 	else if (!RegExr("^[a-zA-Z^{}|`-]{1}[a-zA-Z0-9^{}|`-]{0,8}[\n\r]?$", nickname))
 		Server::clientLog(client.getSocket(), ERR_ERRONEUSNICKNAME(client.getUsername(), nickname));
-	else if (server.findClientByNick(nickname))
+	else if (findClient(server.getClients(), nickname))
 		Server::clientLog(client.getSocket(), ERR_NICKNAMEINUSE(client.getUsername(), nickname));
 	else
 		return true;

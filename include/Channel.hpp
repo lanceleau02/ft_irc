@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 12:38:30 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/13 09:44:02 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/15 10:33:19 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ class Channel {
 		bool	isOperator(int clientSocket);
 		bool	isUser(int clientSocket);
 		bool	isInvitee(int clientSocket);
-		bool	findClient(std::string user) const;
 		void	addOperator(const Client& op);
 		void	addUser(const Client& user);
 		void	addInvitee(const Client& invitee);

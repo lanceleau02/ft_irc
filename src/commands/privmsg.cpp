@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   privmsg.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:26:34 by hsebille          #+#    #+#             */
-/*   Updated: 2024/01/13 09:31:31 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/15 10:25:51 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 static bool	parsing(const Server& server, std::map<std::string, Channel>& _channels, const Client& client, std::string msgtarget, std::string msg) {
 	if (msg.empty())
 		Server::clientLog(client.getSocket(), ERR_NOTEXTTOSEND(client.getUsername()));
-	else if ((msgtarget[0] != '#' && msgtarget[0] != '&') && !server.findClientByNick(msgtarget))
+	else if ((msgtarget[0] != '#' && msgtarget[0] != '&') && !findClient(server.getClients(), msgtarget))
 		Server::clientLog(client.getSocket(), ERR_NOSUCHNICK(client.getUsername(), msgtarget));
 	else if ((msgtarget[0] == '#' || msgtarget[0] == '&') && _channels.find(msgtarget) == _channels.end())
 		Server::clientLog(client.getSocket(), ERR_CANNOTSENDTOCHAN(client.getUsername(), msgtarget));

@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:32:37 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/12 16:31:51 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/15 10:33:57 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,14 @@ Server::Server(char** params) {
 Server::~Server() {
 	close(_socket);
 	close(_epoll);
+}
+
+/* ************************************************************************** */
+/*                             GETTERS FUNCTIONS                              */
+/* ************************************************************************** */
+
+const std::map<int, Client>&	Server::getClients() const {
+	return _clients;
 }
 
 /* ************************************************************************** */
@@ -162,28 +170,19 @@ int	Server::addSocket(epoll_event& event, int socket, int epoll) {
 	return epoll_ctl(epoll, EPOLL_CTL_ADD, socket, &event);
 }
 
-bool	Server::findClientByNick(std::string nickname) const {
-	for (std::map<int, Client>::const_iterator it = _clients.begin(); it != _clients.end(); it++)
-		if (it->second.getNickname() == nickname)
-			return true;
-	return false;
-}
-
 void	Server::executor(const char* buf, Client& client) {
 	std::string			buffer(buf);
 	std::istringstream	iss(buffer);
 	std::string			line;
+	std::string			command;
+	std::string			args;
 
 	while (std::getline(iss, line)) {
 		if (line.find("CAP LS 302") != std::string::npos)
 			continue;
 		std::istringstream cmd(line);
-		std::string command;
-		std::string args;
-
 		cmd >> command;
 		std::getline(cmd, args);
-
 		launchCommand(client, command, args);
 		if (client.getAuthentication() && !client.getNickname().empty() && !client.getUsername().empty() && !client.getRegistration()) {
 			client.setRegistration();

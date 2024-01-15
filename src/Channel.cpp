@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 15:59:15 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/13 09:44:15 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/15 10:33:22 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,13 +111,6 @@ bool	Channel::isUser(int clientSocket) {
 
 bool	Channel::isInvitee(int clientSocket) {
 	return _invitees.find(clientSocket) != _invitees.end();
-}
-
-bool	Channel::findClient(std::string user) const {
-	for (std::map<int, Client>::const_iterator it = _users.begin(); it != _users.end(); it++)
-		if (it->second.getNickname() == user)
-			return true;
-	return false;
 }
 
 void	Channel::addOperator(const Client& op) {

@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:54:49 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/12 00:07:08 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/15 10:26:59 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static bool parsing (Client& client, std::map<std::string, Channel>& _channels, 
 		Server::clientLog(client.getSocket(), ERR_NOSUCHCHANNEL(channel));	
 	else if (_channels.at(channel).getMap(USERS).find(client.getSocket()) == _channels.at(channel).getMap(USERS).end())
 		Server::clientLog(client.getSocket(), ERR_NOTONCHANNEL(client.getUsername(), channel));	
-	else if (!_channels.at(channel).findClient(user))
+	else if (!findClient(_channels.at(channel).getMap(USERS), user))
 		Server::clientLog(client.getSocket(), ERR_USERNOTINCHANNEL(client.getUsername(), user, channel));
 	else if (_channels.at(channel).getMap(OPERATORS).find(client.getSocket()) == _channels.at(channel).getMap(OPERATORS).end())
 		Server::clientLog(client.getSocket(), ERR_CHANOPRIVSNEEDED(client.getUsername(), channel));

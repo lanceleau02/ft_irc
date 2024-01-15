@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 11:18:58 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/11 23:42:52 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/15 10:01:10 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,11 @@ std::string	createNickList(Channel channel) {
 		nickList += it->second.getNickname();
 	}
 	return nickList;
+}
+
+bool	findClient(const std::map<int, Client>& map, std::string nickname) {
+	for (std::map<int, Client>::const_iterator it = map.begin(); it != map.end(); it++)
+		if (it->second.getNickname() == nickname)
+			return true;
+	return false;
 }

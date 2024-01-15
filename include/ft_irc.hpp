@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_irc.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:30:18 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/12 15:01:27 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/15 10:08:19 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,3 +97,4 @@ class Server;
 void		signalHandler(int sig);
 bool		RegExr(const char* pattern, const std::string& input);
 std::string	createNickList(Channel channel);
+bool		findClient(const std::map<int, Client>& map, std::string nickname);

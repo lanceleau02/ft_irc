@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 12:51:16 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/12 16:41:41 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/15 10:28:38 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 /* 482	ERR_CHANOPRIVSNEEDED	"<channel> :You're not channel operator"      */
 /* ************************************************************************** */
 
-static bool	parsing(const Server& server, const Client& client, const std::map<std::string, Channel>& channels, std::string cmd, std::string nickname, std::string channelName) {
+static bool	parsing(const Client& client, const std::map<std::string, Channel>& channels, std::string cmd, std::string nickname, std::string channelName) {
 	if (nickname.empty() || channelName.empty())
 		Server::clientLog(client.getSocket(), ERR_NEEDMOREPARAMS(client.getUsername(), cmd));
 	else if (channels.find(channelName) == channels.end())
@@ -37,9 +37,9 @@ static bool	parsing(const Server& server, const Client& client, const std::map<s
 		Server::clientLog(client.getSocket(), ERR_NOTONCHANNEL(client.getUsername(), channelName));
 	else if (!channel.isOperator(client.getSocket()))
 		Server::clientLog(client.getSocket(), ERR_CHANOPRIVSNEEDED(client.getUsername(), channelName));
-	else if (!server.findClientByNick(nickname))
+	else if (!findClient(channel.getMap(USERS), nickname))
 		Server::clientLog(client.getSocket(), ERR_NOSUCHNICK(client.getUsername(), nickname));
-	else if (channel.findClient(nickname))
+	else if (findClient(channel.getMap(USERS), nickname))
 		Server::clientLog(client.getSocket(), ERR_USERONCHANNEL(client.getUsername(), client.getNickname(), channelName));
 	else
 		return true;
@@ -53,7 +53,7 @@ void	Server::invite(Client& client, const std::string& args) {
 	
 	iss >> nickname;
 	iss >> channel;
-	if (client.getRegistration() && parsing(*this, client, _channels, "INVITE", nickname, channel)) {
+	if (client.getRegistration() && parsing(client, _channels, "INVITE", nickname, channel)) {
 		for (std::map<int, Client>::const_iterator it = _clients.begin(); it != _clients.end(); it++)
 			if (it->second.getNickname() == nickname)
 				_channels.at(channel).addInvitee(it->second);

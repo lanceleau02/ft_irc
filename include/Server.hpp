@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:38:26 by hsebille          #+#    #+#             */
-/*   Updated: 2024/01/12 16:34:31 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/15 10:33:14 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ class Server {
 		int			waitEvents();
 		int			acceptConnection(sockaddr_in& clientAddress);
 		int			addSocket(epoll_event& event, int socket, int epoll);
-		bool		findClientByNick(std::string nickname) const;
 		void		createSocket();
 		void		setupSocket();
 		void		bindSocket();
@@ -52,6 +51,7 @@ class Server {
 		void		eraseClient(int socket);
 		static void	serverLog(int type, const std::string& log);
 		static void	clientLog(int socket, const std::string& log);
+		const std::map<int, Client>&	getClients() const;
 
 		void	pass(Client& client, const std::string& password);
 		void	kick(Client& client, const std::string& args);
