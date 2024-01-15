@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:38:26 by hsebille          #+#    #+#             */
-/*   Updated: 2024/01/15 11:22:58 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/15 13:59:02 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ class Server {
 		void	topic(Client& client, const std::string& args);
 		void	mode(Client& client, const std::string& args);
 		void	invite(Client& client, const std::string& args);
+		void	bot(Client& client, const std::string& param);
+
 };
 
 #endif

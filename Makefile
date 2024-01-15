@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+         #
+#    By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/14 13:54:59 by laprieur          #+#    #+#              #
-#    Updated: 2024/01/10 14:06:16 by laprieur         ###   ########.fr        #
+#    Updated: 2024/01/15 14:01:54 by hsebille         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ SRC				:=	src/main.cpp				\
 					src/commands/invite.cpp		\
 					src/commands/topic.cpp		\
 					src/commands/mode.cpp		\
+					src/commands/bot.cpp		\
 					
 SRC_OBJS		:=	$(SRC:%.cpp=.build/%.o)
 DEPS			:=	$(SRC_OBJS:%.o=%.d)

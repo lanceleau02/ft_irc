@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:32:37 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/15 13:19:29 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/15 14:04:40 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,11 +206,11 @@ void	Server::executor(std::string buffer, Client& client) {
 }
 
 void	Server::launchCommand(Client& client, const std::string& cmd, const std::string& args) {
-	std::string		cmdNames[9] = {"PASS", "NICK", "USER", "JOIN", "PRIVMSG", "TOPIC", "KICK", "MODE", "INVITE"};
+	std::string		cmdNames[10] = {"PASS", "NICK", "USER", "JOIN", "PRIVMSG", "TOPIC", "KICK", "MODE", "INVITE", "BOT"};
 	typedef void	(Server::*cmds)(Client&, const std::string&);
-	cmds			cmdFunc[9] = {&Server::pass, &Server::nick, &Server::user, &Server::join, &Server::privmsg, &Server::topic, &Server::kick, &Server::mode, &Server::invite};
+	cmds			cmdFunc[10] = {&Server::pass, &Server::nick, &Server::user, &Server::join, &Server::privmsg, &Server::topic, &Server::kick, &Server::mode, &Server::invite, &Server::bot};
 
-	for (int i = 0; i < 9; i++)
+	for (int i = 0; i < 10; i++)
 		if (cmdNames[i] == cmd)
 			(this->*cmdFunc[i])(client, args);
 }
