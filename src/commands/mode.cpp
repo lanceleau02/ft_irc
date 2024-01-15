@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mode.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:37:20 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/15 10:29:10 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/15 10:37:16 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ static bool parsing (Client& client, std::map<std::string, Channel>& _channels, 
 		Server::clientLog(client.getSocket(), ERR_USERNOTINCHANNEL(client.getUsername(), param, channel));
 	else if (mode[1] == 'k' && mode[0] == '+' && !_channels.at(channel).getKey().empty())
 		Server::clientLog(client.getSocket(), ERR_KEYSET(channel));
+	else if (mode[1] == 'k' && mode[0] == '-' && _channels.at(channel).getKey() != param)
+		return false;
 	else if (_channels.at(channel).getMap(OPERATORS).find(client.getSocket()) == _channels.at(channel).getMap(OPERATORS).end())
 		Server::clientLog(client.getSocket(), ERR_CHANOPRIVSNEEDED(client.getUsername(), channel));
 	else
