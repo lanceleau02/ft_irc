@@ -3,19 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   privmsg.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:26:34 by hsebille          #+#    #+#             */
-/*   Updated: 2024/01/15 15:20:49 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/16 12:55:50 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
-
-/* ************************************************************************** */
-/* Command Replies:                                                           */
-/* 301	RPL_AWAY				"<nick> :<away message>"                      */
-/* ************************************************************************** */
 
 /* ************************************************************************** */
 /* Error Replies:                                                             */
@@ -24,15 +19,15 @@
 /* 412	ERR_NOTEXTTOSEND		":No text to send"                            */
 /* ************************************************************************** */
 
-static bool	parsing(const Server& server, std::map<std::string, Channel>& _channels, const Client& client, std::string msgtarget, std::string msg) {
+static bool	parsing(const Server& server, std::map<std::string, Channel> _channels, const Client& client, std::string msgtarget, std::string msg) {
 	if (msg.empty())
-		Server::clientLog(client.getSocket(), ERR_NOTEXTTOSEND(client.getUsername()));
+		Server::clientLog(client.getSocket(), ERR_NOTEXTTOSEND(client.getNickname()));
 	else if ((msgtarget[0] != '#' && msgtarget[0] != '&') && !findClient(server.getClients(), msgtarget))
-		Server::clientLog(client.getSocket(), ERR_NOSUCHNICK(client.getUsername(), msgtarget));
+		Server::clientLog(client.getSocket(), ERR_NOSUCHNICK(client.getNickname(), msgtarget));
 	else if ((msgtarget[0] == '#' || msgtarget[0] == '&') && _channels.find(msgtarget) == _channels.end())
-		Server::clientLog(client.getSocket(), ERR_CANNOTSENDTOCHAN(client.getUsername(), msgtarget));
+		Server::clientLog(client.getSocket(), ERR_CANNOTSENDTOCHAN(client.getNickname(), msgtarget));
 	else if ((msgtarget[0] == '#' || msgtarget[0] == '&') && _channels.at(msgtarget).getMap(USERS).find(client.getSocket()) == _channels.at(msgtarget).getMap(USERS).end())
-		Server::clientLog(client.getSocket(), ERR_CANNOTSENDTOCHAN(client.getUsername(), msgtarget));	
+		Server::clientLog(client.getSocket(), ERR_CANNOTSENDTOCHAN(client.getNickname(), msgtarget));	
 	else
 		return true;
 	return false;
@@ -46,13 +41,11 @@ void	Server::privmsg(Client& client, const std::string& args) {
 	iss >> msgtarget;
 	std::getline(iss, msg);
 	if (client.getRegistration() && parsing(*this, _channels, client, msgtarget, msg)) {
-		if (_channels.find(msgtarget) != _channels.end()) {
+		if (_channels.find(msgtarget) != _channels.end())
 			_channels.at(msgtarget).sendMessage(EXCLUDE_SENDER, client.getSocket(), ":" + client.getNickname() + " PRIVMSG " + msgtarget + " :" + msg + "\r\n");
-		}
-		for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++) {
+		for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++)
 			if (it->second.getNickname() == msgtarget)
 				Server::clientLog(it->second.getSocket(), ":" + client.getNickname() + " PRIVMSG " + msgtarget + " " + msg.substr(1) + "\r\n");
-		}
-		serverLog(0, "PRIVMSG command successful!");
+		serverLog(SUCCESS, "PRIVMSG command successful!");
 	}
 }

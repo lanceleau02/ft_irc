@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:54:49 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/15 13:21:26 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/16 13:03:17 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,17 @@
 /* 482	ERR_CHANOPRIVSNEEDED	"<channel> :You're not channel operator"      */
 /* ************************************************************************** */
 
-static bool parsing (Client& client, std::map<std::string, Channel>& _channels, std::string channel, std::string user) {
+static bool parsing (const Client& client, std::map<std::string, Channel> _channels, std::string channel, std::string user) {
 	if (user.empty())
-		Server::clientLog(client.getSocket(), ERR_NEEDMOREPARAMS(client.getUsername(), "KICK"));
+		Server::clientLog(client.getSocket(), ERR_NEEDMOREPARAMS(client.getNickname(), "KICK"));
 	else if (_channels.find(channel) == _channels.end())
 		Server::clientLog(client.getSocket(), ERR_NOSUCHCHANNEL(channel));	
 	else if (_channels.at(channel).getMap(USERS).find(client.getSocket()) == _channels.at(channel).getMap(USERS).end())
-		Server::clientLog(client.getSocket(), ERR_NOTONCHANNEL(client.getUsername(), channel));	
+		Server::clientLog(client.getSocket(), ERR_NOTONCHANNEL(client.getNickname(), channel));	
 	else if (!findClient(_channels.at(channel).getMap(USERS), user))
-		Server::clientLog(client.getSocket(), ERR_USERNOTINCHANNEL(client.getUsername(), user, channel));
+		Server::clientLog(client.getSocket(), ERR_USERNOTINCHANNEL(client.getNickname(), user, channel));
 	else if (_channels.at(channel).getMap(OPERATORS).find(client.getSocket()) == _channels.at(channel).getMap(OPERATORS).end())
-		Server::clientLog(client.getSocket(), ERR_CHANOPRIVSNEEDED(client.getUsername(), channel));
+		Server::clientLog(client.getSocket(), ERR_CHANOPRIVSNEEDED(client.getNickname(), channel));
 	else
 		return true;
 	return (false);
@@ -45,10 +45,10 @@ void Server::kick(Client& client, const std::string& args) {
 	iss >> channel;
 	iss >> user;
 	if (client.getRegistration() && parsing(client, _channels, channel, user)) {
-		_channels.at(channel).sendMessage(SEND_TO_ALL, client.getSocket(), RPL_KICK(client.getUsername(), channel, user));
+		_channels.at(channel).sendMessage(SEND_TO_ALL, client.getSocket(), RPL_KICK(client.getNickname(), channel, user));
 		_channels.at(channel).deleteUser(user);
 		if (_channels.at(channel).getMap(USERS).empty())
 			_channels.erase(channel);
-		serverLog(0, "KICK command successful!");
+		serverLog(SUCCESS, "KICK command successful!");
 	}
 }

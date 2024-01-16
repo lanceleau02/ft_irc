@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   topic.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:31:04 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/13 09:26:06 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/16 13:01:57 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,20 @@
 /* Error Replies:                                                             */
 /* 442	ERR_NOTONCHANNEL		"<channel> :You're not on that channel"       */
 /* 461	ERR_NEEDMOREPARAMS		"<command> :Not enough parameters"            */
-/* 477	ERR_NOCHANMODES			"<channel> :Channel doesn't support modes"    */
 /* 482	ERR_CHANOPRIVSNEEDED	"<channel> :You're not channel operator"      */
 /* ************************************************************************** */
 
-static bool	parsing(const Client& client, std::map<std::string, Channel> channels, std::string cmd, std::string channelName, std::string topic) {
+static bool	parsing(const Client& client, std::map<std::string, Channel> channels, std::string channelName, std::string topic) {
 	if (channelName.empty()) {
-		Server::clientLog(client.getSocket(), ERR_NEEDMOREPARAMS(client.getUsername(), cmd));
+		Server::clientLog(client.getSocket(), ERR_NEEDMOREPARAMS(client.getNickname(), "TOPIC"));
 		return false;
 	} else if (channels.find(channelName) == channels.end())
 		return false;
 	Channel channel = channels.at(channelName);
 	if (!(channel.isUser(client.getSocket())))
-		Server::clientLog(client.getSocket(), ERR_NOTONCHANNEL(client.getUsername(), channelName));
+		Server::clientLog(client.getSocket(), ERR_NOTONCHANNEL(client.getNickname(), channelName));
 	else if (channel.getTopicRestrictions() && !channel.isOperator(client.getSocket()) && !topic.empty())
-		Server::clientLog(client.getSocket(), ERR_CHANOPRIVSNEEDED(client.getUsername(), channelName));
+		Server::clientLog(client.getSocket(), ERR_CHANOPRIVSNEEDED(client.getNickname(), channelName));
 	else
 		return true;
 	return false;
@@ -49,17 +48,17 @@ void	Server::topic(Client& client, const std::string& args) {
 
 	iss >> channelName;
 	iss >> topic;
-	if (client.getRegistration() && parsing(client, _channels, "TOPIC", channelName, topic)) {
+	if (client.getRegistration() && parsing(client, _channels, channelName, topic)) {
 		if (topic[0] == ':')
 			topic = topic.substr(1);
 		if (topic.empty() && (_channels.at(channelName).getTopic()).empty())
-			Server::clientLog(client.getSocket(), RPL_NOTOPIC(client.getUsername(), channelName));
+			Server::clientLog(client.getSocket(), RPL_NOTOPIC(client.getNickname(), channelName));
 		else if (topic.empty() && !(_channels.at(channelName).getTopic()).empty())
-			Server::clientLog(client.getSocket(), RPL_SEETOPIC(client.getUsername(), channelName, _channels.at(channelName).getTopic()));
+			Server::clientLog(client.getSocket(), RPL_SEETOPIC(client.getNickname(), channelName, _channels.at(channelName).getTopic()));
 		else if (!topic.empty()) {
 			_channels.at(channelName).setTopic(topic);
-			_channels.at(channelName).sendMessage(SEND_TO_ALL, client.getSocket(), RPL_TOPIC(client.getUsername(), channelName, _channels.at(channelName).getTopic()));
+			_channels.at(channelName).sendMessage(SEND_TO_ALL, client.getSocket(), RPL_TOPIC(client.getNickname(), channelName, _channels.at(channelName).getTopic()));
 		}
-		serverLog(0, "TOPIC command successful!");
+		serverLog(SUCCESS, "TOPIC command successful!");
 	}
 }

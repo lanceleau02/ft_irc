@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 13:30:36 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/11 22:08:21 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/16 13:02:22 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@
 /* 464	ERR_PASSWDMISMATCH		":Password incorrect"                         */
 /* ************************************************************************** */
 
-static bool parsing(const Client& client, std::string cmd, const std::string& userPass, const std::string& serverPass) {
+static bool parsing(const Client& client, std::string userPass, std::string serverPass) {
 	if (client.getAuthentication())
-		Server::clientLog(client.getSocket(), ERR_ALREADYREGISTRED(client.getUsername()));
+		Server::clientLog(client.getSocket(), ERR_ALREADYREGISTRED(client.getNickname()));
 	else if (userPass.empty())
-		Server::clientLog(client.getSocket(), ERR_NEEDMOREPARAMS(client.getUsername(), cmd));
+		Server::clientLog(client.getSocket(), ERR_NEEDMOREPARAMS(client.getNickname(), "PASS"));
 	else if (userPass != serverPass)
-		Server::clientLog(client.getSocket(), ERR_PASSWDMISMATCH(client.getUsername()));
+		Server::clientLog(client.getSocket(), ERR_PASSWDMISMATCH(client.getNickname()));
 	else
 		return true;
 	return false;
@@ -36,8 +36,8 @@ void	Server::pass(Client& client, const std::string& pass) {
 	std::string			password;
 	
 	iss >> password;
-	if (!client.getAuthentication() && parsing(client, "PASS", password, _password) && password == _password) {
+	if (!client.getAuthentication() && parsing(client, password, _password) && password == _password) {
 		client.setAuthentication(true);
-		serverLog(0, "PASS command successful!");
+		serverLog(SUCCESS, "PASS command successful!");
 	}
 }

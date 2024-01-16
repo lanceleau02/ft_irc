@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:38:26 by hsebille          #+#    #+#             */
-/*   Updated: 2024/01/15 13:59:02 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/16 11:57:51 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 # define SERVER_HPP
 
 #include "ft_irc.hpp"
+
+enum LogType {
+	SUCCESS,
+	FAILURE
+};
 
 class Client;
 class Channel;
@@ -47,6 +52,7 @@ class Server {
 		void		listenConnections();
 		void		createEpoll();
 		void		addSocketToEpoll();
+		void		removeUserAndChannels(int clientSocket);
 		void		executor(std::string buffer, Client& client);
 		void		launchCommand(Client& client, const std::string& cmd, const std::string& args);
 		void		addClient(const Client& client);

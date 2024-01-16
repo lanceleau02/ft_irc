@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 15:59:15 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/15 13:01:46 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/16 10:21:53 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,8 +134,6 @@ void	Channel::addOrRemove(int mode, int clientSocket) {
 		addOperator(_users.at(clientSocket));
 	else if (mode == REMOVE_OPERATOR)
 		_operators.erase(clientSocket);
-	//sendMessage(SEND_TO_ALL, clientSocket, RPL_JOIN(_users.at(clientSocket).getNickname(), _users.at(clientSocket).getUsername(), _name));
-	//sendMessage(SEND_TO_ALL, clientSocket, RPL_NAMEREPLY(_users.at(clientSocket).getNickname(), _name, createNickList(*this)));
 }
 
 void	Channel::deleteUser(std::string nickname) {

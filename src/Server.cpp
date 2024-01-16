@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:32:37 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/15 14:04:40 by hsebille         ###   ########.fr       */
+/*   Updated: 2024/01/16 11:57:01 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,16 +67,16 @@ void	Server::start() {
 				struct sockaddr_in	clientAddress;
 				int	clientSocket = acceptConnection(clientAddress);
                 if (clientSocket == -1) {
-                    serverLog(1, "Failed to accept client connection.");
+                    serverLog(FAILURE, "Failed to accept client connection.");
                     continue;
 				}
-				serverLog(0, "Client connected!");
+				serverLog(SUCCESS, "Client connected!");
 				// Create new client
 				Client	newClient(clientSocket, clientAddress);
 				addClient(newClient);
 				// Add client socket to epoll
                 if (addSocket(_event, clientSocket, _epoll) == -1) {
-					serverLog(1, "Failed to add client socket to epoll instance.");
+					serverLog(FAILURE, "Failed to add client socket to epoll instance.");
                     close(clientSocket);
                     continue;
                 }
@@ -90,19 +90,8 @@ void	Server::start() {
 				buffer[bytes] = '\0';
 				_clients.at(clientSocket).addToBuffer(buffer);
 				if (bytes <= 0) {
-					std::vector<std::string>	channelsToRemove;
-					for (std::map<std::string, Channel>::iterator it = _channels.begin(); it != _channels.end(); it++) {
-						if (findClient(it->second.getMap(USERS), _clients.at(clientSocket).getNickname())) {
-							it->second.addOrRemove(REMOVE_OPERATOR, clientSocket);
-							it->second.deleteUser(_clients.at(clientSocket).getNickname());
-						}
-						if (it->second.getMap(USERS).empty())
-							channelsToRemove.push_back(it->first);
-					}
-					for (std::vector<std::string>::iterator it = channelsToRemove.begin(); it != channelsToRemove.end(); ++it) {
-    					_channels.erase(*it);
-					}
-					serverLog(1, "Client disconnected!");
+					removeUserAndChannels(clientSocket);
+					serverLog(FAILURE, "Client disconnected!");
 					epoll_ctl(_epoll, EPOLL_CTL_DEL, clientSocket, &_event);
 					eraseClient(clientSocket);
 					close(clientSocket);
@@ -119,6 +108,23 @@ void	Server::start() {
 /* ************************************************************************** */
 /*                              UTILS FUNCTIONS                               */
 /* ************************************************************************** */
+
+void	Server::removeUserAndChannels(int clientSocket) {
+	std::vector<std::string>	channelsToRemove;
+	
+	for (std::map<std::string, Channel>::iterator it = _channels.begin(); it != _channels.end(); it++) {
+		if (findClient(it->second.getMap(USERS), _clients.at(clientSocket).getNickname())) {
+			if (it->second.isOperator(clientSocket))
+				it->second.addOrRemove(REMOVE_OPERATOR, clientSocket);
+			it->second.sendMessage(SEND_TO_ALL, clientSocket, RPL_PART(_clients.at(clientSocket).getNickname(), it->first));
+			it->second.deleteUser(_clients.at(clientSocket).getNickname());
+		}
+		if (it->second.getMap(USERS).empty())
+			channelsToRemove.push_back(it->first);
+	}
+	for (std::vector<std::string>::iterator it = channelsToRemove.begin(); it != channelsToRemove.end(); ++it)
+		_channels.erase(*it);
+}
 
 void	Server::createSocket() {
 	_socket = socket(AF_INET, SOCK_STREAM, 0);
@@ -200,7 +206,8 @@ void	Server::executor(std::string buffer, Client& client) {
 		launchCommand(client, command, args);
 		if (client.getAuthentication() && !client.getNickname().empty() && !client.getUsername().empty() && !client.getRegistration()) {
 			client.setRegistration();
-			serverLog(0, client.getNickname() + " just arrived!");
+			clientLog(client.getSocket(), RPL_WELCOME(client.getNickname()));
+			serverLog(SUCCESS, client.getNickname() + " just arrived!");
 		}
 	}
 }
@@ -224,9 +231,9 @@ void	Server::eraseClient(int socket) {
 }
 
 void	Server::serverLog(int type, const std::string& log) {
-	if (type == 0)
+	if (type == SUCCESS)
 		std::cout << GREEN << log << NONE << std::endl << std::endl;
-	else if (type == 1)
+	else if (type == FAILURE)
 		std::cerr << RED << log << NONE << std::endl << std::endl;
 }
 

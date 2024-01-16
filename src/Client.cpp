@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 13:42:32 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/15 11:25:21 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/16 11:58:30 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,12 +95,4 @@ void	Client::addToBuffer(std::string buffer) {
 
 void	Client::cleanBuffer() {
 	_buffer = "";
-}
-
-void	Client::display() const {
-	std::cout << "Socket : " << _socket << std::endl;
-	std::cout << "isAuthenticated : " << _isAuthenticated << std::endl;
-	std::cout << "isRegistered : " << _isRegistered << std::endl;
-	std::cout << "Nickname : " << _nickname << std::endl;
-	std::cout << "Username : " << _username << std::endl;
 }

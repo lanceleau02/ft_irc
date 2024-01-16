@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:56:15 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/15 11:23:18 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/16 11:58:33 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ class Client {
 
 		void	addToBuffer(std::string buffer);
 		void	cleanBuffer();
-		void	display() const;
 };
 
 #endif
