@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 11:18:58 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/15 10:01:10 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/16 09:44:09 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ std::string	createNickList(Channel channel) {
 			nickList += " ";
 		if (channel.isOperator(it->second.getSocket()))
 			nickList += "@";
+		else
+			nickList += "+";
 		nickList += it->second.getNickname();
 	}
 	return nickList;
