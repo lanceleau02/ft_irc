@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:54:49 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/16 13:03:17 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/16 13:50:56 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ void Server::kick(Client& client, const std::string& args) {
 		_channels.at(channel).deleteUser(user);
 		if (_channels.at(channel).getMap(USERS).empty())
 			_channels.erase(channel);
-		serverLog(SUCCESS, "KICK command successful!");
+		serverLog(SUCCESS, "KICK command success!");
 	}
+	else
+		serverLog(FAILURE, "KICK command failure!");
 }

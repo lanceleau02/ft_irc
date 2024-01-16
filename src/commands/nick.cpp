@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:42:59 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/16 13:02:32 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/16 13:50:08 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ void	Server::nick(Client& client, const std::string& nick) {
 		if (!client.getNickname().empty())
 			clientLog(client.getSocket(), RPL_NICK(client.getNickname(), nickname));
 		client.setNickname(nickname);
-		serverLog(SUCCESS, "NICK command successful!");
+		serverLog(SUCCESS, "NICK command success!");
 	}
+	else
+		serverLog(FAILURE, "NICK command failure!");
 }

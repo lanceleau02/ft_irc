@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 09:51:01 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/16 12:59:44 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/16 13:49:18 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ void	Server::user(Client& client, const std::string& user) {
 	iss >> username;
 	if (client.getAuthentication() && parsing(client, username)) {
 		client.setUsername(username);
-		serverLog(SUCCESS, "USER command successful!");
+		serverLog(SUCCESS, "USER command success!");
 	}
+	else
+		serverLog(FAILURE, "USER command failure!");
 }

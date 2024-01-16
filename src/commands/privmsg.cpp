@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 14:26:34 by hsebille          #+#    #+#             */
-/*   Updated: 2024/01/16 12:55:50 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/16 13:50:29 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,9 @@ void	Server::privmsg(Client& client, const std::string& args) {
 			_channels.at(msgtarget).sendMessage(EXCLUDE_SENDER, client.getSocket(), ":" + client.getNickname() + " PRIVMSG " + msgtarget + " :" + msg + "\r\n");
 		for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++)
 			if (it->second.getNickname() == msgtarget)
-				Server::clientLog(it->second.getSocket(), ":" + client.getNickname() + " PRIVMSG " + msgtarget + " " + msg.substr(1) + "\r\n");
-		serverLog(SUCCESS, "PRIVMSG command successful!");
+				clientLog(it->second.getSocket(), ":" + client.getNickname() + " PRIVMSG " + msgtarget + " " + msg.substr(1) + "\r\n");
+		serverLog(SUCCESS, "PRIVMSG command success!");
 	}
+	else
+		serverLog(FAILURE, "PRIVMSG command failure!");
 }

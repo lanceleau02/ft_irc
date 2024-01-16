@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:31:04 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/16 13:01:57 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/16 13:50:37 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,15 @@ void	Server::topic(Client& client, const std::string& args) {
 		if (topic[0] == ':')
 			topic = topic.substr(1);
 		if (topic.empty() && (_channels.at(channelName).getTopic()).empty())
-			Server::clientLog(client.getSocket(), RPL_NOTOPIC(client.getNickname(), channelName));
+			clientLog(client.getSocket(), RPL_NOTOPIC(client.getNickname(), channelName));
 		else if (topic.empty() && !(_channels.at(channelName).getTopic()).empty())
-			Server::clientLog(client.getSocket(), RPL_SEETOPIC(client.getNickname(), channelName, _channels.at(channelName).getTopic()));
+			clientLog(client.getSocket(), RPL_SEETOPIC(client.getNickname(), channelName, _channels.at(channelName).getTopic()));
 		else if (!topic.empty()) {
 			_channels.at(channelName).setTopic(topic);
 			_channels.at(channelName).sendMessage(SEND_TO_ALL, client.getSocket(), RPL_TOPIC(client.getNickname(), channelName, _channels.at(channelName).getTopic()));
 		}
-		serverLog(SUCCESS, "TOPIC command successful!");
+		serverLog(SUCCESS, "TOPIC command success!");
 	}
+	else
+		serverLog(FAILURE, "TOPIC command failure!");
 }

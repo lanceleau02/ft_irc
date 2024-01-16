@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 13:37:20 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/16 13:02:47 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/16 13:50:24 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,9 @@ void Server::mode(Client& client, const std::string& args) {
 			_channels.at(channel).setUserLimit(SET_USER_LIMIT, 0);
 		else if (mode[1] == 'l' && mode[0] == '-' && param.empty())
 			_channels.at(channel).setUserLimit(UNSET_USER_LIMIT, 0);
-		Server::clientLog(client.getSocket(), RPL_MODE(client.getNickname(), channel, mode, param));
-		serverLog(SUCCESS, "MODE command successful!");
+		clientLog(client.getSocket(), RPL_MODE(client.getNickname(), channel, mode, param));
+		serverLog(SUCCESS, "MODE command success!");
 	}
+	else
+		serverLog(FAILURE, "MODE command failure!");
 }

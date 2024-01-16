@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 13:30:36 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/16 13:02:22 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/16 13:50:01 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ void	Server::pass(Client& client, const std::string& pass) {
 	iss >> password;
 	if (!client.getAuthentication() && parsing(client, password, _password) && password == _password) {
 		client.setAuthentication(true);
-		serverLog(SUCCESS, "PASS command successful!");
+		serverLog(SUCCESS, "PASS command success!");
 	}
+	else
+		serverLog(FAILURE, "PASS command failure!");
 }

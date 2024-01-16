@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:30:52 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/16 13:03:33 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/16 13:51:11 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,11 @@ void	Server::join(Client& client, const std::string& args) {
 		_channels.at(channel).sendMessage(SEND_TO_ALL, client.getSocket(), RPL_JOIN(client.getNickname(), channel));
 		_channels.at(channel).sendMessage(SEND_TO_ALL, client.getSocket(), RPL_NAMEREPLY(client.getNickname(), channel, createNickList(_channels.at(channel))));
 		if ((_channels.at(channel).getTopic()).empty())
-			Server::clientLog(client.getSocket(), RPL_NOTOPIC(client.getNickname(), channel));
+			clientLog(client.getSocket(), RPL_NOTOPIC(client.getNickname(), channel));
 		else
-			Server::clientLog(client.getSocket(), RPL_TOPIC(client.getNickname(), channel, _channels.at(channel).getTopic()));
-		serverLog(SUCCESS, "JOIN command successful!");
+			clientLog(client.getSocket(), RPL_TOPIC(client.getNickname(), channel, _channels.at(channel).getTopic()));
+		serverLog(SUCCESS, "JOIN command success!");
 	}
+	else
+		serverLog(FAILURE, "JOIN command failure!");
 }

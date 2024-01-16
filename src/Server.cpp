@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:32:37 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/16 13:11:04 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/16 14:02:09 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 /*                              CLASS FUNCTIONS                               */
 /* ************************************************************************** */
 
-Server::Server(char** params) {
+Server::Server(char** params) : _socket(-1), _epoll(-1) {
 	std::string	port(params[1]);
 	if (port.find_first_not_of("0123456789") != std::string::npos)
 		throw std::invalid_argument("invalid port number.");
@@ -28,8 +28,10 @@ Server::Server(char** params) {
 }
 
 Server::~Server() {
-	close(_socket);
-	close(_epoll);
+	if (_socket != -1)
+		close(_socket);
+	if (_epoll != -1)
+		close(_epoll);
 }
 
 /* ************************************************************************** */
@@ -143,35 +145,26 @@ void	Server::setupSocket() {
 }
 
 void	Server::bindSocket() {
-	if (bind(_socket, reinterpret_cast<sockaddr*>(&_serverAddress), sizeof(_serverAddress)) == -1) {
-		close(_socket);
+	if (bind(_socket, reinterpret_cast<sockaddr*>(&_serverAddress), sizeof(_serverAddress)) == -1)
 		throw std::runtime_error("failed to bind socket.");
-	}
 }
 
 void	Server::listenConnections() {
-	if (listen(_socket, 5) == -1) {
-		close(_socket);
+	if (listen(_socket, 5) == -1)
 		throw std::runtime_error("failed to listen.");
-    }
 }
 
 void	Server::createEpoll() {
 	_epoll = epoll_create1(0);
-	if (_epoll == -1) {
-		close(_socket);
+	if (_epoll == -1)
 		throw std::runtime_error("failed to create epoll instance.");
-	}
 	_event.events = EPOLLIN;
 	_event.data.fd = _socket;
 }
 
 void	Server::addSocketToEpoll() {
-	if (epoll_ctl(_epoll, EPOLL_CTL_ADD, _socket, &_event) == -1) {
-		close(_epoll);
-		close(_socket);
+	if (epoll_ctl(_epoll, EPOLL_CTL_ADD, _socket, &_event) == -1)
 		throw std::runtime_error("failed to add socket to epoll.");
-	}
 }
 
 void	Server::addClient(const Client& client) {

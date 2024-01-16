@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 12:51:16 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/16 13:03:51 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/16 13:51:22 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ void	Server::invite(Client& client, const std::string& args) {
 			}
 		}
 		clientLog(client.getSocket(), RPL_INVITESNDR(client.getNickname(), nickname, channel));
-		serverLog(SUCCESS, "INVITE command successful!");
+		serverLog(SUCCESS, "INVITE command success!");
 	}
+	else
+		serverLog(FAILURE, "INVITE command failure!");
 }
