@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:38:26 by hsebille          #+#    #+#             */
-/*   Updated: 2024/01/16 11:57:51 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/16 13:12:11 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,24 +52,24 @@ class Server {
 		void		listenConnections();
 		void		createEpoll();
 		void		addSocketToEpoll();
-		void		removeUserAndChannels(int clientSocket);
-		void		executor(std::string buffer, Client& client);
-		void		launchCommand(Client& client, const std::string& cmd, const std::string& args);
 		void		addClient(const Client& client);
+		void		removeUserAndChannels(int clientSocket);
 		void		eraseClient(int socket);
+		void		execute(std::string buffer, Client& client);
+		void		launchCommand(Client& client, const std::string& cmd, const std::string& args);
 		static void	serverLog(int type, const std::string& log);
 		static void	clientLog(int socket, const std::string& log);
 
-		void	pass(Client& client, const std::string& password);
-		void	kick(Client& client, const std::string& args);
-		void	nick(Client& client, const std::string& nickname);
-		void	user(Client& client, const std::string& username);
+		void	bot(Client& client, const std::string& param);
+		void	invite(Client& client, const std::string& args);
 		void	join(Client& client, const std::string& channelName);
+		void	kick(Client& client, const std::string& args);
+		void	mode(Client& client, const std::string& args);
+		void	nick(Client& client, const std::string& nickname);
+		void	pass(Client& client, const std::string& password);
 		void	privmsg(Client& client, const std::string& args);
 		void	topic(Client& client, const std::string& args);
-		void	mode(Client& client, const std::string& args);
-		void	invite(Client& client, const std::string& args);
-		void	bot(Client& client, const std::string& param);
+		void	user(Client& client, const std::string& username);
 
 };
 

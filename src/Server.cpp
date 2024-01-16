@@ -6,7 +6,7 @@
 /*   By: laprieur <laprieur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:32:37 by laprieur          #+#    #+#             */
-/*   Updated: 2024/01/16 11:57:01 by laprieur         ###   ########.fr       */
+/*   Updated: 2024/01/16 13:11:04 by laprieur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	Server::start() {
 					close(clientSocket);
 				} else if (_clients.at(clientSocket).getBuffer().find('\n') != std::string::npos) {
 					std::cout << _clients.at(clientSocket).getBuffer();
-					executor(_clients.at(clientSocket).getBuffer(), _clients.at(clientSocket));
+					execute(_clients.at(clientSocket).getBuffer(), _clients.at(clientSocket));
 					_clients.at(clientSocket).cleanBuffer();
 				}
 			}
@@ -109,21 +109,22 @@ void	Server::start() {
 /*                              UTILS FUNCTIONS                               */
 /* ************************************************************************** */
 
-void	Server::removeUserAndChannels(int clientSocket) {
-	std::vector<std::string>	channelsToRemove;
-	
-	for (std::map<std::string, Channel>::iterator it = _channels.begin(); it != _channels.end(); it++) {
-		if (findClient(it->second.getMap(USERS), _clients.at(clientSocket).getNickname())) {
-			if (it->second.isOperator(clientSocket))
-				it->second.addOrRemove(REMOVE_OPERATOR, clientSocket);
-			it->second.sendMessage(SEND_TO_ALL, clientSocket, RPL_PART(_clients.at(clientSocket).getNickname(), it->first));
-			it->second.deleteUser(_clients.at(clientSocket).getNickname());
-		}
-		if (it->second.getMap(USERS).empty())
-			channelsToRemove.push_back(it->first);
-	}
-	for (std::vector<std::string>::iterator it = channelsToRemove.begin(); it != channelsToRemove.end(); ++it)
-		_channels.erase(*it);
+int	Server::waitEvents() {
+	int nbEvents = epoll_wait(_epoll, _events, 10, -1);
+    if (nbEvents == -1)
+		throw std::runtime_error("failed to wait for events.");
+	return nbEvents;
+}
+
+int	Server::acceptConnection(sockaddr_in& clientAddress) {
+	socklen_t clientAddressLength = sizeof(clientAddress);
+	return accept(_socket, reinterpret_cast<sockaddr*>(&clientAddress), &clientAddressLength);
+}
+
+int	Server::addSocket(epoll_event& event, int socket, int epoll) {
+	event.events = EPOLLIN;
+	event.data.fd = socket;
+	return epoll_ctl(epoll, EPOLL_CTL_ADD, socket, &event);
 }
 
 void	Server::createSocket() {
@@ -173,25 +174,32 @@ void	Server::addSocketToEpoll() {
 	}
 }
 
-int	Server::waitEvents() {
-	int nbEvents = epoll_wait(_epoll, _events, 10, -1);
-    if (nbEvents == -1)
-		throw std::runtime_error("failed to wait for events.");
-	return nbEvents;
+void	Server::addClient(const Client& client) {
+	_clients.insert(std::pair<int, Client>(client.getSocket(), client));
 }
 
-int	Server::acceptConnection(sockaddr_in& clientAddress) {
-	socklen_t clientAddressLength = sizeof(clientAddress);
-	return accept(_socket, reinterpret_cast<sockaddr*>(&clientAddress), &clientAddressLength);
+void	Server::removeUserAndChannels(int clientSocket) {
+	std::vector<std::string>	channelsToRemove;
+	
+	for (std::map<std::string, Channel>::iterator it = _channels.begin(); it != _channels.end(); it++) {
+		if (findClient(it->second.getMap(USERS), _clients.at(clientSocket).getNickname())) {
+			if (it->second.isOperator(clientSocket))
+				it->second.addOrRemove(REMOVE_OPERATOR, clientSocket);
+			it->second.sendMessage(SEND_TO_ALL, clientSocket, RPL_PART(_clients.at(clientSocket).getNickname(), it->first));
+			it->second.deleteUser(_clients.at(clientSocket).getNickname());
+		}
+		if (it->second.getMap(USERS).empty())
+			channelsToRemove.push_back(it->first);
+	}
+	for (std::vector<std::string>::iterator it = channelsToRemove.begin(); it != channelsToRemove.end(); ++it)
+		_channels.erase(*it);
 }
 
-int	Server::addSocket(epoll_event& event, int socket, int epoll) {
-	event.events = EPOLLIN;
-	event.data.fd = socket;
-	return epoll_ctl(epoll, EPOLL_CTL_ADD, socket, &event);
+void	Server::eraseClient(int socket) {
+	_clients.erase(socket);
 }
 
-void	Server::executor(std::string buffer, Client& client) {
+void	Server::execute(std::string buffer, Client& client) {
 	std::istringstream	iss(buffer);
 	std::string			line;
 	std::string			command;
@@ -220,14 +228,6 @@ void	Server::launchCommand(Client& client, const std::string& cmd, const std::st
 	for (int i = 0; i < 10; i++)
 		if (cmdNames[i] == cmd)
 			(this->*cmdFunc[i])(client, args);
-}
-
-void	Server::addClient(const Client& client) {
-	_clients.insert(std::pair<int, Client>(client.getSocket(), client));
-}
-
-void	Server::eraseClient(int socket) {
-	_clients.erase(socket);
 }
 
 void	Server::serverLog(int type, const std::string& log) {
