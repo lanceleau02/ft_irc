@@ -10,13 +10,13 @@
 
 ## Features
 
-1. Implement an IRC server compliant with the RFC 2812 protocol.
-2. Support multiple simultaneous client connections using sockets.
-3. Handle basic IRC commands such as `NICK`, `USER`, `JOIN`, `PART`, `PRIVMSG`, and `QUIT`.
-4. Manage user authentication and connection registration.
-5. Enable private messaging and public channel communication.
-6. Support operator privileges for managing channels and users.
-7. Ensure server stability and proper error handling under load.
+- Implement an IRC server compliant with the RFC 2812 protocol.
+- Support multiple simultaneous client connections using sockets.
+- Handle basic IRC commands such as `NICK`, `USER`, `JOIN`, `PART`, `PRIVMSG`, and `QUIT`.
+- Manage user authentication and connection registration.
+- Enable private messaging and public channel communication.
+- Support operator privileges for managing channels and users.
+- Ensure server stability and proper error handling under load.
 
 ## Installation
 
